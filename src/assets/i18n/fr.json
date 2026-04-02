@@ -1,0 +1,15 @@
+{
+    "preloader": {
+        "status": "INITIALISATION",
+        "loading": "Chargement",
+        "ready": "Prêt"
+    },
+    "steps": {
+        "init":    "initialisation du système...",
+        "assets":  "chargement des ressources...",
+        "modules": "compilation des modules...",
+        "render":  "préparation du rendu...",
+        "ready":   "finalisation...",
+        "done":    "système prêt."
+    }
+}

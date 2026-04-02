@@ -1,21 +1,23 @@
 import { NgModule, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
 import { BrowserModule, provideClientHydration, withEventReplay } from '@angular/platform-browser';
-import { TranslateModule, TranslateLoader, provideTranslateService } from '@ngx-translate/core';
+import { TranslateModule, provideTranslateService } from '@ngx-translate/core';
 
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
 import { provideHttpClient } from '@angular/common/http';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
+import { PreloaderComponent } from './components/preloader/preloader';
 
 @NgModule({
   declarations: [
-    App
+    App,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     TranslateModule,
-  ],
+    PreloaderComponent
+],
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
@@ -23,7 +25,7 @@ import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
     provideHttpClient(),
     provideTranslateService({
       loader: provideTranslateHttpLoader({
-        prefix: './assets/i18n',
+        prefix: './assets/i18n/',
         suffix: '.json'
       }),
       defaultLanguage: 'fr'

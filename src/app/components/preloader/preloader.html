@@ -1,0 +1,47 @@
+<div class="preloader" #preloader>
+
+  <!-- Coin supérieur gauche -->
+  <div class="preloader__corner preloader__corner--tl">
+    <span class="mono">[status:<span class="accent">{{ status }}</span>]</span>
+  </div>
+
+  <!-- Coin supérieur droit -->
+  <div class="preloader__corner preloader__corner--tr">
+    <span class="mono">{{ currentDate }}</span>
+  </div>
+
+  <!-- Centre principal -->
+  <div class="preloader__center">
+
+    <div class="preloader__counter" #counter>
+      <span class="preloader__counter-number">{{ count }}</span>
+      <span class="preloader__counter-symbol accent">%</span>
+    </div>
+
+    <div class="preloader__status" #statusEl>
+      <span class="mono accent">// </span>
+      <span class="mono">{{ statusText }}</span>
+      <span class="preloader__cursor accent">_</span>
+    </div>
+
+  </div>
+
+  <!-- Barre de progression -->
+  <div class="preloader__progress-wrapper">
+    <div class="preloader__progress-bar" #progressBar>
+      <div
+        class="preloader__progress-fill"
+        [style.width.%]="count">
+      </div>
+    </div>
+    <span class="preloader__progress-label mono">
+      {{ 'preloader.loading' | translate }} — {{ count }}/100
+    </span>
+  </div>
+
+  <!-- Coin inférieur droit -->
+  <div class="preloader__corner preloader__corner--br">
+    <span class="mono">v1.0.0</span>
+  </div>
+
+</div>

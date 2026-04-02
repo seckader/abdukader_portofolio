@@ -1,0 +1,129 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: $z-preloader;
+  background-color: $color-bg;
+  @include flex-center;
+  flex-direction: column;
+  overflow: hidden;
+
+  // ============================================
+  // COINS
+  // ============================================
+  &__corner {
+    position: absolute;
+    font-size: $font-size-xs;
+    color: $color-text-dark;
+    letter-spacing: 0.08em;
+
+    &--tl { top: $spacing-xl;  left: $spacing-xl; }
+    &--tr { top: $spacing-xl;  right: $spacing-xl; }
+    &--br { bottom: $spacing-xl; right: $spacing-xl; }
+
+    .accent { color: $color-accent; }
+  }
+
+  // ============================================
+  // CENTRE
+  // ============================================
+  &__center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-lg;
+  }
+
+  // ============================================
+  // COMPTEUR
+  // ============================================
+  &__counter {
+    display: flex;
+    align-items: flex-start;
+    line-height: 1;
+    opacity: 0; // GSAP l'animera
+
+    &-number {
+      font-family: $font-mono;
+      font-size: clamp(5rem, 15vw, 10rem);
+      font-weight: $font-weight-bold;
+      color: $color-text-primary;
+      letter-spacing: -0.04em;
+      min-width: 3ch;
+      text-align: right;
+      transition: color 0.1s ease;
+    }
+
+    &-symbol {
+      font-family: $font-mono;
+      font-size: clamp(2rem, 6vw, 4rem);
+      font-weight: $font-weight-bold;
+      margin-top: 0.3em;
+      margin-left: $spacing-xs;
+    }
+  }
+
+  // ============================================
+  // STATUS TEXT
+  // ============================================
+  &__status {
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+    opacity: 0; // GSAP l'animera
+    font-size: $font-size-sm;
+    letter-spacing: 0.05em;
+
+    .mono { font-family: $font-mono; }
+    .accent { color: $color-accent; }
+  }
+
+  &__cursor {
+    animation: blink 1s step-end infinite;
+    font-family: $font-mono;
+  }
+
+  // ============================================
+  // PROGRESS BAR
+  // ============================================
+  &__progress-wrapper {
+    position: absolute;
+    bottom: $spacing-2xl;
+    left: $spacing-xl;
+    right: $spacing-xl;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+  }
+
+  &__progress-bar {
+    width: 100%;
+    height: 1px;
+    background: $color-text-dark;
+    opacity: 0; // GSAP l'animera
+    overflow: hidden;
+  }
+
+  &__progress-fill {
+    height: 100%;
+    background: $color-accent;
+    transition: width 0.05s linear;
+    box-shadow: 0 0 8px rgba($color-accent-rgb..., 0.6);
+  }
+
+  &__progress-label {
+    font-size: $font-size-xs;
+    color: $color-text-dark;
+    letter-spacing: 0.08em;
+  }
+}
+
+// ============================================
+// ANIMATIONS
+// ============================================
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
