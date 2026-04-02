@@ -1,2 +1,8 @@
-<app-preloader *ngIf="showPreloader" (preloadComplete)="onPreloadComplete()"></app-preloader>
-<router-outlet />
+<app-preloader
+  *ngIf="showPreloader"
+  (preloadComplete)="onPreloadComplete()">
+</app-preloader>
+
+<div #pageEntry class="app-content" [class.visible]="!showPreloader">
+  <router-outlet />
+</div>
