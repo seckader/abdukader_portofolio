@@ -1,0 +1,202 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.about {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: $spacing-4xl 0;
+  overflow: hidden;
+
+  &__content {
+    position: relative;
+    z-index: 1;
+    max-width: 760px;
+  }
+
+  &__eyebrow {
+    display: inline-block;
+    margin-bottom: $spacing-lg;
+    color: $color-accent;
+    font-size: $font-size-sm;
+  }
+
+  &__greeting {
+    margin-bottom: $spacing-sm;
+    color: $color-text-secondary;
+    font-size: clamp(1rem, 2vw, 1.25rem);
+  }
+
+  &__name {
+    margin-bottom: $spacing-md;
+    color: $color-text-primary;
+    font-size: clamp(3.75rem, 11vw, 7rem);
+    line-height: 0.95;
+    letter-spacing: 0;
+  }
+
+  &__role {
+    @include accent-underline;
+
+    display: inline-block;
+    margin-bottom: $spacing-xl;
+    color: $color-accent;
+    font-size: clamp(1.5rem, 4vw, 2.75rem);
+    font-weight: $font-weight-semibold;
+    line-height: $line-height-tight;
+  }
+
+  &__tagline {
+    max-width: 680px;
+    margin-bottom: $spacing-xl;
+    color: $color-text-primary;
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    line-height: $line-height-normal;
+  }
+
+  &__bio {
+    display: grid;
+    gap: $spacing-md;
+    max-width: 66ch;
+    margin-bottom: $spacing-xl;
+  }
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: $spacing-md;
+    margin-bottom: $spacing-xl;
+  }
+
+  &__availability,
+  &__location {
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-sm;
+    min-height: 36px;
+    padding: 0 $spacing-md;
+    border: 1px solid rgba($color-accent, 0.18);
+    border-radius: $border-radius-sm;
+    color: $color-text-secondary;
+    font-size: $font-size-xs;
+    background: rgba($color-bg-light, 0.45);
+  }
+
+  &__availability-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: $color-accent;
+    box-shadow: 0 0 0 rgba($color-accent-rgb..., 0.7);
+    animation: availability-pulse 1.8s infinite;
+  }
+
+  &__availability.is-unavailable {
+    border-color: rgba($color-text-dark, 0.4);
+
+    .about__availability-dot {
+      background: $color-text-dark;
+      animation: none;
+      box-shadow: none;
+    }
+  }
+
+  &__location svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+  }
+
+  &__cta {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 $spacing-lg;
+    border: 1px solid $color-accent;
+    border-radius: $border-radius-sm;
+    color: $color-accent;
+    font-size: $font-size-sm;
+    transition: $transition-normal;
+
+    &:hover,
+    &:focus-visible {
+      background: rgba($color-accent-rgb..., 0.1);
+      transform: translateY(-2px);
+      outline: none;
+    }
+
+    &:focus-visible {
+      box-shadow: 0 0 0 3px rgba($color-accent-rgb..., 0.25);
+    }
+  }
+
+  &__art {
+    position: absolute;
+    top: 18%;
+    right: 0;
+    width: min(32vw, 260px);
+    aspect-ratio: 1;
+    opacity: 0.28;
+    pointer-events: none;
+
+    span {
+      position: absolute;
+      border: 1px solid rgba($color-accent, 0.35);
+    }
+
+    span:nth-child(1) {
+      inset: 12%;
+    }
+
+    span:nth-child(2) {
+      inset: 26%;
+      transform: rotate(45deg);
+    }
+
+    span:nth-child(3) {
+      inset: 40%;
+      background: rgba($color-accent-rgb..., 0.08);
+    }
+  }
+}
+
+@keyframes availability-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba($color-accent-rgb..., 0.55);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba($color-accent-rgb..., 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba($color-accent-rgb..., 0);
+  }
+}
+
+@include respond-to('md') {
+  .about {
+    min-height: calc(100vh - 76px);
+    padding: $spacing-3xl 0;
+
+    &__art {
+      top: 10%;
+      right: -18%;
+      width: 220px;
+    }
+  }
+}
+
+@include respond-to('sm') {
+  .about {
+    &__meta {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    &__availability,
+    &__location {
+      width: 100%;
+    }
+  }
+}

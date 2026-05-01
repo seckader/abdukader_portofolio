@@ -141,6 +141,40 @@ export class AnimationService {
     }
   }
 
+  animateAboutIntro(elements: Element[]): void {
+    if (!this.isBrowser || !elements.length) return;
+
+    gsap.fromTo(elements,
+      { opacity: 0, y: 28 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.75,
+        stagger: 0.1,
+        ease: 'power3.out',
+        delay: 0.15
+      }
+    );
+  }
+
+  animateAboutOnScroll(section: Element): void {
+    if (!this.isBrowser) return;
+
+    gsap.fromTo(section,
+      { filter: 'brightness(0.92)' },
+      {
+        filter: 'brightness(1)',
+        duration: 0.5,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 70%',
+          toggleActions: 'play none none none'
+        }
+      }
+    );
+  }
+
   // ============================================
   // SCROLL ANIMATIONS
   // ============================================

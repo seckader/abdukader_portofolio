@@ -13,7 +13,7 @@
         }
     },
     "sidebar": {
-        "name": "Abdou Kader SECK",
+        "name": "AbduKader",
         "title": "Fullstack Developer",
         "tagline": "I build accessible, performant, and polished web experiences.",
         "menu": "Open navigation menu"
@@ -29,6 +29,24 @@
     },
     "social": {
         "label": "Social links"
+    },
+    "about": {
+        "ariaLabel": "About",
+        "eyebrow": "// 01. about",
+        "greeting": "Hi, I am",
+        "role": "Fullstack Developer",
+        "tagline": "I design fast, accessible, and reliable web interfaces, with careful attention to user experience and code quality.",
+        "bio": {
+            "paragraph1": "I enjoy turning complex ideas into clear, maintainable, and pleasant web products.",
+            "paragraph2": "My approach combines frontend attention to detail with a pragmatic understanding of APIs, data, and backend constraints.",
+            "paragraph3": "This portfolio will progressively evolve with my real experience, selected projects, and technical notes."
+        },
+        "availability": {
+            "available": "Available for opportunities",
+            "unavailable": "Currently unavailable"
+        },
+        "location": "Canada",
+        "cta": "View my work"
     },
     "sections": {
         "about": {

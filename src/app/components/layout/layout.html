@@ -5,10 +5,8 @@
 
   <main class="layout__content" aria-label="Portfolio">
     <app-main-content>
-      <section id="about" class="content-section" #sectionEntry>
-        <span class="content-section__eyebrow mono">01</span>
-        <h2>{{ 'sections.about.title' | translate }}</h2>
-        <p>{{ 'sections.about.placeholder' | translate }}</p>
+      <section id="about" class="content-section" [attr.aria-label]="'about.ariaLabel' | translate" #sectionEntry>
+        <app-about />
       </section>
 
       <section id="experience" class="content-section" #sectionEntry>

@@ -12,6 +12,7 @@ import { SidebarComponent } from './components/layout/sidebar/sidebar';
 import { NavComponent } from './components/layout/sidebar/nav/nav';
 import { SocialLinksComponent } from './components/layout/sidebar/social-links/social-links';
 import { MainContentComponent } from './components/layout/main-content/main-content';
+import { AboutComponent } from './components/sections/about/about';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { MainContentComponent } from './components/layout/main-content/main-cont
     NavComponent,
     SocialLinksComponent,
     MainContentComponent,
+    AboutComponent,
   ],
   imports: [
     BrowserModule,
