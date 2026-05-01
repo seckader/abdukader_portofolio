@@ -239,6 +239,104 @@ export class AnimationService {
     );
   }
 
+  animateSkillsSection(
+    headerEls: Element[],
+    filterEls: Element[],
+    cardEls: Element[],
+    triggerEl: Element
+  ): void {
+    if (!this.isBrowser) return;
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: triggerEl,
+        start: 'top 78%',
+        toggleActions: 'play none none none'
+      }
+    });
+
+    if (headerEls.length) {
+      tl.fromTo(headerEls,
+        { opacity: 0, y: 28 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.65,
+          stagger: 0.08,
+          ease: 'power3.out'
+        }
+      );
+    }
+
+    if (filterEls.length) {
+      tl.fromTo(filterEls,
+        { opacity: 0, y: -16 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          stagger: 0.07,
+          ease: 'power3.out'
+        },
+        '-=0.2'
+      );
+    }
+
+    if (cardEls.length) {
+      tl.fromTo(cardEls,
+        { opacity: 0, y: 26 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.55,
+          stagger: {
+            each: 0.06,
+            from: 'start',
+            grid: 'auto'
+          },
+          ease: 'power3.out'
+        },
+        '-=0.15'
+      );
+    }
+  }
+
+  animateSkillsFilterOut(gridEl: Element, onComplete: () => void): void {
+    if (!this.isBrowser) return;
+
+    gsap.to(gridEl, {
+      opacity: 0,
+      y: 12,
+      duration: 0.22,
+      ease: 'power2.out',
+      onComplete
+    });
+  }
+
+  animateSkillsFilterIn(cardEls: Element[]): void {
+    if (!this.isBrowser) return;
+
+    const targets = cardEls.length ? cardEls : [];
+
+    gsap.set(targets, { opacity: 0, y: 18 });
+    gsap.to(targets, {
+      opacity: 1,
+      y: 0,
+      duration: 0.36,
+      stagger: 0.045,
+      ease: 'power2.out'
+    });
+
+    if (targets[0]?.parentElement) {
+      gsap.to(targets[0].parentElement, {
+        opacity: 1,
+        y: 0,
+        duration: 0.18,
+        ease: 'power2.out'
+      });
+    }
+  }
+
   // ============================================
   // SCROLL ANIMATIONS
   // ============================================
@@ -303,6 +401,14 @@ export class AnimationService {
     if (!this.isBrowser) return;
     ScrollTrigger.getAll().forEach(t => t.kill());
     gsap.killTweensOf('*');
+  }
+
+  killScrollTriggersFor(triggers: Element[]): void {
+    if (!this.isBrowser || !triggers.length) return;
+
+    ScrollTrigger.getAll()
+      .filter(trigger => triggers.includes(trigger.vars.trigger as Element))
+      .forEach(trigger => trigger.kill());
   }
   
 }

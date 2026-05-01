@@ -1,0 +1,50 @@
+<div class="skills" #skillsSection>
+  <div class="skills__header">
+    <div>
+      <span class="skills__tag mono" #headerItem>{{ 'skills.eyebrow' | translate }}</span>
+      <h2 class="skills__title" #headerItem>{{ 'skills.title' | translate }}</h2>
+    </div>
+
+    <p class="skills__count mono" #headerItem>
+      {{ 'skills.count' | translate: { count: visibleSkills.length, total: skills.length } }}
+    </p>
+  </div>
+
+  <div class="skills__filters" [attr.aria-label]="'skills.filtersLabel' | translate">
+    <button
+      *ngFor="let filter of filters"
+      class="skills__filter mono"
+      #filterItem
+      type="button"
+      [class.active]="selectedCategory === filter.value"
+      [attr.aria-pressed]="selectedCategory === filter.value"
+      (click)="filterSkills(filter.value)">
+      {{ filter.labelKey | translate }}
+    </button>
+  </div>
+
+  <div class="skills__grid" role="list" #skillsGrid>
+    <button
+      *ngFor="let skill of visibleSkills"
+      class="skill-card"
+      #skillCard
+      type="button"
+      role="listitem"
+      [attr.aria-label]="'skills.cardLabel' | translate: { name: skill.name }">
+      <span class="skill-card__icon" aria-hidden="true">
+        <img
+          *ngIf="skill.icon && !hasIconError(skill.name); else iconFallback"
+          [src]="skill.icon"
+          [alt]=""
+          loading="lazy"
+          (error)="onIconError(skill.name)" />
+
+        <ng-template #iconFallback>
+          <span class="skill-card__fallback mono">{{ getInitials(skill.name) }}</span>
+        </ng-template>
+      </span>
+
+      <span class="skill-card__name">{{ skill.name }}</span>
+    </button>
+  </div>
+</div>

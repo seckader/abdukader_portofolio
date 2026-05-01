@@ -13,10 +13,8 @@
         <app-experience />
       </section>
 
-      <section id="skills" class="content-section" #sectionEntry>
-        <span class="content-section__eyebrow mono">03</span>
-        <h2>{{ 'sections.skills.title' | translate }}</h2>
-        <p>{{ 'sections.skills.placeholder' | translate }}</p>
+      <section id="skills" class="content-section" [attr.aria-label]="'skills.ariaLabel' | translate" #sectionEntry>
+        <app-skills />
       </section>
 
       <section id="projects" class="content-section" #sectionEntry>

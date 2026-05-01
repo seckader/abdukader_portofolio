@@ -14,6 +14,7 @@ import { SocialLinksComponent } from './components/layout/sidebar/social-links/s
 import { MainContentComponent } from './components/layout/main-content/main-content';
 import { AboutComponent } from './components/sections/about/about';
 import { ExperienceComponent } from './components/sections/experience/experience';
+import { SkillsComponent } from './components/sections/skills/skills';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { ExperienceComponent } from './components/sections/experience/experience
     MainContentComponent,
     AboutComponent,
     ExperienceComponent,
+    SkillsComponent,
   ],
   imports: [
     BrowserModule,

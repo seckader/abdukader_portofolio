@@ -99,6 +99,20 @@
             }
         }
     },
+    "skills": {
+        "ariaLabel": "Compétences techniques",
+        "eyebrow": "// 03. compétences",
+        "title": "Compétences",
+        "filtersLabel": "Filtrer les compétences par catégorie",
+        "count": "{{ count }} compétences / {{ total }}",
+        "cardLabel": "{{ name }}, niveau expert",
+        "filter": {
+            "all": "Tout",
+            "frontend": "Frontend",
+            "backend": "Backend",
+            "devops": "DevOps"
+        }
+    },
     "sections": {
         "about": {
             "title": "À propos",
