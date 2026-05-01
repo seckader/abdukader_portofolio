@@ -1,0 +1,75 @@
+<ng-container *ngIf="experiences$ | async as experiences">
+  <div class="experience" *ngIf="experiences.length">
+    <div class="experience__header">
+      <span class="experience__tag mono" #headerItem>{{ 'experience.eyebrow' | translate }}</span>
+      <h2 class="experience__title" #headerItem>{{ 'experience.title' | translate }}</h2>
+    </div>
+
+    <div class="experience__content">
+      <div class="experience__tabs" role="tablist" [attr.aria-label]="'experience.title' | translate">
+        <button
+          *ngFor="let experience of experiences; let i = index"
+          class="experience__tab mono"
+          #tabItem
+          type="button"
+          role="tab"
+          [id]="getTabId(i)"
+          [class.active]="selectedIndex === i"
+          [attr.aria-selected]="selectedIndex === i"
+          [attr.aria-controls]="getPanelId(i)"
+          [attr.tabindex]="selectedIndex === i ? 0 : -1"
+          (click)="selectTab(i)"
+          (keydown)="onTabKeydown($event, i, experiences.length)">
+          {{ experience.companyName }}
+        </button>
+      </div>
+
+      <article
+        class="experience__panel panel"
+        #panel
+        role="tabpanel"
+        [id]="getPanelId(selectedIndex)"
+        [attr.aria-labelledby]="getTabId(selectedIndex)">
+        <ng-container *ngIf="experiences[selectedIndex] as experience">
+          <div class="panel__header">
+            <h3 class="panel__role">
+              {{ experience.roleKey | translate }}
+              <a
+                [href]="experience.companyUrl"
+                target="_blank"
+                rel="noopener noreferrer">
+                @ {{ experience.companyName }}
+              </a>
+            </h3>
+
+            <p class="panel__meta mono">
+              {{ ('experience.contract.' + experience.contractType) | translate }}
+              <span aria-hidden="true">·</span>
+              {{ ('experience.location.' + experience.locationType) | translate }}
+              <span aria-hidden="true">·</span>
+              {{ experience.locationKey | translate }}
+            </p>
+
+            <p class="panel__period mono">
+              {{ experience.startDateKey | translate }}
+              <span aria-hidden="true">→</span>
+              {{ experience.endDateKey ? (experience.endDateKey | translate) : ('experience.present' | translate) }}
+            </p>
+          </div>
+
+          <ul class="panel__bullets">
+            <li *ngFor="let descriptionKey of experience.descriptionKeys">
+              {{ descriptionKey | translate }}
+            </li>
+          </ul>
+
+          <ul class="panel__techs" aria-label="Technologies">
+            <li class="panel__tech mono" *ngFor="let technology of experience.technologies">
+              {{ technology }}
+            </li>
+          </ul>
+        </ng-container>
+      </article>
+    </div>
+  </div>
+</ng-container>

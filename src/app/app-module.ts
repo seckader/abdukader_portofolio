@@ -13,6 +13,7 @@ import { NavComponent } from './components/layout/sidebar/nav/nav';
 import { SocialLinksComponent } from './components/layout/sidebar/social-links/social-links';
 import { MainContentComponent } from './components/layout/main-content/main-content';
 import { AboutComponent } from './components/sections/about/about';
+import { ExperienceComponent } from './components/sections/experience/experience';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { AboutComponent } from './components/sections/about/about';
     SocialLinksComponent,
     MainContentComponent,
     AboutComponent,
+    ExperienceComponent,
   ],
   imports: [
     BrowserModule,

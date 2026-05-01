@@ -30,7 +30,8 @@
   transform: translateY(28px);
   scroll-margin-top: $spacing-4xl;
 
-  &:has(app-about) {
+  &:has(app-about),
+  &:has(app-experience) {
     display: block;
   }
 
@@ -69,7 +70,8 @@
     min-height: auto;
     padding: $spacing-4xl 0;
 
-    &:has(app-about) {
+    &:has(app-about),
+    &:has(app-experience) {
       padding: 0;
     }
   }

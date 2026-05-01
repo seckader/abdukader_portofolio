@@ -48,6 +48,57 @@
         "location": "Canada",
         "cta": "View my work"
     },
+    "experience": {
+        "ariaLabel": "Professional experience",
+        "eyebrow": "// 02. experience",
+        "title": "Experience",
+        "present": "Present",
+        "contract": {
+            "full_time": "Full-time",
+            "fixed_term": "Fixed-term",
+            "freelance": "Freelance",
+            "internship": "Internship"
+        },
+        "location": {
+            "remote": "Remote",
+            "on_site": "On-site",
+            "hybrid": "Hybrid"
+        },
+        "items": {
+            "placeholderStudio": {
+                "role": "Fullstack Developer",
+                "startDate": "Jan 2025",
+                "location": "Canada",
+                "description": [
+                    "Epic 6 placeholder: designed Angular interfaces focused on performance, accessibility, and maintainability.",
+                    "Structured user flows with reusable components, clear states, and API integration.",
+                    "Collaborated with stakeholders to turn business needs into reliable web deliverables."
+                ]
+            },
+            "placeholderLabs": {
+                "role": "Angular Frontend Developer",
+                "startDate": "Jun 2023",
+                "endDate": "Dec 2024",
+                "location": "Montreal",
+                "description": [
+                    "Epic 6 placeholder: developed Angular application modules for an internal platform.",
+                    "Integrated REST services, improved forms, and managed interface-side state.",
+                    "Contributed to code reviews, SCSS quality, and responsive refinements."
+                ]
+            },
+            "placeholderDigital": {
+                "role": "Junior Web Developer",
+                "startDate": "Feb 2022",
+                "endDate": "May 2023",
+                "location": "Dakar",
+                "description": [
+                    "Epic 6 placeholder: built responsive web pages from existing mockups and guidelines.",
+                    "Maintained HTML, SCSS, and JavaScript components with attention to accessibility.",
+                    "Helped ship small features and maintain technical documentation."
+                ]
+            }
+        }
+    },
     "sections": {
         "about": {
             "title": "About",

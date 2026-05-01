@@ -175,6 +175,70 @@ export class AnimationService {
     );
   }
 
+  animateExperienceSection(headerEls: Element[], tabEls: Element[], panelEl: Element): void {
+    if (!this.isBrowser) return;
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: panelEl,
+        start: 'top 82%',
+        toggleActions: 'play none none none'
+      }
+    });
+
+    if (headerEls.length) {
+      tl.fromTo(headerEls,
+        { opacity: 0, y: 28 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.65,
+          stagger: 0.1,
+          ease: 'power3.out'
+        }
+      );
+    }
+
+    if (tabEls.length) {
+      tl.fromTo(tabEls,
+        { opacity: 0, x: -24 },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 0.55,
+          stagger: 0.08,
+          ease: 'power3.out'
+        },
+        '-=0.25'
+      );
+    }
+
+    tl.fromTo(panelEl,
+      { opacity: 0, x: 28 },
+      {
+        opacity: 1,
+        x: 0,
+        duration: 0.65,
+        ease: 'power3.out'
+      },
+      '-=0.2'
+    );
+  }
+
+  animateExperiencePanel(panelEl: Element): void {
+    if (!this.isBrowser) return;
+
+    gsap.fromTo(panelEl,
+      { opacity: 0, x: 18 },
+      {
+        opacity: 1,
+        x: 0,
+        duration: 0.35,
+        ease: 'power2.out'
+      }
+    );
+  }
+
   // ============================================
   // SCROLL ANIMATIONS
   // ============================================

@@ -48,6 +48,57 @@
         "location": "Canada",
         "cta": "Voir mes projets"
     },
+    "experience": {
+        "ariaLabel": "Expérience professionnelle",
+        "eyebrow": "// 02. expérience",
+        "title": "Expérience",
+        "present": "Présent",
+        "contract": {
+            "full_time": "CDI",
+            "fixed_term": "CDD",
+            "freelance": "Freelance",
+            "internship": "Stage"
+        },
+        "location": {
+            "remote": "Remote",
+            "on_site": "Présentiel",
+            "hybrid": "Hybride"
+        },
+        "items": {
+            "placeholderStudio": {
+                "role": "Développeur Fullstack",
+                "startDate": "Jan 2025",
+                "location": "Canada",
+                "description": [
+                    "Placeholder Epic 6 : conception d'interfaces Angular orientées performance, accessibilité et maintenabilité.",
+                    "Structuration de parcours utilisateurs avec composants réutilisables, états clairs et intégration API.",
+                    "Collaboration avec les parties prenantes pour transformer des besoins métiers en livrables web fiables."
+                ]
+            },
+            "placeholderLabs": {
+                "role": "Développeur Frontend Angular",
+                "startDate": "Juin 2023",
+                "endDate": "Déc 2024",
+                "location": "Montréal",
+                "description": [
+                    "Placeholder Epic 6 : développement de modules applicatifs Angular pour une plateforme interne.",
+                    "Intégration de services REST, amélioration des formulaires et gestion des états côté interface.",
+                    "Contribution aux revues de code, à la qualité SCSS et aux ajustements responsive."
+                ]
+            },
+            "placeholderDigital": {
+                "role": "Développeur Web Junior",
+                "startDate": "Fév 2022",
+                "endDate": "Mai 2023",
+                "location": "Dakar",
+                "description": [
+                    "Placeholder Epic 6 : création de pages web responsives à partir de maquettes et guidelines existantes.",
+                    "Maintenance de composants HTML, SCSS et JavaScript avec attention portée à l'accessibilité.",
+                    "Participation à la livraison de petites fonctionnalités et à la documentation technique."
+                ]
+            }
+        }
+    },
     "sections": {
         "about": {
             "title": "À propos",
