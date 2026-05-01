@@ -118,6 +118,29 @@ export class AnimationService {
     );
   }
 
+  animateLayoutIn(sidebar: Element, sections: Element[]): void {
+    if (!this.isBrowser) return;
+
+    const tl = gsap.timeline();
+
+    tl.to(sidebar, {
+      opacity: 1,
+      x: 0,
+      duration: 0.75,
+      ease: 'power3.out'
+    });
+
+    if (sections.length) {
+      tl.to(sections, {
+        opacity: 1,
+        y: 0,
+        duration: 0.75,
+        stagger: 0.12,
+        ease: 'power3.out'
+      }, '-=0.45');
+    }
+  }
+
   // ============================================
   // SCROLL ANIMATIONS
   // ============================================

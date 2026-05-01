@@ -2,14 +2,58 @@
     "preloader": {
         "status": "INITIALISATION",
         "loading": "Chargement",
-        "ready": "Prêt"
+        "ready": "Prêt",
+        "steps": {
+          "init":    "Initialisation du système...",
+          "assets":  "Chargement des ressources...",
+          "modules": "Compilation des modules...",
+          "render":  "Préparation du rendu...",
+          "ready":   "Finalisation...",
+          "done":    "Système prêt"
+        }
     },
-    "steps": {
-        "init":    "initialisation du système...",
-        "assets":  "chargement des ressources...",
-        "modules": "compilation des modules...",
-        "render":  "préparation du rendu...",
-        "ready":   "finalisation...",
-        "done":    "système prêt."
+    "sidebar": {
+        "name": "Abdou Kader SECK",
+        "title": "Développeur Fullstack",
+        "tagline": "Je construis des expériences web accessibles, performantes et soignées.",
+        "menu": "Ouvrir le menu de navigation"
+    },
+    "nav": {
+        "label": "Navigation principale",
+        "about": "À propos",
+        "experience": "Expérience",
+        "skills": "Compétences",
+        "projects": "Projets",
+        "blog": "Blog",
+        "contact": "Contact"
+    },
+    "social": {
+        "label": "Liens sociaux"
+    },
+    "sections": {
+        "about": {
+            "title": "À propos",
+            "placeholder": "Cette section accueillera la présentation personnelle, le parcours et la façon de travailler."
+        },
+        "experience": {
+            "title": "Expérience",
+            "placeholder": "Cette section présentera les expériences professionnelles, missions et responsabilités clés."
+        },
+        "skills": {
+            "title": "Compétences",
+            "placeholder": "Cette section regroupera les technologies, outils et expertises principales."
+        },
+        "projects": {
+            "title": "Projets",
+            "placeholder": "Cette section mettra en avant les projets sélectionnés avec contexte, impact et liens."
+        },
+        "blog": {
+            "title": "Blog",
+            "placeholder": "Cette section pourra présenter les articles, notes techniques ou réflexions publiées."
+        },
+        "contact": {
+            "title": "Contact",
+            "placeholder": "Cette section proposera les moyens de contact et l'appel à discussion."
+        }
     }
 }

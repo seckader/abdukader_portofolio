@@ -1,7 +1,7 @@
 import { isPlatformBrowser } from '@angular/common';
-import { ChangeDetectorRef, Component, ElementRef, Inject, OnInit, PLATFORM_ID, QueryList, signal, ViewChildren } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { AnimationService } from './services/animation';
+import { AppStateService } from './services/app-state';
 
 @Component({
   selector: 'app-root',
@@ -13,11 +13,9 @@ export class App implements OnInit {
 
   showPreloader = true;
 
-  @ViewChildren('pageEntry') pageEntryEls!: QueryList<ElementRef>;
-
   constructor(
     private translateService: TranslateService, 
-    private animationService: AnimationService,
+    private appStateService: AppStateService,
     private changeDetectorRef: ChangeDetectorRef,
     @Inject(PLATFORM_ID) private platformId: Object) {}
   
@@ -29,19 +27,7 @@ export class App implements OnInit {
     this.showPreloader = false;
     this.changeDetectorRef.markForCheck();
     
-    setTimeout(() => this.animatePageEntrance(), 0);
-  }
-
-  private animatePageEntrance(): void {
-    if (!isPlatformBrowser(this.platformId)) return;
-
-    const elements = this.pageEntryEls
-      .toArray()
-      .map(ref => ref.nativeElement as Element);
-
-    if (!elements.length) return;
-
-    this.animationService.animatePageIn(elements);
+    setTimeout(() => this.appStateService.notifyPreloaderComplete(), 0);
   }
   
   private initLang(): void {

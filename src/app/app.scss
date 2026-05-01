@@ -1,8 +1,7 @@
 .app-content {
-  opacity: 0; // état initial — GSAP anime vers opacity: 1
+  opacity: 0;
   
   &.visible {
-    // Fallback si GSAP ne s'exécute pas (SSR, no-JS)
-    // On le laisse vide : GSAP override inline styles de toute façon
+    opacity: 1;
   }
 }

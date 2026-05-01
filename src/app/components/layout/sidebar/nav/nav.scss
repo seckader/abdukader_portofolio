@@ -1,0 +1,49 @@
+@use '../../../../../styles/variables' as *;
+@use '../../../../../styles/mixins' as *;
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: $spacing-sm;
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-md;
+    min-height: 32px;
+    color: $color-text-dark;
+    font-size: $font-size-xs;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: $transition-normal;
+
+    &:hover,
+    &.active {
+      color: $color-text-primary;
+    }
+
+    &:hover .nav__indicator,
+    &.active .nav__indicator {
+      width: 64px;
+      background: $color-accent;
+    }
+  }
+
+  &__indicator {
+    width: 32px;
+    height: 1px;
+    background: $color-text-dark;
+    transition: $transition-normal;
+  }
+}
+
+@include respond-to('lg') {
+  .nav {
+    gap: $spacing-md;
+
+    &__link {
+      font-size: $font-size-sm;
+    }
+  }
+}

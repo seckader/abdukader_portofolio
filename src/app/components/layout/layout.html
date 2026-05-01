@@ -1,0 +1,45 @@
+<div class="layout">
+  <aside class="layout__sidebar" #sidebarEntry>
+    <app-sidebar />
+  </aside>
+
+  <main class="layout__content" aria-label="Portfolio">
+    <app-main-content>
+      <section id="about" class="content-section" #sectionEntry>
+        <span class="content-section__eyebrow mono">01</span>
+        <h2>{{ 'sections.about.title' | translate }}</h2>
+        <p>{{ 'sections.about.placeholder' | translate }}</p>
+      </section>
+
+      <section id="experience" class="content-section" #sectionEntry>
+        <span class="content-section__eyebrow mono">02</span>
+        <h2>{{ 'sections.experience.title' | translate }}</h2>
+        <p>{{ 'sections.experience.placeholder' | translate }}</p>
+      </section>
+
+      <section id="skills" class="content-section" #sectionEntry>
+        <span class="content-section__eyebrow mono">03</span>
+        <h2>{{ 'sections.skills.title' | translate }}</h2>
+        <p>{{ 'sections.skills.placeholder' | translate }}</p>
+      </section>
+
+      <section id="projects" class="content-section" #sectionEntry>
+        <span class="content-section__eyebrow mono">04</span>
+        <h2>{{ 'sections.projects.title' | translate }}</h2>
+        <p>{{ 'sections.projects.placeholder' | translate }}</p>
+      </section>
+
+      <section id="blog" class="content-section" #sectionEntry>
+        <span class="content-section__eyebrow mono">05</span>
+        <h2>{{ 'sections.blog.title' | translate }}</h2>
+        <p>{{ 'sections.blog.placeholder' | translate }}</p>
+      </section>
+
+      <section id="contact" class="content-section" #sectionEntry>
+        <span class="content-section__eyebrow mono">06</span>
+        <h2>{{ 'sections.contact.title' | translate }}</h2>
+        <p>{{ 'sections.contact.placeholder' | translate }}</p>
+      </section>
+    </app-main-content>
+  </main>
+</div>

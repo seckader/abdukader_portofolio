@@ -2,14 +2,58 @@
     "preloader": {
         "status": "INITIALIZING",
         "loading": "Loading",
-        "ready": "Ready"
+        "ready": "Ready",
+        "steps": {
+          "init":    "Initializing system...",
+          "assets":  "Loading assets...",
+          "modules": "Compiling modules...",
+          "render":  "Preparing render...",
+          "ready":   "Finalizing...",
+          "done":    "System ready."
+        }
     },
-    "steps": {
-        "init":    "initializing system...",
-        "assets":  "loading assets...",
-        "modules": "compiling modules...",
-        "render":  "preparing render...",
-        "ready":   "finalizing...",
-        "done":    "system ready."
+    "sidebar": {
+        "name": "Abdou Kader SECK",
+        "title": "Fullstack Developer",
+        "tagline": "I build accessible, performant, and polished web experiences.",
+        "menu": "Open navigation menu"
+    },
+    "nav": {
+        "label": "Primary navigation",
+        "about": "About",
+        "experience": "Experience",
+        "skills": "Skills",
+        "projects": "Projects",
+        "blog": "Blog",
+        "contact": "Contact"
+    },
+    "social": {
+        "label": "Social links"
+    },
+    "sections": {
+        "about": {
+            "title": "About",
+            "placeholder": "This section will introduce the personal profile, background, and way of working."
+        },
+        "experience": {
+            "title": "Experience",
+            "placeholder": "This section will present professional experience, missions, and key responsibilities."
+        },
+        "skills": {
+            "title": "Skills",
+            "placeholder": "This section will group the main technologies, tools, and areas of expertise."
+        },
+        "projects": {
+            "title": "Projects",
+            "placeholder": "This section will highlight selected projects with context, impact, and links."
+        },
+        "blog": {
+            "title": "Blog",
+            "placeholder": "This section can present articles, technical notes, or published thoughts."
+        },
+        "contact": {
+            "title": "Contact",
+            "placeholder": "This section will provide contact options and a clear invitation to connect."
+        }
     }
 }

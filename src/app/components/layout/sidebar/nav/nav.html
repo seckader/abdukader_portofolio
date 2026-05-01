@@ -1,0 +1,12 @@
+<nav class="nav" [attr.aria-label]="'nav.label' | translate">
+  <button
+    *ngFor="let section of sections"
+    class="nav__link mono"
+    type="button"
+    [class.active]="activeSection === section.id"
+    [attr.aria-current]="activeSection === section.id ? 'true' : null"
+    (click)="goToSection(section.id)">
+    <span class="nav__indicator"></span>
+    <span>{{ section.labelKey | translate }}</span>
+  </button>
+</nav>

@@ -4,31 +4,41 @@ import { TranslateModule, provideTranslateService } from '@ngx-translate/core';
 
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { PreloaderComponent } from './components/preloader/preloader';
+import { LayoutComponent } from './components/layout/layout';
+import { SidebarComponent } from './components/layout/sidebar/sidebar';
+import { NavComponent } from './components/layout/sidebar/nav/nav';
+import { SocialLinksComponent } from './components/layout/sidebar/social-links/social-links';
+import { MainContentComponent } from './components/layout/main-content/main-content';
 
 @NgModule({
   declarations: [
     App,
+    LayoutComponent,
+    SidebarComponent,
+    NavComponent,
+    SocialLinksComponent,
+    MainContentComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     TranslateModule,
     PreloaderComponent
-],
+  ],
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideClientHydration(withEventReplay()),
-    provideHttpClient(),
+    provideHttpClient(withFetch()),
     provideTranslateService({
       loader: provideTranslateHttpLoader({
         prefix: './assets/i18n/',
         suffix: '.json'
       }),
-      defaultLanguage: 'fr'
+      fallbackLang: 'fr'
     })
   ],
   bootstrap: [App]

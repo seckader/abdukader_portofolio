@@ -1,0 +1,68 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.layout {
+  display: grid;
+  grid-template-columns: $sidebar-width minmax(0, 1fr);
+  min-height: 100vh;
+  background: $color-bg;
+
+  &__sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+
+  &__content {
+    min-width: 0;
+  }
+}
+
+.content-section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: $spacing-md;
+  opacity: 0;
+  transform: translateY(28px);
+  scroll-margin-top: $spacing-4xl;
+
+  &__eyebrow {
+    color: $color-accent;
+    font-size: $font-size-sm;
+  }
+
+  h2 {
+    @include section-title;
+  }
+
+  p {
+    max-width: 62ch;
+  }
+}
+
+@include respond-to('lg') {
+  .layout {
+    display: block;
+    padding-top: 76px;
+
+    &__sidebar {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: $z-nav;
+      height: auto;
+      background: rgba($color-bg, 0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba($color-accent, 0.08);
+    }
+  }
+
+  .content-section {
+    min-height: auto;
+    padding: $spacing-4xl 0;
+  }
+}
