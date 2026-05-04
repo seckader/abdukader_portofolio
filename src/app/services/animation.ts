@@ -439,6 +439,135 @@ export class AnimationService {
     );
   }
 
+  animateBlogSection(headerEls: Element[], cardEls: Element[], triggerEl: Element): void {
+    if (!this.isBrowser) return;
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: triggerEl,
+        start: 'top 78%',
+        toggleActions: 'play none none none'
+      }
+    });
+
+    if (headerEls.length) {
+      tl.fromTo(headerEls,
+        { opacity: 0, y: 28 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.65,
+          stagger: 0.08,
+          ease: 'power3.out'
+        }
+      );
+    }
+
+    if (cardEls.length) {
+      tl.fromTo(cardEls,
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.55,
+          stagger: 0.08,
+          ease: 'power3.out'
+        },
+        '-=0.18'
+      );
+    }
+  }
+
+  animateBlogPageIn(cardEls: Element[]): void {
+    if (!this.isBrowser || !cardEls.length) return;
+
+    gsap.fromTo(cardEls,
+      { opacity: 0, y: 24 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.5,
+        stagger: 0.06,
+        ease: 'power3.out'
+      }
+    );
+  }
+
+  animateBlogFilterOut(gridEl: Element, onComplete: () => void): void {
+    if (!this.isBrowser) return;
+
+    gsap.to(gridEl, {
+      opacity: 0,
+      y: 12,
+      duration: 0.2,
+      ease: 'power2.out',
+      onComplete
+    });
+  }
+
+  animateBlogFilterIn(cardEls: Element[], gridEl: Element): void {
+    if (!this.isBrowser) return;
+
+    gsap.to(gridEl, {
+      opacity: 1,
+      y: 0,
+      duration: 0.18,
+      ease: 'power2.out'
+    });
+
+    if (!cardEls.length) return;
+
+    gsap.fromTo(cardEls,
+      { opacity: 0, y: 18 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.34,
+        stagger: 0.05,
+        ease: 'power2.out'
+      }
+    );
+  }
+
+  animateArticlePageIn(rootEl: Element): void {
+    if (!this.isBrowser) return;
+
+    gsap.fromTo(rootEl,
+      { opacity: 0, y: 18 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.55,
+        ease: 'power3.out'
+      }
+    );
+  }
+
+  animateRouteOut(routeEl: Element): void {
+    if (!this.isBrowser) return;
+
+    gsap.to(routeEl, {
+      opacity: 0.7,
+      y: 8,
+      duration: 0.18,
+      ease: 'power2.out'
+    });
+  }
+
+  animateRouteIn(routeEl: Element): void {
+    if (!this.isBrowser) return;
+
+    gsap.fromTo(routeEl,
+      { opacity: 0.7, y: 8 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.28,
+        ease: 'power2.out'
+      }
+    );
+  }
+
   // ============================================
   // SCROLL ANIMATIONS
   // ============================================

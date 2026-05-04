@@ -1,0 +1,197 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.blog-page {
+  min-height: 100vh;
+  padding: $spacing-3xl $spacing-xl;
+  background: $color-bg;
+  outline: none;
+
+  &__header,
+  &__tools,
+  &__grid {
+    width: min(100%, 1040px);
+    margin-inline: auto;
+  }
+
+  &__header {
+    display: grid;
+    gap: $spacing-xl;
+    margin-bottom: $spacing-2xl;
+  }
+
+  &__back,
+  &__eyebrow {
+    color: $color-accent;
+    font-size: $font-size-sm;
+  }
+
+  h1 {
+    color: $color-text-primary;
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    line-height: 1;
+
+    span {
+      color: $color-text-dark;
+    }
+  }
+
+  &__tools {
+    display: grid;
+    gap: $spacing-md;
+    margin-bottom: $spacing-2xl;
+  }
+
+  &__search-label {
+    color: $color-text-secondary;
+    font-size: $font-size-sm;
+  }
+
+  &__search {
+    min-height: 46px;
+    padding: 0 $spacing-md;
+    border: 1px solid rgba($color-accent, 0.18);
+    border-radius: $border-radius-sm;
+    color: $color-text-primary;
+    background: rgba($color-bg-light, 0.5);
+    outline: none;
+
+    &:focus {
+      border-color: $color-accent;
+      box-shadow: 0 0 0 3px rgba($color-accent-rgb..., 0.16);
+    }
+  }
+
+  &__filters,
+  &__tags,
+  &__results {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: $spacing-sm;
+  }
+
+  &__filter,
+  &__tag,
+  &__clear {
+    min-height: 34px;
+    padding: 0 $spacing-md;
+    border: 1px solid rgba($color-accent, 0.22);
+    border-radius: $border-radius-sm;
+    color: $color-text-secondary;
+    font-size: $font-size-xs;
+    transition: $transition-normal;
+
+    &:hover,
+    &:focus-visible,
+    &.active {
+      border-color: $color-accent;
+      color: $color-accent;
+      outline: none;
+    }
+  }
+
+  &__results {
+    justify-content: space-between;
+    color: $color-text-dark;
+  }
+
+  &__clear {
+    color: $color-accent;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: $spacing-md;
+  }
+
+  &__empty {
+    width: min(100%, 1040px);
+    margin: $spacing-2xl auto 0;
+    color: $color-text-secondary;
+  }
+}
+
+.blog-card {
+  @include glass-effect;
+
+  display: flex;
+  flex-direction: column;
+  min-height: 300px;
+  padding: $spacing-lg;
+  border-left: 2px solid transparent;
+  border-radius: $border-radius-md;
+  outline: none;
+  transition: $transition-normal;
+
+  &:hover,
+  &:focus-visible {
+    border-left-color: $color-accent;
+    transform: translateY(-5px);
+  }
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-sm;
+    margin-bottom: $spacing-lg;
+    color: $color-text-dark;
+    font-size: $font-size-xs;
+
+    span:first-child {
+      color: $color-accent;
+    }
+  }
+
+  &__title {
+    margin-bottom: $spacing-md;
+    color: $color-text-primary;
+    font-size: $font-size-lg;
+
+    a {
+      color: inherit;
+
+      &:hover,
+      &:focus-visible {
+        color: $color-accent;
+        outline: none;
+      }
+    }
+  }
+
+  &__summary {
+    color: $color-text-secondary;
+    font-size: $font-size-sm;
+    line-height: $line-height-relaxed;
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-sm;
+    margin-top: auto;
+    padding-top: $spacing-xl;
+
+    li {
+      color: $color-text-dark;
+      font-size: $font-size-xs;
+    }
+  }
+}
+
+@include respond-to('lg') {
+  .blog-page__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@include respond-to('sm') {
+  .blog-page {
+    padding: $spacing-2xl $spacing-lg;
+
+    &__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}

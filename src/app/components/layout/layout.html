@@ -21,10 +21,8 @@
         <app-projects />
       </section>
 
-      <section id="blog" class="content-section" #sectionEntry>
-        <span class="content-section__eyebrow mono">05</span>
-        <h2>{{ 'sections.blog.title' | translate }}</h2>
-        <p>{{ 'sections.blog.placeholder' | translate }}</p>
+      <section id="blog" class="content-section" [attr.aria-label]="'blog.ariaLabel' | translate" #sectionEntry>
+        <app-blog />
       </section>
 
       <section id="contact" class="content-section" #sectionEntry>

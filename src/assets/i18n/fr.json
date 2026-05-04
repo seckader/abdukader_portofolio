@@ -171,6 +171,42 @@
             }
         }
     },
+    "blog": {
+        "ariaLabel": "Blog",
+        "article_label": "Article de blog",
+        "eyebrow": "// 05. blog",
+        "title": "Blog",
+        "all_articles": "Voir tous les articles",
+        "back": "← Retour",
+        "back_to_articles": "← Tous les articles",
+        "read_more": "Lire l'article",
+        "read_article_label": "Lire l'article : {{ title }}",
+        "read_time": "{{ minutes }} min de lecture",
+        "filters_label": "Filtres des articles",
+        "search_label": "Recherche",
+        "search_placeholder": "Rechercher un article...",
+        "results_count": "{{ count }} articles trouvés",
+        "no_results": "Aucun article ne correspond aux filtres.",
+        "related_articles": "Articles similaires",
+        "share": "Partager",
+        "copy_link": "Copier le lien",
+        "copied": "Lien copié",
+        "clear_filters": "Effacer les filtres",
+        "filter": {
+            "all": "Tous"
+        },
+        "category": {
+            "tutorial": "Tutoriel",
+            "opinion": "Opinion",
+            "case-study": "Étude de cas",
+            "tips": "Conseils",
+            "other": "Autre"
+        },
+        "meta": {
+            "title": "Blog | AbduKader",
+            "description": "Articles techniques, notes Fullstack et réflexions sur le développement web."
+        }
+    },
     "sections": {
         "about": {
             "title": "À propos",

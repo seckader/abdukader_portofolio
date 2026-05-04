@@ -1,0 +1,201 @@
+import { CommonModule, DOCUMENT, isPlatformBrowser } from '@angular/common';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Inject,
+  OnDestroy,
+  OnInit,
+  PLATFORM_ID,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
+import { Meta, Title } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
+import { LangChangeEvent, TranslateModule, TranslateService } from '@ngx-translate/core';
+import { Subject, debounceTime, takeUntil } from 'rxjs';
+import { Article, ArticleCategory, LocalizedText } from '../../../models/article.model';
+import { AnimationService } from '../../../services/animation';
+import { BlogService } from '../../../services/blog.service';
+
+type BlogCategoryFilter = ArticleCategory | 'all';
+
+@Component({
+  selector: 'app-blog-page',
+  standalone: true,
+  imports: [CommonModule, RouterModule, TranslateModule],
+  templateUrl: './blog-page.html',
+  styleUrl: './blog-page.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class BlogPageComponent implements OnInit, AfterViewInit, OnDestroy {
+  readonly categories: BlogCategoryFilter[] = ['all', 'tutorial', 'opinion', 'case-study', 'tips', 'other'];
+
+  articles: Article[] = [];
+  filteredArticles: Article[] = [];
+  tags: string[] = [];
+  selectedCategory: BlogCategoryFilter = 'all';
+  selectedTags = new Set<string>();
+  searchQuery = '';
+  currentLang: 'fr' | 'en' = 'fr';
+
+  private searchSubject = new Subject<string>();
+  private destroy$ = new Subject<void>();
+  private isBrowser: boolean;
+
+  @ViewChild('pageRoot') pageRootRef!: ElementRef<HTMLElement>;
+  @ViewChild('articleGrid') articleGridRef!: ElementRef<HTMLElement>;
+  @ViewChildren('articleCard') articleCardRefs!: QueryList<ElementRef<HTMLElement>>;
+
+  constructor(
+    private animationService: AnimationService,
+    private blogService: BlogService,
+    private cdr: ChangeDetectorRef,
+    private meta: Meta,
+    private title: Title,
+    private translateService: TranslateService,
+    @Inject(DOCUMENT) private document: Document,
+    @Inject(PLATFORM_ID) platformId: Object
+  ) {
+    this.isBrowser = isPlatformBrowser(platformId);
+  }
+
+  ngOnInit(): void {
+    this.currentLang = this.getActiveLang();
+    this.setMeta();
+
+    this.blogService.getArticles()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(articles => {
+        this.articles = articles;
+        this.tags = [...new Set(articles.flatMap(article => article.tags))].sort();
+        this.applyFilters();
+      });
+
+    this.searchSubject
+      .pipe(debounceTime(300), takeUntil(this.destroy$))
+      .subscribe(query => {
+        this.searchQuery = query;
+        this.applyFilters(true);
+      });
+
+    this.translateService.onLangChange
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((event: LangChangeEvent) => {
+        this.currentLang = event.lang === 'en' ? 'en' : 'fr';
+        this.setMeta();
+        this.applyFilters();
+      });
+  }
+
+  ngAfterViewInit(): void {
+    if (!this.isBrowser) return;
+
+    this.pageRootRef?.nativeElement.focus();
+    setTimeout(() => this.animationService.animateBlogPageIn(this.articleCardRefs.map(ref => ref.nativeElement)), 0);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  onSearch(value: string): void {
+    this.searchSubject.next(value);
+  }
+
+  selectCategory(category: BlogCategoryFilter): void {
+    if (this.selectedCategory === category) return;
+    this.selectedCategory = category;
+    this.applyFilters(true);
+  }
+
+  toggleTag(tag: string): void {
+    this.selectedTags.has(tag) ? this.selectedTags.delete(tag) : this.selectedTags.add(tag);
+    this.applyFilters(true);
+  }
+
+  clearFilters(): void {
+    this.selectedCategory = 'all';
+    this.selectedTags.clear();
+    this.searchQuery = '';
+    this.applyFilters(true);
+  }
+
+  isTagSelected(tag: string): boolean {
+    return this.selectedTags.has(tag);
+  }
+
+  text(value: LocalizedText): string {
+    return value[this.currentLang];
+  }
+
+  formatDate(date: string): string {
+    return new Intl.DateTimeFormat(this.currentLang === 'fr' ? 'fr-CA' : 'en-CA', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    }).format(new Date(date));
+  }
+
+  private applyFilters(animate = false): void {
+    const query = this.searchQuery.trim().toLowerCase();
+    const selectedTags = [...this.selectedTags];
+
+    const nextArticles = this.articles.filter(article => {
+      const categoryMatches = this.selectedCategory === 'all' || article.category === this.selectedCategory;
+      const tagsMatch = selectedTags.length === 0 || selectedTags.every(tag => article.tags.includes(tag));
+      const queryMatches = !query
+        || this.text(article.title).toLowerCase().includes(query)
+        || this.text(article.summary).toLowerCase().includes(query)
+        || article.tags.some(tag => tag.toLowerCase().includes(query));
+
+      return categoryMatches && tagsMatch && queryMatches;
+    });
+
+    if (animate && this.isBrowser && this.articleGridRef?.nativeElement) {
+      this.animationService.animateBlogFilterOut(this.articleGridRef.nativeElement, () => {
+        this.filteredArticles = nextArticles;
+        this.cdr.markForCheck();
+        setTimeout(() => {
+          this.animationService.animateBlogFilterIn(
+            this.articleCardRefs.map(ref => ref.nativeElement),
+            this.articleGridRef.nativeElement
+          );
+        }, 0);
+      });
+      return;
+    }
+
+    this.filteredArticles = nextArticles;
+    this.cdr.markForCheck();
+  }
+
+  private setMeta(): void {
+    const title = this.translateService.instant('blog.meta.title');
+    const description = this.translateService.instant('blog.meta.description');
+
+    this.title.setTitle(title);
+    this.meta.updateTag({ name: 'description', content: description });
+    this.meta.updateTag({ property: 'og:title', content: title });
+    this.meta.updateTag({ property: 'og:description', content: description });
+    this.setCanonical('/blog');
+  }
+
+  private setCanonical(path: string): void {
+    let link = this.document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    if (!link) {
+      link = this.document.createElement('link');
+      link.setAttribute('rel', 'canonical');
+      this.document.head.appendChild(link);
+    }
+    link.setAttribute('href', `https://example.com${path}`);
+  }
+
+  private getActiveLang(): 'fr' | 'en' {
+    return this.translateService.currentLang === 'en' ? 'en' : 'fr';
+  }
+}

@@ -1,0 +1,62 @@
+<div
+  class="reading-progress"
+  role="progressbar"
+  aria-valuemin="0"
+  aria-valuemax="100"
+  [attr.aria-valuenow]="readingProgress">
+  <span [style.width.%]="readingProgress"></span>
+</div>
+
+<main class="article" #articleRoot tabindex="-1" [attr.aria-label]="'blog.article_label' | translate">
+  <ng-container *ngIf="article as article">
+    <a class="article__back mono" routerLink="/blog">{{ 'blog.back_to_articles' | translate }}</a>
+
+    <figure class="article__cover" *ngIf="article.coverImage">
+      <img [src]="article.coverImage.src" [alt]="text(article.coverImage.alt)" loading="lazy" />
+    </figure>
+
+    <header class="article__header">
+      <p class="article__meta mono">
+        <span>{{ ('blog.category.' + article.category) | translate }}</span>
+        <span aria-hidden="true">·</span>
+        <time [attr.datetime]="article.publishedAt">{{ formatDate(article.publishedAt) }}</time>
+        <span aria-hidden="true">·</span>
+        <span>{{ 'blog.read_time' | translate: { minutes: article.readTimeMinutes } }}</span>
+      </p>
+
+      <h1>{{ text(article.title) }}</h1>
+
+      <ul class="article__tags">
+        <li class="mono" *ngFor="let tag of article.tags">{{ tag }}</li>
+      </ul>
+    </header>
+
+    <section class="article__content" #articleContent [innerHTML]="safeContent"></section>
+
+    <section class="article__share" [attr.aria-label]="'blog.share' | translate">
+      <h2>{{ 'blog.share' | translate }}</h2>
+      <div>
+        <button class="mono" type="button" (click)="copyLink()">
+          {{ (copied ? 'blog.copied' : 'blog.copy_link') | translate }}
+        </button>
+        <a class="mono" [href]="getShareUrl('twitter')" target="_blank" rel="noopener noreferrer">X</a>
+        <a class="mono" [href]="getShareUrl('linkedin')" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      </div>
+    </section>
+
+    <section class="article__related" *ngIf="relatedArticles.length">
+      <h2>{{ 'blog.related_articles' | translate }}</h2>
+      <div class="article__related-grid">
+        <article class="related-card" *ngFor="let related of relatedArticles">
+          <p class="related-card__meta mono">
+            {{ ('blog.category.' + related.category) | translate }}
+          </p>
+          <h3>
+            <a [routerLink]="['/blog', related.id]">{{ text(related.title) }}</a>
+          </h3>
+          <p>{{ text(related.summary) }}</p>
+        </article>
+      </div>
+    </section>
+  </ng-container>
+</main>

@@ -1,0 +1,47 @@
+<div class="blog" #blogSection>
+  <div class="blog__header">
+    <span class="blog__tag mono" #headerItem>{{ 'blog.eyebrow' | translate }}</span>
+    <h2 class="blog__title" #headerItem>{{ 'blog.title' | translate }}</h2>
+  </div>
+
+  <div class="blog__grid" role="list">
+    <article class="blog-card" #blogCard role="listitem" *ngFor="let article of articles" tabindex="0">
+      <div class="blog-card__meta mono">
+        <span>{{ ('blog.category.' + article.category) | translate }}</span>
+        <span aria-hidden="true">·</span>
+        <time [attr.datetime]="article.publishedAt">{{ formatDate(article.publishedAt) }}</time>
+        <span aria-hidden="true">·</span>
+        <span>{{ 'blog.read_time' | translate: { minutes: article.readTimeMinutes } }}</span>
+      </div>
+
+      <h3 class="blog-card__title">
+        <a
+          [routerLink]="['/blog', article.id]"
+          [attr.aria-label]="'blog.read_article_label' | translate: { title: text(article.title) }">
+          {{ text(article.title) }}
+        </a>
+      </h3>
+
+      <p class="blog-card__summary">{{ text(article.summary) }}</p>
+
+      <ul class="blog-card__tags">
+        <li class="mono" *ngFor="let tag of article.tags">{{ tag }}</li>
+      </ul>
+
+      <a
+        class="blog-card__link mono"
+        [routerLink]="['/blog', article.id]"
+        [attr.aria-label]="'blog.read_article_label' | translate: { title: text(article.title) }">
+        <span>{{ 'blog.read_more' | translate }}</span>
+        <span aria-hidden="true">→</span>
+      </a>
+    </article>
+  </div>
+
+  <div class="blog__cta">
+    <a class="blog__cta-link mono" routerLink="/blog">
+      <span>{{ 'blog.all_articles' | translate }}</span>
+      <span aria-hidden="true">→</span>
+    </a>
+  </div>
+</div>

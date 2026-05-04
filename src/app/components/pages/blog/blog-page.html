@@ -1,0 +1,81 @@
+<main class="blog-page" #pageRoot tabindex="-1" [attr.aria-label]="'blog.title' | translate">
+  <header class="blog-page__header">
+    <a class="blog-page__back mono" routerLink="/">{{ 'blog.back' | translate }}</a>
+    <div>
+      <span class="blog-page__eyebrow mono">{{ 'blog.eyebrow' | translate }}</span>
+      <h1>{{ 'blog.title' | translate }} <span>({{ articles.length }})</span></h1>
+    </div>
+  </header>
+
+  <section class="blog-page__tools" [attr.aria-label]="'blog.filters_label' | translate">
+    <label class="blog-page__search-label" for="blog-search">{{ 'blog.search_label' | translate }}</label>
+    <input
+      id="blog-search"
+      class="blog-page__search"
+      type="search"
+      [value]="searchQuery"
+      [placeholder]="'blog.search_placeholder' | translate"
+      (input)="onSearch($any($event.target).value)" />
+
+    <div class="blog-page__filters">
+      <button
+        class="blog-page__filter mono"
+        *ngFor="let category of categories"
+        type="button"
+        [class.active]="selectedCategory === category"
+        [attr.aria-pressed]="selectedCategory === category"
+        (click)="selectCategory(category)">
+        {{ category === 'all' ? ('blog.filter.all' | translate) : (('blog.category.' + category) | translate) }}
+      </button>
+    </div>
+
+    <div class="blog-page__tags">
+      <button
+        class="blog-page__tag mono"
+        *ngFor="let tag of tags"
+        type="button"
+        [class.active]="isTagSelected(tag)"
+        [attr.aria-pressed]="isTagSelected(tag)"
+        (click)="toggleTag(tag)">
+        {{ tag }}
+      </button>
+    </div>
+
+    <div class="blog-page__results">
+      <p class="mono">{{ 'blog.results_count' | translate: { count: filteredArticles.length } }}</p>
+      <button class="blog-page__clear mono" type="button" (click)="clearFilters()">
+        {{ 'blog.clear_filters' | translate }}
+      </button>
+    </div>
+  </section>
+
+  <section class="blog-page__grid" role="list" #articleGrid>
+    <article class="blog-card" role="listitem" #articleCard *ngFor="let article of filteredArticles" tabindex="0">
+      <div class="blog-card__meta mono">
+        <span>{{ ('blog.category.' + article.category) | translate }}</span>
+        <span aria-hidden="true">·</span>
+        <time [attr.datetime]="article.publishedAt">{{ formatDate(article.publishedAt) }}</time>
+        <span aria-hidden="true">·</span>
+        <span>{{ 'blog.read_time' | translate: { minutes: article.readTimeMinutes } }}</span>
+      </div>
+
+      <h2 class="blog-card__title">
+        <a
+          [routerLink]="['/blog', article.id]"
+          [attr.aria-label]="'blog.read_article_label' | translate: { title: text(article.title) }">
+          {{ text(article.title) }}
+        </a>
+      </h2>
+
+      <p class="blog-card__summary">{{ text(article.summary) }}</p>
+
+      <ul class="blog-card__tags">
+        <li class="mono" *ngFor="let tag of article.tags">{{ tag }}</li>
+      </ul>
+    </article>
+  </section>
+
+  <p class="blog-page__empty" *ngIf="filteredArticles.length === 0">
+    {{ 'blog.no_results' | translate }}
+  </p>
+</main>

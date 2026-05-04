@@ -3,6 +3,6 @@
   (preloadComplete)="onPreloadComplete()">
 </app-preloader>
 
-<div class="app-content" [class.visible]="!showPreloader">
+<div class="app-content" [class.visible]="!showPreloader" #appContent>
   <router-outlet />
 </div>
