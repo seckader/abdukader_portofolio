@@ -1,0 +1,32 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.footer {
+  display: grid;
+  justify-items: center;
+  gap: $spacing-sm;
+  padding: 0 0 $spacing-2xl;
+  color: $color-text-dark;
+  font-size: $font-size-xs;
+  text-align: center;
+
+  a {
+    color: $color-text-secondary;
+    transition: $transition-fast;
+
+    &:hover,
+    &:focus-visible {
+      color: $color-accent;
+      outline: none;
+    }
+
+    &:focus-visible {
+      box-shadow: 0 2px 0 $color-accent;
+    }
+  }
+
+  &__stack span,
+  &__easter-egg {
+    color: $color-text-secondary;
+  }
+}

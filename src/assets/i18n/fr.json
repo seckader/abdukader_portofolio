@@ -207,6 +207,34 @@
             "description": "Articles techniques, notes Fullstack et réflexions sur le développement web."
         }
     },
+    "contact": {
+        "ariaLabel": "Contact",
+        "eyebrow": "// 06. contact",
+        "title": "Et pour finir...",
+        "subtitle": "Travaillons ensemble",
+        "description": "Vous avez un projet web, une mission Fullstack ou une opportunité à discuter ? Je serais ravi d'échanger et de voir comment je peux contribuer avec sérieux, clarté et soin.",
+        "cta": "Dire bonjour",
+        "copy_email": "Copier l'email",
+        "copied": "✓ Copié !",
+        "email_label": "Envoyer un email à {{ email }}",
+        "social_label": "Voir mon profil {{ label }}",
+        "availability": {
+            "open": "Disponible pour opportunités",
+            "closed": "Indisponible actuellement"
+        },
+        "missions": {
+            "freelance": "Freelance",
+            "fulltime": "CDI",
+            "consulting": "Consulting"
+        }
+    },
+    "footer": {
+        "credit": "Conçu et développé par AbduKader",
+        "repo": "Voir le repo",
+        "built_with": "Construit avec",
+        "built_with_tech": "Angular & SCSS",
+        "easter_egg": "> made with heart and coffee"
+    },
     "sections": {
         "about": {
             "title": "À propos",

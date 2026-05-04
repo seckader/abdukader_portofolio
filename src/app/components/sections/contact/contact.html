@@ -1,0 +1,64 @@
+<ng-container *ngIf="contact as contact">
+  <div class="contact" #contactSection>
+    <span class="contact__watermark mono" #introItem aria-hidden="true">06</span>
+    <span class="contact__tag mono" #introItem>{{ 'contact.eyebrow' | translate }}</span>
+
+    <h2 class="contact__title" #introItem>{{ 'contact.title' | translate }}</h2>
+    <p class="contact__subtitle" #introItem>{{ 'contact.subtitle' | translate }}</p>
+    <p class="contact__description" #introItem>{{ 'contact.description' | translate }}</p>
+
+    <div
+      class="contact__badge mono"
+      #detailItem
+      [class.is-unavailable]="!contact.availability.available">
+      <span class="contact__badge-dot"></span>
+      {{ contact.availability.messageKey | translate }}
+    </div>
+
+    <ul class="contact__missions" #detailItem>
+      <li class="mono" *ngFor="let missionKey of contact.missionKeys">{{ missionKey | translate }}</li>
+    </ul>
+
+    <div class="contact__actions" #detailItem>
+      <button
+        class="contact__cta contact__cta--primary mono"
+        type="button"
+        [attr.aria-label]="'contact.email_label' | translate: { email: contact.email }"
+        (click)="sendEmail()">
+        {{ 'contact.cta' | translate }}
+      </button>
+
+      <button
+        class="contact__cta contact__cta--secondary mono"
+        type="button"
+        aria-live="polite"
+        (click)="copyEmail()">
+        {{ (isCopied ? 'contact.copied' : 'contact.copy_email') | translate }}
+      </button>
+    </div>
+
+    <ul class="contact__social" #detailItem>
+      <li *ngFor="let social of contact.socialLinks" #socialItem>
+        <a
+          [href]="social.href"
+          target="_blank"
+          rel="noopener noreferrer"
+          [attr.aria-label]="'contact.social_label' | translate: { label: social.label }">
+          <svg *ngIf="social.icon === 'github'" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.2.8-.6v-2.1c-3.3.7-4-1.4-4-1.4-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.9 1.3 1.9 1.3 1.1 1.9 2.9 1.3 3.6 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.6.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5Z" />
+          </svg>
+
+          <svg *ngIf="social.icon === 'linkedin'" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4.98 3.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0ZM.43 8h4.1v13.2H.43V8Zm6.7 0h3.9v1.8h.1c.5-1 1.9-2.1 3.9-2.1 4.2 0 5 2.8 5 6.4v7.1h-4.1v-6.3c0-1.5 0-3.5-2.1-3.5s-2.5 1.7-2.5 3.4v6.4h-4.1V8Z" transform="translate(2 1)" />
+          </svg>
+
+          <svg *ngIf="social.icon === 'twitter'" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M18.2 2h3.3l-7.2 8.2L22.8 22h-6.7l-5.2-6.8L5 22H1.7l7.7-8.8L1.2 2h6.8l4.7 6.2L18.2 2Zm-1.1 17.9h1.8L7 4H5.1l12 15.9Z" />
+          </svg>
+        </a>
+      </li>
+    </ul>
+
+    <span class="contact__separator" #detailItem aria-hidden="true"></span>
+  </div>
+</ng-container>

@@ -1,0 +1,16 @@
+<footer class="footer" #footer>
+  <p class="footer__credit">
+    {{ 'footer.credit' | translate }}
+    <a [href]="repoUrl" target="_blank" rel="noopener noreferrer">
+      {{ 'footer.repo' | translate }}
+    </a>
+  </p>
+
+  <p class="footer__stack mono">
+    {{ 'footer.built_with' | translate }}
+    <span>{{ 'footer.built_with_tech' | translate }}</span>
+  </p>
+
+  <p class="footer__year mono">© {{ currentYear }}</p>
+  <p class="footer__easter-egg mono">{{ 'footer.easter_egg' | translate }}</p>
+</footer>

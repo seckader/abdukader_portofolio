@@ -1,0 +1,240 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.contact {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: $spacing-4xl 0;
+  text-align: center;
+  overflow: hidden;
+
+  &__watermark {
+    position: absolute;
+    top: 8%;
+    left: 50%;
+    z-index: 0;
+    color: rgba($color-text-dark, 0.12);
+    font-size: clamp(8rem, 24vw, 16rem);
+    font-weight: $font-weight-bold;
+    line-height: 1;
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+
+  &__tag,
+  &__title,
+  &__subtitle,
+  &__description,
+  &__badge,
+  &__missions,
+  &__actions,
+  &__social,
+  &__separator {
+    position: relative;
+    z-index: 1;
+  }
+
+  &__tag {
+    display: inline-block;
+    margin-bottom: $spacing-lg;
+    color: $color-accent;
+    font-size: $font-size-sm;
+  }
+
+  &__title {
+    margin-bottom: $spacing-md;
+    color: $color-text-primary;
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    line-height: $line-height-tight;
+  }
+
+  &__subtitle {
+    margin-bottom: $spacing-lg;
+    color: $color-accent;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    font-weight: $font-weight-semibold;
+    line-height: $line-height-tight;
+  }
+
+  &__description {
+    max-width: 62ch;
+    margin-bottom: $spacing-xl;
+    color: $color-text-secondary;
+    font-size: $font-size-lg;
+    line-height: $line-height-relaxed;
+  }
+
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-sm;
+    min-height: 36px;
+    margin-bottom: $spacing-md;
+    padding: 0 $spacing-md;
+    border: 1px solid rgba($color-accent, 0.18);
+    border-radius: $border-radius-sm;
+    color: $color-text-secondary;
+    font-size: $font-size-xs;
+    background: rgba($color-bg-light, 0.45);
+  }
+
+  &__badge-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: $color-accent;
+    box-shadow: 0 0 0 rgba($color-accent-rgb..., 0.7);
+    animation: contact-pulse 1.8s infinite;
+  }
+
+  &__badge.is-unavailable {
+    border-color: rgba($color-text-dark, 0.4);
+
+    .contact__badge-dot {
+      background: $color-text-dark;
+      animation: none;
+      box-shadow: none;
+    }
+  }
+
+  &__missions,
+  &__actions,
+  &__social {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: $spacing-sm;
+  }
+
+  &__missions {
+    margin-bottom: $spacing-xl;
+
+    li {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 0 $spacing-md;
+      border: 1px solid rgba($color-accent, 0.24);
+      border-radius: $border-radius-sm;
+      color: $color-accent;
+      font-size: $font-size-xs;
+      background: rgba($color-accent-rgb..., 0.06);
+    }
+  }
+
+  &__actions {
+    margin-bottom: $spacing-xl;
+  }
+
+  &__cta {
+    min-height: 46px;
+    padding: 0 $spacing-lg;
+    border-radius: $border-radius-sm;
+    font-size: $font-size-sm;
+    transition: $transition-normal;
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba($color-accent-rgb..., 0.22);
+    }
+  }
+
+  &__cta--primary {
+    border: 1px solid $color-accent;
+    color: $color-accent;
+
+    &:hover,
+    &:focus-visible {
+      color: $color-black;
+      background: $color-accent;
+      transform: translateY(-2px);
+    }
+  }
+
+  &__cta--secondary {
+    border: 1px solid rgba($color-accent, 0.24);
+    color: $color-text-secondary;
+
+    &:hover,
+    &:focus-visible {
+      color: $color-accent;
+      border-color: $color-accent;
+    }
+  }
+
+  &__social {
+    margin-bottom: $spacing-2xl;
+
+    a {
+      @include flex-center;
+
+      width: 42px;
+      height: 42px;
+      color: $color-text-secondary;
+      transition: $transition-normal;
+
+      &:hover,
+      &:focus-visible {
+        color: $color-accent;
+        outline: none;
+        transform: translateY(-3px);
+      }
+
+      &:focus-visible {
+        box-shadow: 0 2px 0 $color-accent;
+      }
+    }
+
+    svg {
+      width: 22px;
+      height: 22px;
+      fill: currentColor;
+    }
+  }
+
+  &__separator {
+    width: min(220px, 60%);
+    height: 1px;
+    background: rgba($color-accent, 0.22);
+  }
+}
+
+@keyframes contact-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba($color-accent-rgb..., 0.55);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba($color-accent-rgb..., 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba($color-accent-rgb..., 0);
+  }
+}
+
+@include respond-to('md') {
+  .contact {
+    min-height: calc(100vh - 76px);
+    padding: $spacing-3xl 0;
+
+    &__description {
+      font-size: $font-size-base;
+    }
+  }
+}
+
+@include respond-to('sm') {
+  .contact {
+    &__actions {
+      width: 100%;
+      flex-direction: column;
+    }
+
+    &__cta {
+      width: 100%;
+    }
+  }
+}

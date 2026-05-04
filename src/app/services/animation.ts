@@ -568,6 +568,82 @@ export class AnimationService {
     );
   }
 
+  animateContactSection(
+    introEls: Element[],
+    detailEls: Element[],
+    socialEls: Element[],
+    triggerEl: Element
+  ): void {
+    if (!this.isBrowser) return;
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: triggerEl,
+        start: 'top 76%',
+        toggleActions: 'play none none none'
+      }
+    });
+
+    if (introEls.length) {
+      tl.fromTo(introEls,
+        { opacity: 0, y: 28 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.65,
+          stagger: 0.1,
+          ease: 'power3.out'
+        }
+      );
+    }
+
+    if (detailEls.length) {
+      tl.fromTo(detailEls,
+        { opacity: 0, y: 24 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.55,
+          stagger: 0.08,
+          ease: 'power3.out'
+        },
+        '-=0.18'
+      );
+    }
+
+    if (socialEls.length) {
+      tl.fromTo(socialEls,
+        { opacity: 0, y: 18 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.45,
+          stagger: 0.07,
+          ease: 'power2.out'
+        },
+        '-=0.2'
+      );
+    }
+  }
+
+  animateFooterIn(footerEl: Element): void {
+    if (!this.isBrowser) return;
+
+    gsap.fromTo(footerEl,
+      { opacity: 0 },
+      {
+        opacity: 1,
+        duration: 0.55,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: footerEl,
+          start: 'top 95%',
+          toggleActions: 'play none none none'
+        }
+      }
+    );
+  }
+
   // ============================================
   // SCROLL ANIMATIONS
   // ============================================

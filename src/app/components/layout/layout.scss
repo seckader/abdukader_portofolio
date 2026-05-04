@@ -34,7 +34,8 @@
   &:has(app-experience),
   &:has(app-skills),
   &:has(app-projects),
-  &:has(app-blog) {
+  &:has(app-blog),
+  &:has(app-contact) {
     display: block;
   }
 
@@ -77,7 +78,8 @@
     &:has(app-experience),
     &:has(app-skills),
     &:has(app-projects),
-    &:has(app-blog) {
+    &:has(app-blog),
+    &:has(app-contact) {
       padding: 0;
     }
   }
