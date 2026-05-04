@@ -337,6 +337,108 @@ export class AnimationService {
     }
   }
 
+  animateProjectsSection(
+    headerEls: Element[],
+    featuredEls: Element[],
+    secondaryEls: Element[],
+    triggerEl: Element
+  ): void {
+    if (!this.isBrowser) return;
+
+    gsap.timeline({
+      scrollTrigger: {
+        trigger: triggerEl,
+        start: 'top 78%',
+        toggleActions: 'play none none none'
+      }
+    })
+    .fromTo(headerEls,
+      { opacity: 0, y: 28 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.65,
+        stagger: 0.08,
+        ease: 'power3.out'
+      }
+    );
+
+    featuredEls.forEach((featuredEl, index) => {
+      gsap.fromTo(featuredEl,
+        { opacity: 0, x: index % 2 === 0 ? -44 : 44 },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 0.7,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: featuredEl,
+            start: 'top 82%',
+            toggleActions: 'play none none none'
+          }
+        }
+      );
+    });
+
+    if (secondaryEls.length) {
+      gsap.fromTo(secondaryEls,
+        { opacity: 0, y: 28 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.55,
+          stagger: {
+            each: 0.07,
+            from: 'start',
+            grid: 'auto'
+          },
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: secondaryEls[0],
+            start: 'top 86%',
+            toggleActions: 'play none none none'
+          }
+        }
+      );
+    }
+  }
+
+  animateProjectsGridOut(gridEl: Element, onComplete: () => void): void {
+    if (!this.isBrowser) return;
+
+    gsap.to(gridEl, {
+      opacity: 0,
+      y: 14,
+      duration: 0.22,
+      ease: 'power2.out',
+      onComplete
+    });
+  }
+
+  animateProjectsGridIn(cardEls: Element[], gridEl: Element): void {
+    if (!this.isBrowser) return;
+
+    gsap.to(gridEl, {
+      opacity: 1,
+      y: 0,
+      duration: 0.18,
+      ease: 'power2.out'
+    });
+
+    if (!cardEls.length) return;
+
+    gsap.fromTo(cardEls,
+      { opacity: 0, y: 20 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.38,
+        stagger: 0.05,
+        ease: 'power2.out'
+      }
+    );
+  }
+
   // ============================================
   // SCROLL ANIMATIONS
   // ============================================

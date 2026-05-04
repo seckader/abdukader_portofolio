@@ -1,0 +1,141 @@
+<div class="projects" #projectsSection>
+  <div class="projects__header">
+    <span class="projects__tag mono" #headerItem>{{ 'projects.eyebrow' | translate }}</span>
+    <h2 class="projects__title" #headerItem>{{ 'projects.title' | translate }}</h2>
+    <p class="projects__count mono" #headerItem>
+      {{ 'projects.count' | translate: { count: featuredProjects.length + otherProjects.length } }}
+    </p>
+  </div>
+
+  <div class="projects__featured">
+    <article
+      *ngFor="let project of featuredProjects; let i = index"
+      class="featured-card"
+      #featuredCard
+      [class.featured-card--reverse]="i % 2 === 1"
+      tabindex="0">
+      <span class="featured-card__watermark mono" aria-hidden="true">{{ getWatermark(i) }}</span>
+
+      <div class="featured-card__media">
+        <picture *ngIf="project.previewImage; else featuredFallback">
+          <source [srcset]="project.previewImage.webp" type="image/webp" />
+          <img
+            [src]="project.previewImage.jpg"
+            [alt]="project.previewImage.altKey | translate"
+            loading="lazy" />
+        </picture>
+
+        <ng-template #featuredFallback>
+          <div class="featured-card__fallback" aria-hidden="true"></div>
+        </ng-template>
+      </div>
+
+      <div class="featured-card__body">
+        <span class="featured-card__label mono">{{ 'projects.featured_label' | translate }}</span>
+        <h3 class="featured-card__title">
+          <a
+            *ngIf="project.liveUrl; else plainFeaturedTitle"
+            [href]="project.liveUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+            [attr.aria-label]="'projects.view_demo_for' | translate: { title: (project.titleKey | translate) }">
+            {{ project.titleKey | translate }}
+          </a>
+
+          <ng-template #plainFeaturedTitle>
+            {{ project.titleKey | translate }}
+          </ng-template>
+        </h3>
+
+        <p class="featured-card__desc">{{ project.longDescriptionKey | translate }}</p>
+
+        <ul class="featured-card__techs">
+          <li class="mono" *ngFor="let tech of project.technologies">{{ tech }}</li>
+        </ul>
+
+        <div class="featured-card__links" *ngIf="hasExternalLinks(project)">
+          <a
+            *ngIf="project.githubUrl"
+            [href]="project.githubUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+            [attr.aria-label]="'projects.view_code_for' | translate: { title: (project.titleKey | translate) }">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.2.8-.6v-2.1c-3.3.7-4-1.4-4-1.4-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.9 1.3 1.9 1.3 1.1 1.9 2.9 1.3 3.6 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.6.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5Z" />
+            </svg>
+          </a>
+
+          <a
+            *ngIf="project.liveUrl"
+            [href]="project.liveUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+            [attr.aria-label]="'projects.view_demo_for' | translate: { title: (project.titleKey | translate) }">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M14 3h7v7h-2V6.4l-9.3 9.3-1.4-1.4L17.6 5H14V3ZM5 5h6v2H7v10h10v-4h2v6H5V5Z" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <div class="projects__grid" role="list" #projectsGrid>
+    <article
+      *ngFor="let project of visibleOtherProjects"
+      class="project-card"
+      #projectCard
+      role="listitem"
+      tabindex="0">
+      <div class="project-card__header">
+        <svg class="project-card__folder" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 5h7l2 3h9v11H3V5Zm2 5v7h14v-7H5Z" />
+        </svg>
+
+        <div class="project-card__links" *ngIf="hasExternalLinks(project)">
+          <a
+            *ngIf="project.githubUrl"
+            [href]="project.githubUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+            [attr.aria-label]="'projects.view_code_for' | translate: { title: (project.titleKey | translate) }">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.2.8-.6v-2.1c-3.3.7-4-1.4-4-1.4-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.9 1.3 1.9 1.3 1.1 1.9 2.9 1.3 3.6 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.6.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5Z" />
+            </svg>
+          </a>
+
+          <a
+            *ngIf="project.liveUrl"
+            [href]="project.liveUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+            [attr.aria-label]="'projects.view_demo_for' | translate: { title: (project.titleKey | translate) }">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M14 3h7v7h-2V6.4l-9.3 9.3-1.4-1.4L17.6 5H14V3ZM5 5h6v2H7v10h10v-4h2v6H5V5Z" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <h3 class="project-card__title">{{ project.titleKey | translate }}</h3>
+      <p class="project-card__desc">{{ project.shortDescriptionKey | translate }}</p>
+
+      <ul class="project-card__techs">
+        <li class="mono" *ngFor="let tech of project.technologies">{{ tech }}</li>
+      </ul>
+    </article>
+  </div>
+
+  <div class="projects__more" *ngIf="otherProjects.length > initialOtherLimit">
+    <button
+      class="projects__more-button mono"
+      type="button"
+      [attr.aria-expanded]="showAll"
+      (click)="toggleShowAll()">
+      <span>{{ (showAll ? 'projects.show_less' : 'projects.view_all') | translate }}</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true" [class.is-open]="showAll">
+        <path d="M12 15.5 5 8.5 6.4 7 12 12.7 17.6 7 19 8.5l-7 7Z" />
+      </svg>
+    </button>
+  </div>
+</div>

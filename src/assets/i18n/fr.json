@@ -113,6 +113,64 @@
             "devops": "DevOps"
         }
     },
+    "projects": {
+        "ariaLabel": "Projets",
+        "eyebrow": "// 04. projets",
+        "title": "Projets",
+        "featured_label": "Projet mis en avant",
+        "view_code": "Voir le code",
+        "view_demo": "Voir la démo",
+        "view_code_for": "Voir le code de {{ title }} sur GitHub",
+        "view_demo_for": "Voir la démo de {{ title }}",
+        "view_all": "Voir tous les projets",
+        "show_less": "Voir moins",
+        "count": "{{ count }} projets sélectionnés",
+        "status": {
+            "completed": "Terminé",
+            "in_progress": "En cours",
+            "archived": "Archivé"
+        },
+        "items": {
+            "portfolio": {
+                "title": "Portfolio Fullstack bilingue",
+                "shortDescription": "Portfolio personnel Angular avec preloader créatif, animations GSAP et contenu FR/EN.",
+                "longDescription": "Placeholder Epic 6 : expérience portfolio complète pensée pour présenter un profil Fullstack, avec navigation fluide, sections éditoriales et animations mesurées.",
+                "imageAlt": "Aperçu graphique du portfolio Fullstack bilingue"
+            },
+            "dashboard": {
+                "title": "Dashboard opérationnel",
+                "shortDescription": "Interface de suivi avec tableaux, filtres et intégration API.",
+                "longDescription": "Placeholder Epic 6 : tableau de bord métier conçu pour organiser des données complexes, accélérer la lecture et faciliter la prise de décision.",
+                "imageAlt": "Aperçu graphique d'un dashboard opérationnel"
+            },
+            "apiHub": {
+                "title": "API Hub sécurisé",
+                "shortDescription": "API REST structurée avec authentification, documentation et conteneurisation.",
+                "longDescription": "Placeholder Epic 6 : backend modulaire pour exposer des ressources métier, sécuriser les accès et préparer un déploiement fiable.",
+                "imageAlt": "Aperçu graphique d'une architecture API"
+            },
+            "componentKit": {
+                "title": "Component Kit",
+                "shortDescription": "Bibliothèque de composants UI réutilisables pour accélérer les interfaces Angular.",
+                "longDescription": "Placeholder Epic 6 : kit de composants documenté pour homogénéiser les écrans et réduire la duplication côté frontend."
+            },
+            "mobileCompanion": {
+                "title": "Mobile Companion",
+                "shortDescription": "Prototype mobile compagnon pour consulter des informations clés en déplacement.",
+                "longDescription": "Placeholder Epic 6 : application mobile hybride explorant des parcours courts, rapides et adaptés aux usages terrain."
+            },
+            "automation": {
+                "title": "Automation Toolkit",
+                "shortDescription": "Scripts et workflows pour automatiser les tâches répétitives du développement.",
+                "longDescription": "Placeholder Epic 6 : ensemble d'automatisations pour fiabiliser les livraisons, réduire les oublis et accélérer les routines."
+            },
+            "learningApi": {
+                "title": "Learning API",
+                "shortDescription": "API pédagogique pour gérer ressources, utilisateurs et progression.",
+                "longDescription": "Placeholder Epic 6 : service backend d'apprentissage conçu autour de routes claires, d'une base relationnelle et de tests ciblés."
+            }
+        }
+    },
     "sections": {
         "about": {
             "title": "À propos",

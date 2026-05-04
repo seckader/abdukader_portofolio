@@ -32,7 +32,8 @@
 
   &:has(app-about),
   &:has(app-experience),
-  &:has(app-skills) {
+  &:has(app-skills),
+  &:has(app-projects) {
     display: block;
   }
 
@@ -73,7 +74,8 @@
 
     &:has(app-about),
     &:has(app-experience),
-    &:has(app-skills) {
+    &:has(app-skills),
+    &:has(app-projects) {
       padding: 0;
     }
   }
