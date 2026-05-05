@@ -1,37 +1,16 @@
 <div class="sidebar">
-  <div class="sidebar__mobile-bar">
-    <a class="sidebar__mobile-brand" href="#about" (click)="closeMenu()">
-      {{ 'sidebar.name' | translate }}
-    </a>
 
-    <button
-      class="sidebar__menu-button"
-      type="button"
-      [class.is-open]="isMenuOpen"
-      [attr.aria-expanded]="isMenuOpen"
-      [attr.aria-label]="'sidebar.menu' | translate"
-      (click)="toggleMenu()">
-      <span></span>
-      <span></span>
-    </button>
-  </div>
-
-  <div class="sidebar__overlay" [class.is-open]="isMenuOpen" (click)="closeMenu()"></div>
-
-  <div class="sidebar__panel" [class.is-open]="isMenuOpen">
-    <div class="sidebar__intro">
-      <a class="sidebar__name" href="#about" (click)="closeMenu()">
+  <!-- MOBILE : header fixe en haut (pas de hamburger) -->
+  <div class="sidebar__mobile-header">
+    <div class="sidebar__mobile-intro">
+      <a class="sidebar__mobile-name" href="#about">
         {{ 'sidebar.name' | translate }}
       </a>
-      <p class="sidebar__title">{{ 'sidebar.title' | translate }}</p>
-      <p class="sidebar__tagline">{{ 'sidebar.tagline' | translate }}</p>
+      <p class="sidebar__mobile-title">{{ 'sidebar.title' | translate }}</p>
     </div>
 
-    <app-nav [activeSection]="activeSection" (linkSelected)="closeMenu()" />
-
-    <div class="sidebar__footer">
+    <div class="sidebar__mobile-actions">
       <app-social-links />
-
       <button class="sidebar__lang mono" type="button" (click)="switchLanguage()">
         <span [class.active]="currentLang === 'fr'">FR</span>
         <span>/</span>
@@ -39,4 +18,27 @@
       </button>
     </div>
   </div>
+
+  <!-- DESKTOP : sidebar fixe à gauche (inchangée) -->
+  <div class="sidebar__panel">
+    <div class="sidebar__intro">
+      <a class="sidebar__name" href="#about">
+        {{ 'sidebar.name' | translate }}
+      </a>
+      <p class="sidebar__title">{{ 'sidebar.title' | translate }}</p>
+      <p class="sidebar__tagline">{{ 'sidebar.tagline' | translate }}</p>
+    </div>
+
+    <app-nav [activeSection]="activeSection" />
+
+    <div class="sidebar__footer">
+      <app-social-links />
+      <button class="sidebar__lang mono" type="button" (click)="switchLanguage()">
+        <span [class.active]="currentLang === 'fr'">FR</span>
+        <span>/</span>
+        <span [class.active]="currentLang === 'en'">EN</span>
+      </button>
+    </div>
+  </div>
+
 </div>

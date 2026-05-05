@@ -21,7 +21,6 @@ import { ScrollSpyService } from '../../../services/scroll-spy';
 })
 export class SidebarComponent implements OnInit, OnDestroy {
   activeSection = 'about';
-  isMenuOpen = false;
   currentLang = 'fr';
 
   private destroy$ = new Subject<void>();
@@ -52,20 +51,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  toggleMenu(): void {
-    this.isMenuOpen = !this.isMenuOpen;
-    this.cdr.markForCheck();
-  }
-
-  closeMenu(): void {
-    if (!this.isMenuOpen) return;
-    this.isMenuOpen = false;
-    this.cdr.markForCheck();
-  }
-
   switchLanguage(): void {
     const nextLang = this.currentLang === 'fr' ? 'en' : 'fr';
-
     this.currentLang = nextLang;
     this.translateService.use(nextLang);
 

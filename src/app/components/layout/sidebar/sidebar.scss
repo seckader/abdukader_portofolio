@@ -2,10 +2,8 @@
 @use '../../../../styles/mixins' as *;
 
 .sidebar {
-  height: 100%;
 
-  &__mobile-bar,
-  &__overlay {
+  &__mobile-header {
     display: none;
   }
 
@@ -30,17 +28,21 @@
     font-size: clamp(2.25rem, 4vw, 3.5rem);
     font-weight: $font-weight-bold;
     line-height: $line-height-tight;
+    transition: $transition-fast;
+    &:hover { color: $color-accent; }
   }
 
   &__title {
-    color: $color-text-primary;
-    font-size: $font-size-xl;
+    color: $color-accent;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-medium;
     line-height: $line-height-tight;
   }
 
   &__tagline {
     max-width: 28ch;
     font-size: $font-size-base;
+    color: $color-text-secondary;
   }
 
   &__footer {
@@ -56,104 +58,72 @@
     color: $color-text-dark;
     font-size: $font-size-sm;
     transition: $transition-normal;
+    cursor: pointer;
 
-    span.active,
-    &:hover {
-      color: $color-accent;
-    }
+    span.active { color: $color-accent; }
+    &:hover { color: $color-text-secondary; }
   }
 }
 
 @include respond-to('lg') {
   .sidebar {
-    &__mobile-bar {
-      height: 76px;
-      padding: 0 $spacing-xl;
+
+    // On cache le panel desktop
+    &__panel {
+      display: none;
+    }
+
+    // On affiche le header mobile
+    &__mobile-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: $z-nav;
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-sm;
+      padding: $spacing-lg $spacing-xl;
+      background: rgba($color-bg, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba($color-accent, 0.08);
+    }
+
+    &__mobile-intro {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-xs;
+    }
+
+    &__mobile-name {
+      color: $color-text-primary;
+      font-size: $font-size-lg;
+      font-weight: $font-weight-bold;
+      line-height: $line-height-tight;
+      transition: $transition-fast;
+      &:hover { color: $color-accent; }
+    }
+
+    &__mobile-title {
+      color: $color-accent;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-medium;
+    }
+
+    &__mobile-actions {
       display: flex;
       align-items: center;
       justify-content: space-between;
-    }
-
-    &__mobile-brand {
-      color: $color-text-primary;
-      font-weight: $font-weight-bold;
-    }
-
-    &__menu-button {
-      position: relative;
-      z-index: $z-tooltip;
-      width: 44px;
-      height: 44px;
-      display: inline-flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 7px;
-
-      span {
-        width: 24px;
-        height: 2px;
-        margin-left: auto;
-        background: $color-accent;
-        transition: $transition-normal;
-      }
-
-      &.is-open span:first-child {
-        transform: translateY(4.5px) rotate(45deg);
-      }
-
-      &.is-open span:last-child {
-        transform: translateY(-4.5px) rotate(-45deg);
-      }
-    }
-
-    &__overlay {
-      position: fixed;
-      inset: 76px 0 0;
-      display: block;
-      pointer-events: none;
-      opacity: 0;
-      background: rgba($color-black, 0.72);
-      transition: $transition-normal;
-
-      &.is-open {
-        pointer-events: auto;
-        opacity: 1;
-      }
-    }
-
-    &__panel {
-      position: fixed;
-      top: 76px;
-      right: 0;
-      bottom: 0;
-      width: min(82vw, 360px);
-      height: auto;
-      padding: $spacing-2xl;
-      background: $color-bg-light;
-      box-shadow: $shadow-lg;
-      transform: translateX(100%);
-      transition: $transition-slow;
-
-      &.is-open {
-        transform: translateX(0);
-      }
-    }
-
-    &__name {
-      font-size: $font-size-2xl;
+      gap: $spacing-md;
     }
   }
 }
 
 @include respond-to('sm') {
   .sidebar {
-    &__mobile-bar {
-      padding: 0 $spacing-lg;
-    }
-
-    &__panel {
-      width: min(88vw, 340px);
-      padding: $spacing-xl;
+    &__mobile-header {
+      padding: $spacing-md $spacing-lg;
     }
   }
 }

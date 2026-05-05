@@ -58,6 +58,10 @@
     display: block;
     padding-top: 76px;
 
+    &__content {
+      padding-top: 120px;
+    }
+
     &__sidebar {
       position: fixed;
       inset: 0 0 auto 0;
