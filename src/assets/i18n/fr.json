@@ -15,7 +15,7 @@
     "sidebar": {
         "name": "AbduKader",
         "title": "Développeur Fullstack",
-        "tagline": "Je construis des expériences web accessibles, performantes et soignées.",
+        "tagline": "Web - APIs - Cloud - Architecture logicielle",
         "menu": "Ouvrir le menu de navigation"
     },
     "nav": {
@@ -35,17 +35,17 @@
         "eyebrow": "// 01. à propos",
         "greeting": "Bonjour, je suis",
         "role": "Développeur Fullstack",
-        "tagline": "Je conçois des interfaces web rapides, accessibles et solides, avec une attention particulière portée à l'expérience utilisateur et à la qualité du code.",
+        "tagline": "Web - APIs - Cloud - Architecture logicielle",
         "bio": {
-            "paragraph1": "J'aime transformer des idées complexes en produits web clairs, maintenables et agréables à utiliser.",
-            "paragraph2": "Mon approche combine le sens du détail côté frontend avec une compréhension pragmatique des APIs, de la donnée et des contraintes backend.",
-            "paragraph3": "Ce portfolio évoluera progressivement avec mes expériences réelles, mes projets sélectionnés et mes notes techniques."
+            "paragraph1": "J’aime comprendre comment les systèmes fonctionnent, du frontend jusqu’aux APIs, à la donnée, à l’infrastructure et aux workflows qui relient le tout.",
+            "paragraph2": "Je prends autant de plaisir à concevoir une interface qu’à structurer un backend, instrumenter une application ou automatiser un environnement.",
+            "paragraph3": "Quand je ne code pas, je suis probablement en train d’analyser une architecture, documenter une idée, optimiser un workflow… ou démarrer un nouveau projet juste “pour tester quelque chose”."
         },
         "availability": {
             "available": "Disponible pour opportunités",
             "unavailable": "Indisponible actuellement"
         },
-        "location": "Canada",
+        "location": "Québec, Canada",
         "cta": "Voir mes projets"
     },
     "experience": {

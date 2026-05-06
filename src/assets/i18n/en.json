@@ -15,7 +15,7 @@
     "sidebar": {
         "name": "AbduKader",
         "title": "Fullstack Developer",
-        "tagline": "I build accessible, performant, and polished web experiences.",
+        "tagline": "Web - APIs - Cloud - Software Architecture",
         "menu": "Open navigation menu"
     },
     "nav": {
@@ -35,17 +35,17 @@
         "eyebrow": "// 01. about",
         "greeting": "Hi, I am",
         "role": "Fullstack Developer",
-        "tagline": "I design fast, accessible, and reliable web interfaces, with careful attention to user experience and code quality.",
+        "tagline": "Web - APIs - Cloud - Software Architecture",
         "bio": {
-            "paragraph1": "I enjoy turning complex ideas into clear, maintainable, and pleasant web products.",
-            "paragraph2": "My approach combines frontend attention to detail with a pragmatic understanding of APIs, data, and backend constraints.",
-            "paragraph3": "This portfolio will progressively evolve with my real experience, selected projects, and technical notes."
+            "paragraph1": "I enjoy understanding how systems work, from frontend interfaces to APIs, data, infrastructure, and the workflows connecting everything together.",
+            "paragraph2": "I enjoy designing user interfaces just as much as structuring backend services, instrumenting applications, or automating environments.",
+            "paragraph3": "When I am not coding, I am probably analyzing an architecture, documenting an idea, optimizing a workflow… or starting a new side project just to experiment with something."
         },
         "availability": {
             "available": "Available for opportunities",
             "unavailable": "Currently unavailable"
         },
-        "location": "Canada",
+        "location": "Quebec, Canada",
         "cta": "View my work"
     },
     "experience": {
