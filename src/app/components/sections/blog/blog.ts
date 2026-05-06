@@ -32,6 +32,7 @@ export class BlogComponent implements OnInit, AfterViewInit, OnDestroy {
   currentLang: 'fr' | 'en' = 'fr';
 
   @ViewChild('blogSection') blogSectionRef!: ElementRef<HTMLElement>;
+  @ViewChild('blogCta') blogCtaRef?: ElementRef<HTMLElement>;
   @ViewChildren('headerItem') headerItemRefs!: QueryList<ElementRef<HTMLElement>>;
   @ViewChildren('blogCard') blogCardRefs!: QueryList<ElementRef<HTMLElement>>;
 
@@ -77,7 +78,7 @@ export class BlogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     if (this.isBrowser && this.blogSectionRef?.nativeElement) {
-      this.animationService.killScrollTriggersFor([this.blogSectionRef.nativeElement]);
+      this.animationService.killTriggersForElement(this.blogSectionRef.nativeElement);
     }
 
     this.destroy$.next();
@@ -103,7 +104,7 @@ export class BlogComponent implements OnInit, AfterViewInit, OnDestroy {
 
     if (!triggerEl) return;
 
-    this.animationService.animateBlogSection(headerEls, cardEls, triggerEl);
+    this.animationService.animateBlogSection(headerEls, cardEls, triggerEl, this.blogCtaRef?.nativeElement);
   }
 
   private getActiveLang(): 'fr' | 'en' {

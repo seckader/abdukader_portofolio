@@ -1,13 +1,13 @@
 <main class="blog-page" #pageRoot tabindex="-1" [attr.aria-label]="'blog.title' | translate">
   <header class="blog-page__header">
-    <a class="blog-page__back mono" routerLink="/">{{ 'blog.back' | translate }}</a>
+    <a class="blog-page__back mono" routerLink="/" #titleItem>{{ 'blog.back' | translate }}</a>
     <div>
-      <span class="blog-page__eyebrow mono">{{ 'blog.eyebrow' | translate }}</span>
-      <h1>{{ 'blog.title' | translate }} <span>({{ articles.length }})</span></h1>
+      <span class="blog-page__eyebrow mono" #titleItem>{{ 'blog.eyebrow' | translate }}</span>
+      <h1 #titleItem>{{ 'blog.title' | translate }} <span>({{ articles.length }})</span></h1>
     </div>
   </header>
 
-  <section class="blog-page__tools" [attr.aria-label]="'blog.filters_label' | translate">
+  <section class="blog-page__tools" [attr.aria-label]="'blog.filters_label' | translate" #toolItem>
     <label class="blog-page__search-label" for="blog-search">{{ 'blog.search_label' | translate }}</label>
     <input
       id="blog-search"

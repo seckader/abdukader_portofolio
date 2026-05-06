@@ -136,6 +136,7 @@
   <div class="projects__more" *ngIf="otherProjects.length > initialOtherLimit">
     <button
       class="projects__more-button mono btn-hover"
+      #showMoreButton
       cursorHover
       type="button"
       [attr.aria-expanded]="showAll"

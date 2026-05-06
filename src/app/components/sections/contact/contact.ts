@@ -72,7 +72,7 @@ export class ContactComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     if (this.isBrowser && this.contactSectionRef?.nativeElement) {
-      this.animationService.killScrollTriggersFor([this.contactSectionRef.nativeElement]);
+      this.animationService.killTriggersForElement(this.contactSectionRef.nativeElement);
     }
 
     this.destroy$.next();

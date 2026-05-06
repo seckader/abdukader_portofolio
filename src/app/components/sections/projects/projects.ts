@@ -42,6 +42,7 @@ export class ProjectsComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChildren('headerItem') headerItemRefs!: QueryList<ElementRef<HTMLElement>>;
   @ViewChildren('featuredCard') featuredCardRefs!: QueryList<ElementRef<HTMLElement>>;
   @ViewChildren('projectCard') projectCardRefs!: QueryList<ElementRef<HTMLElement>>;
+  @ViewChild('showMoreButton') showMoreButtonRef?: ElementRef<HTMLElement>;
 
   private destroy$ = new Subject<void>();
   private isBrowser: boolean;
@@ -86,14 +87,8 @@ export class ProjectsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.isBrowser) {
-      const triggers = [
-        this.projectsSectionRef?.nativeElement,
-        ...this.featuredCardRefs.map(ref => ref.nativeElement),
-        ...this.projectCardRefs.map(ref => ref.nativeElement),
-      ].filter(Boolean) as Element[];
-
-      this.animationService.killScrollTriggersFor(triggers);
+    if (this.isBrowser && this.projectsSectionRef?.nativeElement) {
+      this.animationService.killTriggersForElement(this.projectsSectionRef.nativeElement);
     }
 
     this.destroy$.next();
@@ -116,6 +111,7 @@ export class ProjectsComponent implements OnInit, AfterViewInit, OnDestroy {
       setTimeout(() => {
         const cards = this.projectCardRefs.map(ref => ref.nativeElement);
         this.animationService.animateProjectsGridIn(cards, this.projectsGridRef.nativeElement);
+        this.animationService.refreshScrollTriggers();
       }, 0);
     });
   }
@@ -139,9 +135,10 @@ export class ProjectsComponent implements OnInit, AfterViewInit, OnDestroy {
     const featuredEls = this.featuredCardRefs.map(ref => ref.nativeElement);
     const secondaryEls = this.projectCardRefs.map(ref => ref.nativeElement);
     const triggerEl = this.projectsSectionRef?.nativeElement;
+    const moreButtonEl = this.showMoreButtonRef?.nativeElement;
 
     if (!triggerEl) return;
 
-    this.animationService.animateProjectsSection(headerEls, featuredEls, secondaryEls, triggerEl);
+    this.animationService.animateProjectsSection(headerEls, featuredEls, secondaryEls, triggerEl, moreButtonEl);
   }
 }

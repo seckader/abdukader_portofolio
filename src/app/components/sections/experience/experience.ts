@@ -60,6 +60,13 @@ export class ExperienceComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    if (this.isBrowser && this.panelRef?.nativeElement) {
+      const root = this.panelRef.nativeElement.closest('.experience');
+      if (root instanceof HTMLElement) {
+        this.animationService.killTriggersForElement(root);
+      }
+    }
+
     this.destroy$.next();
     this.destroy$.complete();
   }

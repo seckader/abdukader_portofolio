@@ -12,6 +12,8 @@ import {
   PLATFORM_ID,
   SecurityContext,
   ViewChild,
+  ViewChildren,
+  QueryList,
 } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -40,6 +42,7 @@ export class ArticlePageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild('articleRoot') articleRootRef!: ElementRef<HTMLElement>;
   @ViewChild('articleContent') articleContentRef!: ElementRef<HTMLElement>;
+  @ViewChildren('articleIntro') articleIntroRefs!: QueryList<ElementRef<HTMLElement>>;
 
   private destroy$ = new Subject<void>();
   private scrollListener?: () => void;
@@ -94,6 +97,7 @@ export class ArticlePageComponent implements OnInit, AfterViewInit, OnDestroy {
         this.updateContent();
         if (this.article) this.setMeta(this.article);
         this.cdr.markForCheck();
+        setTimeout(() => this.animationService.refreshScrollTriggers(), 0);
       });
   }
 
@@ -107,12 +111,16 @@ export class ArticlePageComponent implements OnInit, AfterViewInit, OnDestroy {
 
     setTimeout(() => {
       if (this.articleRootRef?.nativeElement) {
-        this.animationService.animateArticlePageIn(this.articleRootRef.nativeElement);
+        this.animateArticle();
       }
     }, 0);
   }
 
   ngOnDestroy(): void {
+    if (this.isBrowser && this.articleRootRef?.nativeElement) {
+      this.animationService.killTriggersForElement(this.articleRootRef.nativeElement);
+    }
+
     if (this.isBrowser && this.scrollListener) {
       window.removeEventListener('scroll', this.scrollListener);
     }
@@ -210,5 +218,16 @@ export class ArticlePageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private getActiveLang(): 'fr' | 'en' {
     return this.translateService.currentLang === 'en' ? 'en' : 'fr';
+  }
+
+  private animateArticle(): void {
+    const rootEl = this.articleRootRef?.nativeElement;
+    if (!rootEl) return;
+
+    this.animationService.animateArticleSections(
+      rootEl,
+      this.articleIntroRefs.map(ref => ref.nativeElement),
+      this.articleContentRef?.nativeElement
+    );
   }
 }

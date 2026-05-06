@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
 import { NavSection, ScrollSpyService } from '../../../../services/scroll-spy';
 
 @Component({
@@ -11,6 +11,7 @@ import { NavSection, ScrollSpyService } from '../../../../services/scroll-spy';
 export class NavComponent {
   @Input() activeSection = 'about';
   @Output() linkSelected = new EventEmitter<void>();
+  @ViewChildren('navLink') private navLinkRefs!: QueryList<ElementRef<HTMLElement>>;
 
   sections: NavSection[];
 
@@ -21,5 +22,9 @@ export class NavComponent {
   goToSection(sectionId: string): void {
     this.scrollSpyService.scrollToSection(sectionId);
     this.linkSelected.emit();
+  }
+
+  getLinkElements(): HTMLElement[] {
+    return this.navLinkRefs?.map(ref => ref.nativeElement) ?? [];
   }
 }

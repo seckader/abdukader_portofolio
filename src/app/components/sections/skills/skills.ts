@@ -85,7 +85,7 @@ export class SkillsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     if (this.isBrowser && this.skillsSectionRef?.nativeElement) {
-      this.animationService.killScrollTriggersFor([this.skillsSectionRef.nativeElement]);
+      this.animationService.killTriggersForElement(this.skillsSectionRef.nativeElement);
     }
 
     this.destroy$.next();
@@ -105,6 +105,7 @@ export class SkillsComponent implements OnInit, AfterViewInit, OnDestroy {
       setTimeout(() => {
         const cards = this.skillCardRefs.map(ref => ref.nativeElement);
         this.animationService.animateSkillsFilterIn(cards);
+        this.animationService.refreshScrollTriggers();
       }, 0);
     });
   }

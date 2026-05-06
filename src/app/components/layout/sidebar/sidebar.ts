@@ -1,16 +1,25 @@
 import { isPlatformBrowser } from '@angular/common';
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   Inject,
   OnDestroy,
   OnInit,
   PLATFORM_ID,
+  QueryList,
+  ViewChild,
+  ViewChildren,
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
+import { AnimationService } from '../../../services/animation';
+import { AppStateService } from '../../../services/app-state';
 import { ScrollSpyService } from '../../../services/scroll-spy';
+import { NavComponent } from './nav/nav';
+import { SocialLinksComponent } from './social-links/social-links';
 
 @Component({
   selector: 'app-sidebar',
@@ -19,14 +28,20 @@ import { ScrollSpyService } from '../../../services/scroll-spy';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
 })
-export class SidebarComponent implements OnInit, OnDestroy {
+export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
   activeSection = 'about';
   currentLang = 'fr';
 
   private destroy$ = new Subject<void>();
   private isBrowser: boolean;
 
+  @ViewChildren('sidebarIntro') sidebarIntroRefs!: QueryList<ElementRef<HTMLElement>>;
+  @ViewChild(NavComponent) navComponent?: NavComponent;
+  @ViewChildren(SocialLinksComponent) socialComponents!: QueryList<SocialLinksComponent>;
+
   constructor(
+    private animationService: AnimationService,
+    private appStateService: AppStateService,
     private cdr: ChangeDetectorRef,
     private scrollSpyService: ScrollSpyService,
     private translateService: TranslateService,
@@ -51,6 +66,15 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  ngAfterViewInit(): void {
+    if (!this.isBrowser) return;
+
+    // Classic GSAP entrance, intentionally triggered by the preloader completion event rather than ScrollTrigger.
+    this.appStateService.preloaderComplete$
+      .pipe(take(1), takeUntil(this.destroy$))
+      .subscribe(() => this.animateSidebar());
+  }
+
   switchLanguage(): void {
     const nextLang = this.currentLang === 'fr' ? 'en' : 'fr';
     this.currentLang = nextLang;
@@ -58,8 +82,19 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
     if (this.isBrowser) {
       localStorage.setItem('lang', nextLang);
+      setTimeout(() => this.animationService.refreshScrollTriggers(), 0);
     }
 
     this.cdr.markForCheck();
+  }
+
+  private animateSidebar(): void {
+    const introEls = this.sidebarIntroRefs.map(ref => ref.nativeElement);
+    const navEls = this.navComponent?.getLinkElements() ?? [];
+    const socialEls = this.socialComponents
+      .toArray()
+      .flatMap((component: SocialLinksComponent) => component.getLinkElements());
+
+    this.animationService.animateSidebarIn(introEls, navEls, socialEls);
   }
 }

@@ -30,7 +30,9 @@ export class AboutComponent implements OnInit, AfterViewInit, OnDestroy {
   about$!: Observable<About>;
 
   @ViewChild('aboutSection') aboutSectionRef!: ElementRef<HTMLElement>;
-  @ViewChildren('introItem') introItemRefs!: QueryList<ElementRef<HTMLElement>>;
+  @ViewChildren('titleItem') titleItemRefs!: QueryList<ElementRef<HTMLElement>>;
+  @ViewChildren('bioItem') bioItemRefs!: QueryList<ElementRef<HTMLElement>>;
+  @ViewChildren('metaItem') metaItemRefs!: QueryList<ElementRef<HTMLElement>>;
 
   private destroy$ = new Subject<void>();
   private isBrowser: boolean;
@@ -54,12 +56,14 @@ export class AboutComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.appStateService.preloaderComplete$
       .pipe(take(1), takeUntil(this.destroy$))
-      .subscribe(() => this.animateIntro());
-
-    this.animationService.animateAboutOnScroll(this.aboutSectionRef.nativeElement);
+      .subscribe(() => this.animateSection());
   }
 
   ngOnDestroy(): void {
+    if (this.isBrowser && this.aboutSectionRef?.nativeElement) {
+      this.animationService.killTriggersForElement(this.aboutSectionRef.nativeElement);
+    }
+
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -68,8 +72,14 @@ export class AboutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.scrollSpyService.scrollToSection('projects');
   }
 
-  private animateIntro(): void {
-    const elements = this.introItemRefs.map(ref => ref.nativeElement);
-    this.animationService.animateAboutIntro(elements);
+  private animateSection(): void {
+    const titleEls = this.titleItemRefs.map(ref => ref.nativeElement);
+    const bioEls = this.bioItemRefs.map(ref => ref.nativeElement);
+    const metaEls = this.metaItemRefs.map(ref => ref.nativeElement);
+    const triggerEl = this.aboutSectionRef?.nativeElement;
+
+    if (!triggerEl) return;
+
+    this.animationService.animateAboutSection(titleEls, bioEls, metaEls, triggerEl);
   }
 }

@@ -3,31 +3,32 @@
     class="about"
     #aboutSection>
     <div class="about__content">
-      <span class="about__eyebrow mono" #introItem>{{ 'about.eyebrow' | translate }}</span>
+      <span class="about__eyebrow mono" #titleItem>{{ 'about.eyebrow' | translate }}</span>
 
-      <p class="about__greeting" #introItem>{{ 'about.greeting' | translate }}</p>
+      <p class="about__greeting" #titleItem>{{ 'about.greeting' | translate }}</p>
 
-      <h1 class="about__name" #introItem>
+      <h1 class="about__name" #titleItem>
         {{ about.firstName }}<ng-container *ngIf="about.lastName"> {{ about.lastName }}</ng-container>
       </h1>
 
-      <p class="about__role" #introItem>{{ about.roleKey | translate }}</p>
+      <p class="about__role" #titleItem>{{ about.roleKey | translate }}</p>
 
-      <p class="about__tagline" #introItem>{{ about.taglineKey | translate }}</p>
+      <p class="about__tagline" #bioItem>{{ about.taglineKey | translate }}</p>
 
-      <div class="about__bio" #introItem>
-        <p *ngFor="let paragraphKey of about.bioKeys">{{ paragraphKey | translate }}</p>
+      <div class="about__bio">
+        <p #bioItem *ngFor="let paragraphKey of about.bioKeys">{{ paragraphKey | translate }}</p>
       </div>
 
-      <div class="about__meta" #introItem>
+      <div class="about__meta">
         <span
           class="about__availability mono"
+          #metaItem
           [class.is-unavailable]="!about.availability.available">
           <span class="about__availability-dot"></span>
           {{ about.availability.labelKey | translate }}
         </span>
 
-        <span class="about__location mono">
+        <span class="about__location mono" #metaItem>
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 2a7 7 0 0 0-7 7c0 5.3 7 13 7 13s7-7.7 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5Z" />
           </svg>
@@ -35,7 +36,7 @@
         </span>
       </div>
 
-      <button class="about__cta mono btn-hover" type="button" #introItem cursorHover (click)="scrollToProjects()">
+      <button class="about__cta mono btn-hover" type="button" #metaItem cursorHover (click)="scrollToProjects()">
         {{ 'about.cta' | translate }}
       </button>
     </div>

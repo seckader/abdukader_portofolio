@@ -40,6 +40,6 @@ export class FooterComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     if (!this.isBrowser || !this.footerRef?.nativeElement) return;
-    this.animationService.killScrollTriggersFor([this.footerRef.nativeElement]);
+    this.animationService.killTriggersForElement(this.footerRef.nativeElement);
   }
 }

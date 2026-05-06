@@ -2,6 +2,7 @@
   <button
     *ngFor="let section of sections"
     class="nav__link mono"
+    #navLink
     type="button"
     cursorHover
     [class.active]="activeSection === section.id"

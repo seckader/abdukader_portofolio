@@ -9,14 +9,14 @@
 
 <main class="article" #articleRoot tabindex="-1" [attr.aria-label]="'blog.article_label' | translate">
   <ng-container *ngIf="article as article">
-    <a class="article__back mono" routerLink="/blog">{{ 'blog.back_to_articles' | translate }}</a>
+    <a class="article__back mono" routerLink="/blog" #articleIntro>{{ 'blog.back_to_articles' | translate }}</a>
 
     <figure class="article__cover" *ngIf="article.coverImage">
       <img [src]="article.coverImage.src" [alt]="text(article.coverImage.alt)" loading="lazy" />
     </figure>
 
     <header class="article__header">
-      <p class="article__meta mono">
+      <p class="article__meta mono" #articleIntro>
         <span>{{ ('blog.category.' + article.category) | translate }}</span>
         <span aria-hidden="true">·</span>
         <time [attr.datetime]="article.publishedAt">{{ formatDate(article.publishedAt) }}</time>
@@ -24,9 +24,9 @@
         <span>{{ 'blog.read_time' | translate: { minutes: article.readTimeMinutes } }}</span>
       </p>
 
-      <h1>{{ text(article.title) }}</h1>
+      <h1 #articleIntro>{{ text(article.title) }}</h1>
 
-      <ul class="article__tags">
+      <ul class="article__tags" #articleIntro>
         <li class="mono" *ngFor="let tag of article.tags">{{ tag }}</li>
       </ul>
     </header>

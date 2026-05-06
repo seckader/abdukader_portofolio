@@ -2,6 +2,7 @@
   <li *ngFor="let link of links">
     <a
       class="social-links__link"
+      #socialLink
       [href]="link.href"
       [attr.aria-label]="link.label"
       [attr.download]="link.download ? '' : null"

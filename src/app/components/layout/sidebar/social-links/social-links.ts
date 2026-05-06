@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
 
 interface SocialLink {
   label: string;
@@ -15,10 +15,16 @@ interface SocialLink {
   standalone: false,
 })
 export class SocialLinksComponent {
+  @ViewChildren('socialLink') private socialLinkRefs!: QueryList<ElementRef<HTMLElement>>;
+
   links: SocialLink[] = [
     { label: 'GitHub', href: 'https://github.com/seckader', icon: 'github' },
     { label: 'LinkedIn', href: 'https://www.linkedin.com/in/abdukader', icon: 'linkedin' },
     { label: 'X', href: 'https://x.com/Abdu_Kadeer', icon: 'twitter' },
     { label: 'CV', href: '/assets/cv/abdukader-cv.pdf', icon: 'cv', download: true },
   ];
+
+  getLinkElements(): HTMLElement[] {
+    return this.socialLinkRefs?.map(ref => ref.nativeElement) ?? [];
+  }
 }

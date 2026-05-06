@@ -48,6 +48,8 @@ export class BlogPageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild('pageRoot') pageRootRef!: ElementRef<HTMLElement>;
   @ViewChild('articleGrid') articleGridRef!: ElementRef<HTMLElement>;
+  @ViewChildren('titleItem') titleItemRefs!: QueryList<ElementRef<HTMLElement>>;
+  @ViewChildren('toolItem') toolItemRefs!: QueryList<ElementRef<HTMLElement>>;
   @ViewChildren('articleCard') articleCardRefs!: QueryList<ElementRef<HTMLElement>>;
 
   constructor(
@@ -88,6 +90,7 @@ export class BlogPageComponent implements OnInit, AfterViewInit, OnDestroy {
         this.currentLang = event.lang === 'en' ? 'en' : 'fr';
         this.setMeta();
         this.applyFilters();
+        setTimeout(() => this.animationService.refreshScrollTriggers(), 0);
       });
   }
 
@@ -95,10 +98,14 @@ export class BlogPageComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!this.isBrowser) return;
 
     this.pageRootRef?.nativeElement.focus();
-    setTimeout(() => this.animationService.animateBlogPageIn(this.articleCardRefs.map(ref => ref.nativeElement)), 0);
+    setTimeout(() => this.animatePage(), 0);
   }
 
   ngOnDestroy(): void {
+    if (this.isBrowser && this.pageRootRef?.nativeElement) {
+      this.animationService.killTriggersForElement(this.pageRootRef.nativeElement);
+    }
+
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -165,6 +172,7 @@ export class BlogPageComponent implements OnInit, AfterViewInit, OnDestroy {
             this.articleCardRefs.map(ref => ref.nativeElement),
             this.articleGridRef.nativeElement
           );
+          this.animationService.refreshScrollTriggers();
         }, 0);
       });
       return;
@@ -197,5 +205,17 @@ export class BlogPageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private getActiveLang(): 'fr' | 'en' {
     return this.translateService.currentLang === 'en' ? 'en' : 'fr';
+  }
+
+  private animatePage(): void {
+    const rootEl = this.pageRootRef?.nativeElement;
+    if (!rootEl) return;
+
+    this.animationService.animateBlogPageSection(
+      rootEl,
+      this.titleItemRefs.map(ref => ref.nativeElement),
+      this.toolItemRefs.map(ref => ref.nativeElement),
+      this.articleCardRefs.map(ref => ref.nativeElement)
+    );
   }
 }
