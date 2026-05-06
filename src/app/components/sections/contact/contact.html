@@ -23,6 +23,7 @@
       <button
         class="contact__cta contact__cta--primary mono"
         type="button"
+        cursorHover
         [attr.aria-label]="'contact.email_label' | translate: { email: contact.email }"
         (click)="sendEmail()">
         {{ 'contact.cta' | translate }}
@@ -31,6 +32,7 @@
       <button
         class="contact__cta contact__cta--secondary mono"
         type="button"
+        cursorHover
         aria-live="polite"
         (click)="copyEmail()">
         {{ (isCopied ? 'contact.copied' : 'contact.copy_email') | translate }}

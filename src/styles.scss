@@ -1,5 +1,7 @@
 @forward 'styles/variables';
 @forward 'styles/mixins';
+@forward 'styles/hover';
 
 @use 'styles/reset';
 @use 'styles/typography';
+@use 'styles/hover';

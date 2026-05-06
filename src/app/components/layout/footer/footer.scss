@@ -1,5 +1,6 @@
 @use '../../../../styles/variables' as *;
 @use '../../../../styles/mixins' as *;
+@use '../../../../styles/hover' as hover;
 
 .footer {
   display: grid;
@@ -12,7 +13,9 @@
 
   a {
     color: $color-text-secondary;
-    transition: $transition-fast;
+    transition: color $duration-fast ease;
+
+    @include hover.hover-underline(1px, $duration-fast, $ease-out-smooth);
 
     &:hover,
     &:focus-visible {

@@ -43,7 +43,11 @@
     border-radius: $border-radius-sm;
     color: $color-text-secondary;
     font-size: $font-size-xs;
-    transition: $transition-normal;
+    transition:
+      border-color $duration-fast ease,
+      background-color $duration-fast ease,
+      color $duration-fast ease,
+      box-shadow $duration-fast ease;
 
     &:hover,
     &:focus-visible {
@@ -59,6 +63,12 @@
 
     &.active {
       border-color: $color-accent;
+      color: $color-black;
+      background: $color-accent;
+    }
+
+    &.active:hover,
+    &.active:focus-visible {
       color: $color-black;
       background: $color-accent;
     }
@@ -81,7 +91,10 @@
   padding: $spacing-lg $spacing-md;
   border-radius: $border-radius-md;
   color: $color-text-primary;
-  transition: $transition-normal;
+  transition:
+    transform $duration-base $ease-out-smooth,
+    border-color $duration-base $ease-out-smooth,
+    box-shadow $duration-base $ease-out-smooth;
 
   &:hover,
   &:focus-visible {

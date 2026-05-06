@@ -28,7 +28,7 @@
     font-size: clamp(2.25rem, 4vw, 3.5rem);
     font-weight: $font-weight-bold;
     line-height: $line-height-tight;
-    transition: $transition-fast;
+    transition: color $duration-fast ease;
     &:hover { color: $color-accent; }
   }
 
@@ -57,7 +57,7 @@
     gap: $spacing-xs;
     color: $color-text-dark;
     font-size: $font-size-sm;
-    transition: $transition-normal;
+    transition: color $duration-fast ease;
     cursor: pointer;
 
     span.active { color: $color-accent; }
@@ -101,7 +101,7 @@
       font-size: $font-size-lg;
       font-weight: $font-weight-bold;
       line-height: $line-height-tight;
-      transition: $transition-fast;
+      transition: color $duration-fast ease;
       &:hover { color: $color-accent; }
     }
 

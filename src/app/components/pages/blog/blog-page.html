@@ -20,6 +20,7 @@
     <div class="blog-page__filters">
       <button
         class="blog-page__filter mono"
+        cursorHover
         *ngFor="let category of categories"
         type="button"
         [class.active]="selectedCategory === category"
@@ -32,6 +33,7 @@
     <div class="blog-page__tags">
       <button
         class="blog-page__tag mono"
+        cursorHover
         *ngFor="let tag of tags"
         type="button"
         [class.active]="isTagSelected(tag)"
@@ -43,14 +45,14 @@
 
     <div class="blog-page__results">
       <p class="mono">{{ 'blog.results_count' | translate: { count: filteredArticles.length } }}</p>
-      <button class="blog-page__clear mono" type="button" (click)="clearFilters()">
+      <button class="blog-page__clear mono btn-hover" type="button" cursorHover (click)="clearFilters()">
         {{ 'blog.clear_filters' | translate }}
       </button>
     </div>
   </section>
 
   <section class="blog-page__grid" role="list" #articleGrid>
-    <article class="blog-card" role="listitem" #articleCard *ngFor="let article of filteredArticles" tabindex="0">
+    <article class="blog-card" role="listitem" #articleCard *ngFor="let article of filteredArticles" cursorHover tabindex="0">
       <div class="blog-card__meta mono">
         <span>{{ ('blog.category.' + article.category) | translate }}</span>
         <span aria-hidden="true">·</span>

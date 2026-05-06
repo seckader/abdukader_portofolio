@@ -1,5 +1,6 @@
 @use '../../../../../styles/variables' as *;
 @use '../../../../../styles/mixins' as *;
+@use '../../../../../styles/hover' as hover;
 
 .nav {
   display: flex;
@@ -16,7 +17,7 @@
     font-size: $font-size-xs;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    transition: $transition-normal;
+    transition: color $duration-base $ease-signature;
 
     &:hover,
     &.active {
@@ -34,7 +35,13 @@
     width: 32px;
     height: 1px;
     background: $color-text-dark;
-    transition: $transition-normal;
+    transition:
+      width $duration-base $ease-signature,
+      background-color $duration-base $ease-signature;
+  }
+
+  &__text {
+    @include hover.hover-underline(1px, $duration-base, $ease-signature);
   }
 }
 

@@ -1,5 +1,6 @@
 @use '../../../../styles/variables' as *;
 @use '../../../../styles/mixins' as *;
+@use '../../../../styles/hover' as hover;
 
 .about {
   position: relative;
@@ -60,6 +61,13 @@
     gap: $spacing-md;
     max-width: 66ch;
     margin-bottom: $spacing-xl;
+
+    a {
+      color: $color-accent;
+      outline: none;
+
+      @include hover.hover-underline(1px, $duration-base, $ease-signature);
+    }
   }
 
   &__meta {
@@ -118,12 +126,16 @@
     border-radius: $border-radius-sm;
     color: $color-accent;
     font-size: $font-size-sm;
-    transition: $transition-normal;
+    transition:
+      transform $duration-fast $ease-out-smooth,
+      box-shadow $duration-fast $ease-out-smooth,
+      background-color $duration-fast ease,
+      border-color $duration-fast ease,
+      color $duration-fast ease;
 
     &:hover,
     &:focus-visible {
       background: rgba($color-accent-rgb..., 0.1);
-      transform: translateY(-2px);
       outline: none;
     }
 

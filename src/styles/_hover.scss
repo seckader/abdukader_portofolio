@@ -1,0 +1,73 @@
+@use 'variables' as *;
+
+@mixin hover-underline(
+  $height: 1px,
+  $duration: $duration-base,
+  $easing: $ease-signature,
+  $origin: left
+) {
+  position: relative;
+  display: inline-flex;
+
+  &::after {
+    content: '';
+    position: absolute;
+    right: if($origin == right, 0, auto);
+    bottom: -2px;
+    left: if($origin == right, auto, 0);
+    width: 0;
+    height: $height;
+    background-color: var(--color-accent, #{$color-accent});
+    transition: width $duration $easing;
+  }
+
+  &:hover::after,
+  &:focus-visible::after {
+    width: 100%;
+  }
+}
+
+@mixin hover-btn {
+  transition:
+    transform $duration-fast $ease-out-smooth,
+    box-shadow $duration-fast $ease-out-smooth,
+    border-color $duration-fast ease,
+    background-color $duration-fast ease,
+    color $duration-fast ease;
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--color-accent, #{$color-accent});
+    box-shadow: 0 10px 24px rgba($color-accent-rgb..., 0.14);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    box-shadow: 0 4px 12px rgba($color-accent-rgb..., 0.1);
+    transform: translateY(0);
+  }
+}
+
+.btn-hover {
+  @include hover-btn;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+
+  .btn-hover,
+  [class*='card'],
+  [class*='__link'],
+  [class*='__button'],
+  [class*='__filter'],
+  [class*='__tab'] {
+    transform: none !important;
+  }
+}

@@ -20,6 +20,7 @@ import { ProjectsComponent } from './components/sections/projects/projects';
 import { BlogComponent } from './components/sections/blog/blog';
 import { ContactComponent } from './components/sections/contact/contact';
 import { FooterComponent } from './components/layout/footer/footer';
+import { CursorHoverDirective } from './directives/cursor-hover.directive';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { FooterComponent } from './components/layout/footer/footer';
     BlogComponent,
     ContactComponent,
     FooterComponent,
+    CursorHoverDirective,
   ],
   imports: [
     BrowserModule,

@@ -79,13 +79,15 @@
     bottom: -2px; left: 0;
     width: 0; height: 1px;
     background: $color-accent;
-    transition: $transition-normal;
+    transition: width $duration-base $ease-signature;
   }
   &:hover::after { width: 100%; }
 }
 
 @mixin hover-lift {
-  transition: $transition-normal;
+  transition:
+    transform $duration-base $ease-out-smooth,
+    box-shadow $duration-base $ease-out-smooth;
   &:hover {
     transform: translateY(-4px);
     box-shadow: $shadow-md;

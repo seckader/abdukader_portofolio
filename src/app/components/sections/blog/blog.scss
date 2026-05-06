@@ -1,5 +1,6 @@
 @use '../../../../styles/variables' as *;
 @use '../../../../styles/mixins' as *;
+@use '../../../../styles/hover' as hover;
 
 .blog {
   padding: $spacing-4xl 0;
@@ -37,10 +38,10 @@
     gap: $spacing-sm;
     color: $color-accent;
     font-size: $font-size-sm;
-    transition: $transition-normal;
+    @include hover.hover-btn;
 
     span:last-child {
-      transition: $transition-normal;
+      transition: transform $duration-base $ease-signature;
     }
 
     &:hover,
@@ -68,13 +69,16 @@
   border-left: 2px solid transparent;
   border-radius: $border-radius-md;
   outline: none;
-  transition: $transition-normal;
+  transition:
+    transform $duration-base $ease-out-smooth,
+    border-color $duration-base $ease-out-smooth,
+    box-shadow $duration-base $ease-out-smooth;
 
   &:hover,
   &:focus-visible {
     border-left-color: $color-accent;
     box-shadow: 0 14px 34px rgba($color-black, 0.38), 0 0 18px rgba($color-accent-rgb..., 0.07);
-    transform: translateY(-5px);
+    transform: translateY(-3px);
   }
 
   &:focus-visible {
@@ -99,10 +103,11 @@
     color: $color-text-primary;
     font-size: $font-size-lg;
     line-height: $line-height-tight;
+    transition: color $duration-base $ease-out-smooth;
 
     a {
       color: inherit;
-      transition: $transition-fast;
+      transition: color $duration-fast ease;
 
       &:hover,
       &:focus-visible {
@@ -110,6 +115,11 @@
         outline: none;
       }
     }
+  }
+
+  &:hover &__title,
+  &:focus-visible &__title {
+    color: $color-accent;
   }
 
   &__summary {
@@ -138,10 +148,10 @@
     margin-top: $spacing-lg;
     color: $color-accent;
     font-size: $font-size-xs;
-    transition: $transition-normal;
+    transition: color $duration-base ease;
 
     span:last-child {
-      transition: $transition-normal;
+      transition: transform $duration-base $ease-signature;
     }
 
     &:hover,

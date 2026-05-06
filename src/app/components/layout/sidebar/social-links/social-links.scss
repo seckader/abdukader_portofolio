@@ -6,15 +6,21 @@
   gap: $spacing-lg;
 
   &__link {
+    --social-link-delay: 0ms;
+
     display: inline-flex;
     width: 22px;
     height: 22px;
     color: $color-text-secondary;
-    transition: $transition-normal;
+    transition:
+      color $duration-fast ease var(--social-link-delay),
+      transform $duration-fast $ease-out-smooth var(--social-link-delay);
 
-    &:hover {
+    &:hover,
+    &:focus-visible {
       color: $color-accent;
-      transform: translateY(-2px);
+      outline: none;
+      transform: translateY(-3px);
     }
   }
 

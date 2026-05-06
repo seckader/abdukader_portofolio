@@ -1,5 +1,6 @@
 @use '../../../../styles/variables' as *;
 @use '../../../../styles/mixins' as *;
+@use '../../../../styles/hover' as hover;
 
 .blog-page {
   min-height: 100vh;
@@ -55,6 +56,10 @@
     color: $color-text-primary;
     background: rgba($color-bg-light, 0.5);
     outline: none;
+    transition:
+      border-color $duration-fast ease,
+      box-shadow $duration-fast ease,
+      background-color $duration-fast ease;
 
     &:focus {
       border-color: $color-accent;
@@ -80,13 +85,25 @@
     border-radius: $border-radius-sm;
     color: $color-text-secondary;
     font-size: $font-size-xs;
-    transition: $transition-normal;
+    transition:
+      border-color $duration-fast ease,
+      background-color $duration-fast ease,
+      color $duration-fast ease,
+      box-shadow $duration-fast ease,
+      transform $duration-fast $ease-out-smooth;
 
     &:hover,
-    &:focus-visible,
+    &:focus-visible {
+      border-color: rgba($color-accent, 0.68);
+      color: $color-accent;
+      background: rgba($color-accent-rgb..., 0.07);
+      outline: none;
+    }
+
     &.active {
       border-color: $color-accent;
       color: $color-accent;
+      background: rgba($color-accent-rgb..., 0.14);
       outline: none;
     }
   }
@@ -123,12 +140,15 @@
   border-left: 2px solid transparent;
   border-radius: $border-radius-md;
   outline: none;
-  transition: $transition-normal;
+  transition:
+    transform $duration-base $ease-out-smooth,
+    border-color $duration-base $ease-out-smooth,
+    box-shadow $duration-base $ease-out-smooth;
 
   &:hover,
   &:focus-visible {
     border-left-color: $color-accent;
-    transform: translateY(-5px);
+    transform: translateY(-3px);
   }
 
   &__meta {
@@ -148,9 +168,11 @@
     margin-bottom: $spacing-md;
     color: $color-text-primary;
     font-size: $font-size-lg;
+    transition: color $duration-base $ease-out-smooth;
 
     a {
       color: inherit;
+      transition: color $duration-fast ease;
 
       &:hover,
       &:focus-visible {
@@ -158,6 +180,11 @@
         outline: none;
       }
     }
+  }
+
+  &:hover &__title,
+  &:focus-visible &__title {
+    color: $color-accent;
   }
 
   &__summary {

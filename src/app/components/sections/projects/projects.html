@@ -12,6 +12,8 @@
       *ngFor="let project of featuredProjects; let i = index"
       class="featured-card"
       #featuredCard
+      [cursorHover]="'hover'"
+      cursorHoverLabel="View"
       [class.featured-card--reverse]="i % 2 === 1"
       tabindex="0">
       <span class="featured-card__watermark mono" aria-hidden="true">{{ getWatermark(i) }}</span>
@@ -55,6 +57,7 @@
 
         <div class="featured-card__links" *ngIf="hasExternalLinks(project)">
           <a
+            class="btn-hover"
             *ngIf="project.githubUrl"
             [href]="project.githubUrl"
             target="_blank"
@@ -66,6 +69,7 @@
           </a>
 
           <a
+            class="btn-hover"
             *ngIf="project.liveUrl"
             [href]="project.liveUrl"
             target="_blank"
@@ -85,6 +89,7 @@
       *ngFor="let project of visibleOtherProjects"
       class="project-card"
       #projectCard
+      cursorHover
       role="listitem"
       tabindex="0">
       <div class="project-card__header">
@@ -94,6 +99,7 @@
 
         <div class="project-card__links" *ngIf="hasExternalLinks(project)">
           <a
+            class="btn-hover"
             *ngIf="project.githubUrl"
             [href]="project.githubUrl"
             target="_blank"
@@ -105,6 +111,7 @@
           </a>
 
           <a
+            class="btn-hover"
             *ngIf="project.liveUrl"
             [href]="project.liveUrl"
             target="_blank"
@@ -128,7 +135,8 @@
 
   <div class="projects__more" *ngIf="otherProjects.length > initialOtherLimit">
     <button
-      class="projects__more-button mono"
+      class="projects__more-button mono btn-hover"
+      cursorHover
       type="button"
       [attr.aria-expanded]="showAll"
       (click)="toggleShowAll()">

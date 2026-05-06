@@ -1,5 +1,6 @@
 @use '../../../../styles/variables' as *;
 @use '../../../../styles/mixins' as *;
+@use '../../../../styles/hover' as hover;
 
 .contact {
   position: relative;
@@ -135,7 +136,7 @@
     padding: 0 $spacing-lg;
     border-radius: $border-radius-sm;
     font-size: $font-size-sm;
-    transition: $transition-normal;
+    @include hover.hover-btn;
 
     &:focus-visible {
       outline: none;
@@ -151,7 +152,6 @@
     &:focus-visible {
       color: $color-black;
       background: $color-accent;
-      transform: translateY(-2px);
     }
   }
 
@@ -175,7 +175,12 @@
       width: 42px;
       height: 42px;
       color: $color-text-secondary;
-      transition: $transition-normal;
+      transition:
+        color $duration-fast ease,
+        transform $duration-fast $ease-out-smooth,
+        box-shadow $duration-fast ease;
+
+      @include hover.hover-underline(1px, $duration-fast, $ease-out-smooth);
 
       &:hover,
       &:focus-visible {

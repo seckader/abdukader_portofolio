@@ -71,9 +71,16 @@ $bp-2xl: 1536px;
 // ============================================
 // TRANSITIONS
 // ============================================
-$transition-fast:    all 0.15s ease;
-$transition-normal:  all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
-$transition-slow:    all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+$duration-fast: 150ms;
+$duration-base: 250ms;
+$duration-slow: 400ms;
+
+$ease-out-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+$ease-signature: cubic-bezier(0.645, 0.045, 0.355, 1);
+
+$transition-fast: color $duration-fast ease, background-color $duration-fast ease, border-color $duration-fast ease, opacity $duration-fast ease, transform $duration-fast ease, box-shadow $duration-fast ease;
+$transition-normal: color $duration-base $ease-signature, background-color $duration-base $ease-signature, border-color $duration-base $ease-signature, opacity $duration-base $ease-signature, transform $duration-base $ease-signature, box-shadow $duration-base $ease-signature;
+$transition-slow: color $duration-slow $ease-signature, background-color $duration-slow $ease-signature, border-color $duration-slow $ease-signature, opacity $duration-slow $ease-signature, transform $duration-slow $ease-signature, box-shadow $duration-slow $ease-signature;
 
 // ============================================
 // Z-INDEX
