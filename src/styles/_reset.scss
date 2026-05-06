@@ -51,6 +51,14 @@ input, textarea {
   color: $color-accent;
 }
 
+@media (pointer: fine) {
+  *,
+  *::before,
+  *::after {
+    cursor: none !important;
+  }
+}
+
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: $color-bg; }
 ::-webkit-scrollbar-thumb {

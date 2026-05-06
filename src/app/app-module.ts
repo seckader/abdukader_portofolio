@@ -7,6 +7,7 @@ import { App } from './app';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { PreloaderComponent } from './components/preloader/preloader';
+import { CursorComponent } from './components/cursor/cursor';
 import { LayoutComponent } from './components/layout/layout';
 import { SidebarComponent } from './components/layout/sidebar/sidebar';
 import { NavComponent } from './components/layout/sidebar/nav/nav';
@@ -23,6 +24,7 @@ import { FooterComponent } from './components/layout/footer/footer';
 @NgModule({
   declarations: [
     App,
+    CursorComponent,
     LayoutComponent,
     SidebarComponent,
     NavComponent,

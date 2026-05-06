@@ -1,0 +1,7 @@
+<div class="cursor__dot" #dot aria-hidden="true"></div>
+
+<div class="cursor__ring" #ring aria-hidden="true">
+  <span class="cursor__label mono" *ngIf="cursorService.label()">
+    {{ cursorService.label() }}
+  </span>
+</div>
