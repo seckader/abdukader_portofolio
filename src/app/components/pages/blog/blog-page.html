@@ -1,6 +1,6 @@
 <main class="blog-page" #pageRoot tabindex="-1" [attr.aria-label]="'blog.title' | translate">
   <header class="blog-page__header">
-    <a class="blog-page__back mono" routerLink="/" #titleItem>{{ 'blog.back' | translate }}</a>
+    <a class="blog-page__back mono" routerLink="/" fragment="blog" #titleItem>{{ 'blog.back' | translate }}</a>
     <div>
       <span class="blog-page__eyebrow mono" #titleItem>{{ 'blog.eyebrow' | translate }}</span>
       <h1 #titleItem>{{ 'blog.title' | translate }} <span>({{ articles.length }})</span></h1>
