@@ -65,36 +65,30 @@
             "hybrid": "Hybrid"
         },
         "items": {
-            "placeholderStudio": {
-                "role": "Fullstack Developer",
-                "startDate": "Jan 2025",
-                "location": "Canada",
+            "geoplus": {
+                "role": "Software Developer - Metrics & Analytics",
+                "startDate": "Jan 2026",
+                "endDate": "Apr 2026",
+                "location": "Montreal, Quebec",
                 "description": [
-                    "Epic 6 placeholder: designed Angular interfaces focused on performance, accessibility, and maintainability.",
-                    "Structured user flows with reusable components, clear states, and API integration.",
-                    "Collaborated with stakeholders to turn business needs into reliable web deliverables."
+                    "Evaluated multiple analytics solutions and contributed to the selection and self-hosted deployment on virtual infrastructure using Docker.",
+                    "Designed and integrated an instrumentation system within a SaaS application (Angular, Express.js) to measure feature usage and user behavior.",
+                    "Developed backend API mechanisms for analytics event collection, centralization, and enrichment.",
+                    "Designed dashboards to visualize usage metrics and support product analysis and decision-making.",
+                    "Wrote and maintained end-to-end automated tests with Cypress to validate the correct triggering of tracking events."
                 ]
             },
-            "placeholderLabs": {
-                "role": "Angular Frontend Developer",
-                "startDate": "Jun 2023",
-                "endDate": "Dec 2024",
-                "location": "Montreal",
+            "sonatelcdd": {
+                "role": "Network QoS Analyst",
+                "startDate": "Sept 2021",
+                "endDate": "Sept 2023",
+                "location": "Dakar, Senegal",
                 "description": [
-                    "Epic 6 placeholder: developed Angular application modules for an internal platform.",
-                    "Integrated REST services, improved forms, and managed interface-side state.",
-                    "Contributed to code reviews, SCSS quality, and responsive refinements."
-                ]
-            },
-            "placeholderDigital": {
-                "role": "Junior Web Developer",
-                "startDate": "Feb 2022",
-                "endDate": "May 2023",
-                "location": "Dakar",
-                "description": [
-                    "Epic 6 placeholder: built responsive web pages from existing mockups and guidelines.",
-                    "Maintained HTML, SCSS, and JavaScript components with attention to accessibility.",
-                    "Helped ship small features and maintain technical documentation."
+                    "Monitored service quality and KPI metrics in real time across fixed switching, microwave transmission, and backhaul networks.",
+                    "Identified risk situations and coordinated action plans to reduce incidents and improve network availability.",
+                    "Analyzed network traffic, balanced links, and contributed to routing optimization.",
+                    "Participated in the supervision and performance maintenance of critical network infrastructures.",
+                    "Produced monitoring reports and collaborated with technical teams to ensure service stability and continuity."
                 ]
             }
         }
