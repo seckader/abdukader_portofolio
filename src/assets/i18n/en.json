@@ -99,12 +99,23 @@
         "title": "Skills",
         "filtersLabel": "Filter skills by category",
         "count": "{{ count }} skills / {{ total }}",
-        "cardLabel": "{{ name }}, expert level",
+        "cardLabel": "Skill: {{ name }}",
         "filter": {
             "all": "All",
             "frontend": "Frontend",
             "backend": "Backend",
-            "devops": "DevOps"
+            "database": "Databases",
+            "devops": "DevOps & Cloud",
+            "tools": "Tools",
+            "network": "Networks & Telecom",
+            "softSkills": "Soft Skills"
+        },
+        "items": {
+          "mobileNetwork": "Mobile Network",
+          "problemSolving": "Problem solving",
+          "analyticalThinking": "Analytical thinking",
+          "documentation": "Documentation",
+          "continuousLearning": "Continuous learning"
         }
     },
     "projects": {

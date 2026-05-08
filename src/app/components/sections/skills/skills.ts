@@ -38,7 +38,11 @@ export class SkillsComponent implements OnInit, AfterViewInit, OnDestroy {
     { value: 'all', labelKey: 'skills.filter.all' },
     { value: 'frontend', labelKey: 'skills.filter.frontend' },
     { value: 'backend', labelKey: 'skills.filter.backend' },
+    { value: 'database', labelKey: 'skills.filter.database' },
     { value: 'devops', labelKey: 'skills.filter.devops' },
+    { value: 'tools', labelKey: 'skills.filter.tools' },
+    { value: 'network', labelKey: 'skills.filter.network' },
+    { value: 'softSkills', labelKey: 'skills.filter.softSkills' },
   ];
 
   selectedCategory: SkillFilter = 'all';
