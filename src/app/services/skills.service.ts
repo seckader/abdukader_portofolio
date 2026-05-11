@@ -28,13 +28,17 @@ export class SkillsService {
     { name: 'MongoDB', category: 'database', icon: 'assets/icons/skills/mongodb.svg' },
 
     { name: 'Docker', category: 'devops', icon: 'assets/icons/skills/docker.svg' },
+    { name: 'Docker Compose', category: 'devops', icon: 'assets/icons/skills/docker.svg' },
     { name: 'Linux', category: 'devops', icon: 'assets/icons/skills/linux.svg' },
     { name: 'AWS', category: 'devops', icon: 'assets/icons/skills/aws.svg' },
     { name: 'CI/CD', category: 'devops', icon: 'assets/icons/skills/ci-cd.svg'},
 
     { name: 'Git', category: 'tools', icon: 'assets/icons/skills/git.svg' },
+    { name: 'GitHub Actions', category: 'tools', icon: 'assets/icons/skills/ci-cd.svg' },
     { name: 'Jenkins', category: 'tools', icon: 'assets/icons/skills/jenkins.svg' },
     { name: 'Maven', category: 'tools', icon: 'assets/icons/skills/maven.svg' },
+    { name: 'JUnit', category: 'tools', icon: null },
+    { name: 'Mockito', category: 'tools', icon: null },
 
     { name: 'TCP/IP', category: 'network', icon: 'assets/icons/skills/tcp-ip.svg' },
     { name: 'skills.items.mobileNetwork', category: 'network', icon: 'assets/icons/skills/radio-mobile.svg' },

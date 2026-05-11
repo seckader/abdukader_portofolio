@@ -136,43 +136,11 @@
             "archived": "Archived"
         },
         "items": {
-            "portfolio": {
-                "title": "Bilingual Fullstack Portfolio",
-                "shortDescription": "Angular personal portfolio with a creative preloader, GSAP animations, and FR/EN content.",
-                "longDescription": "Epic 6 placeholder: a complete portfolio experience designed to present a Fullstack profile with smooth navigation, editorial sections, and measured animations.",
-                "imageAlt": "Graphic preview of the bilingual Fullstack portfolio"
-            },
-            "dashboard": {
-                "title": "Operations Dashboard",
-                "shortDescription": "Tracking interface with tables, filters, and API integration.",
-                "longDescription": "Epic 6 placeholder: business dashboard designed to organize complex data, improve scanning, and support faster decisions.",
-                "imageAlt": "Graphic preview of an operations dashboard"
-            },
-            "apiHub": {
-                "title": "Secure API Hub",
-                "shortDescription": "Structured REST API with authentication, documentation, and containerization.",
-                "longDescription": "Epic 6 placeholder: modular backend built to expose business resources, secure access, and prepare reliable deployment.",
-                "imageAlt": "Graphic preview of an API architecture"
-            },
-            "componentKit": {
-                "title": "Component Kit",
-                "shortDescription": "Reusable UI component library for faster Angular interfaces.",
-                "longDescription": "Epic 6 placeholder: documented component kit for making screens consistent and reducing frontend duplication."
-            },
-            "mobileCompanion": {
-                "title": "Mobile Companion",
-                "shortDescription": "Companion mobile prototype for checking key information on the go.",
-                "longDescription": "Epic 6 placeholder: hybrid mobile app exploring short, fast flows adapted to field usage."
-            },
-            "automation": {
-                "title": "Automation Toolkit",
-                "shortDescription": "Scripts and workflows for automating repetitive development tasks.",
-                "longDescription": "Epic 6 placeholder: automation set for making delivery more reliable, reducing misses, and speeding up routines."
-            },
-            "learningApi": {
-                "title": "Learning API",
-                "shortDescription": "Educational API for managing resources, users, and progress.",
-                "longDescription": "Epic 6 placeholder: learning backend service designed around clear routes, relational data, and focused tests."
+            "kafkaEventPlatform": {
+                "title": "Kafka Event Processing Platform",
+                "shortDescription": "Event-driven backend platform using Kafka, Spring Boot, and Docker for asynchronous transaction processing.",
+                "longDescription": "Designed and developed an event-driven backend platform based on Apache Kafka and Spring Boot for asynchronous transaction publishing, processing, and monitoring.",
+                "imageAlt": "Architecture of the Kafka Event Processing Platform"
             }
         }
     },
