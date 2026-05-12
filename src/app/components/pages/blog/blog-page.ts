@@ -17,7 +17,7 @@ import { Meta, Title } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { LangChangeEvent, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
-import { Article, ArticleCategory, LocalizedText } from '../../../models/article.model';
+import { ArticleCategory, ArticleMeta } from '../../../models/article.model';
 import { AnimationService } from '../../../services/animation';
 import { BlogService } from '../../../services/blog.service';
 
@@ -34,13 +34,12 @@ type BlogCategoryFilter = ArticleCategory | 'all';
 export class BlogPageComponent implements OnInit, AfterViewInit, OnDestroy {
   readonly categories: BlogCategoryFilter[] = ['all', 'tutorial', 'opinion', 'case-study', 'tips', 'other'];
 
-  articles: Article[] = [];
-  filteredArticles: Article[] = [];
+  articles: ArticleMeta[] = [];
+  filteredArticles: ArticleMeta[] = [];
   tags: string[] = [];
   selectedCategory: BlogCategoryFilter = 'all';
   selectedTags = new Set<string>();
   searchQuery = '';
-  currentLang: 'fr' | 'en' = 'fr';
 
   private searchSubject = new Subject<string>();
   private destroy$ = new Subject<void>();
@@ -66,7 +65,6 @@ export class BlogPageComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.currentLang = this.getActiveLang();
     this.setMeta();
 
     this.blogService.getArticles()
@@ -86,8 +84,7 @@ export class BlogPageComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.translateService.onLangChange
       .pipe(takeUntil(this.destroy$))
-      .subscribe((event: LangChangeEvent) => {
-        this.currentLang = event.lang === 'en' ? 'en' : 'fr';
+      .subscribe((_event: LangChangeEvent) => {
         this.setMeta();
         this.applyFilters();
         setTimeout(() => this.animationService.refreshScrollTriggers(), 0);
@@ -136,12 +133,8 @@ export class BlogPageComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.selectedTags.has(tag);
   }
 
-  text(value: LocalizedText): string {
-    return value[this.currentLang];
-  }
-
   formatDate(date: string): string {
-    return new Intl.DateTimeFormat(this.currentLang === 'fr' ? 'fr-CA' : 'en-CA', {
+    return new Intl.DateTimeFormat('fr-CA', {
       day: '2-digit',
       month: 'short',
       year: 'numeric',
@@ -156,8 +149,8 @@ export class BlogPageComponent implements OnInit, AfterViewInit, OnDestroy {
       const categoryMatches = this.selectedCategory === 'all' || article.category === this.selectedCategory;
       const tagsMatch = selectedTags.length === 0 || selectedTags.every(tag => article.tags.includes(tag));
       const queryMatches = !query
-        || this.text(article.title).toLowerCase().includes(query)
-        || this.text(article.summary).toLowerCase().includes(query)
+        || article.title.toLowerCase().includes(query)
+        || article.excerpt.toLowerCase().includes(query)
         || article.tags.some(tag => tag.toLowerCase().includes(query));
 
       return categoryMatches && tagsMatch && queryMatches;
@@ -202,11 +195,6 @@ export class BlogPageComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     link.setAttribute('href', `https://example.com${path}`);
   }
-
-  private getActiveLang(): 'fr' | 'en' {
-    return this.translateService.currentLang === 'en' ? 'en' : 'fr';
-  }
-
   private animatePage(): void {
     const rootEl = this.pageRootRef?.nativeElement;
     if (!rootEl) return;

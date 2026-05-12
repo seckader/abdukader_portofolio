@@ -56,20 +56,20 @@
       <div class="blog-card__meta mono">
         <span>{{ ('blog.category.' + article.category) | translate }}</span>
         <span aria-hidden="true">·</span>
-        <time [attr.datetime]="article.publishedAt">{{ formatDate(article.publishedAt) }}</time>
+        <time [attr.datetime]="article.date">{{ formatDate(article.date) }}</time>
         <span aria-hidden="true">·</span>
-        <span>{{ 'blog.read_time' | translate: { minutes: article.readTimeMinutes } }}</span>
+        <span>{{ 'blog.read_time' | translate: { minutes: article.readingTime } }}</span>
       </div>
 
       <h2 class="blog-card__title">
         <a
-          [routerLink]="['/blog', article.id]"
-          [attr.aria-label]="'blog.read_article_label' | translate: { title: text(article.title) }">
-          {{ text(article.title) }}
+          [routerLink]="['/blog', article.slug]"
+          [attr.aria-label]="'blog.read_article_label' | translate: { title: article.title }">
+          {{ article.title }}
         </a>
       </h2>
 
-      <p class="blog-card__summary">{{ text(article.summary) }}</p>
+      <p class="blog-card__summary">{{ article.excerpt }}</p>
 
       <ul class="blog-card__tags">
         <li class="mono" *ngFor="let tag of article.tags">{{ tag }}</li>

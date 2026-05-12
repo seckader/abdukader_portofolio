@@ -1,0 +1,22 @@
+[
+  {
+    "slug": "understanding-redis-speed-up-your-api-with-caching",
+    "title": "Comprendre Redis : accélérer son API avec le cache",
+    "excerpt": "Découvrez comment Redis permet d’accélérer une API backend grâce au cache. Dans cet article, nous explorons le fonctionnement du pattern Cache-Aside, le TTL, l’invalidation du cache et une implémentation concrète avec Express.",
+    "date": "2026-05-10",
+    "updatedAt": "2026-05-10",
+    "readingTime": 5,
+    "category": "tutorial",
+    "tags": [
+      "Redis",
+      "Backend",
+      "Cache",
+      "Performance"
+    ],
+    "coverImage": {
+      "src": "assets/images/blog/comprendre_redis_cache.jpg",
+      "alt": "Illustration d’architecture backend montrant comment Redis accélère les réponses API grâce au cache en mémoire RAM."
+    },
+    "featured": true
+  }
+]

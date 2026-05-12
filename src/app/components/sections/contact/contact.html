@@ -15,6 +15,16 @@
       {{ contact.availability.messageKey | translate }}
     </div>
 
+    <div class="contact__details mono" #detailItem>
+      <span>{{ contact.locationKey | translate }}</span>
+      <a
+        [href]="'mailto:' + contact.email"
+        [attr.aria-label]="'contact.email_label' | translate: { email: contact.email }"
+        (click)="sendEmail(); $event.preventDefault()">
+        {{ contact.email }}
+      </a>
+    </div>
+
     <ul class="contact__missions" #detailItem>
       <li class="mono" *ngFor="let missionKey of contact.missionKeys">{{ missionKey | translate }}</li>
     </ul>

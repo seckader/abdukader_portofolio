@@ -11,6 +11,8 @@ export interface ContactAvailability {
 
 export interface Contact {
   email: string;
+  emailSubjectKey: string;
+  locationKey: string;
   socialLinks: ContactSocialLink[];
   availability: ContactAvailability;
   missionKeys: string[];

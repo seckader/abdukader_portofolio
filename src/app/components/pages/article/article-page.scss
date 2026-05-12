@@ -25,13 +25,14 @@
   outline: none;
 
   &__back,
+  &__language-notice,
   &__header,
   &__cover,
   &__content,
   &__share,
   &__related {
     display: block;
-    width: min(100%, 680px);
+    width: min(100%, 1100px);
     margin-inline: auto;
   }
 
@@ -39,6 +40,16 @@
     margin-bottom: $spacing-2xl;
     color: $color-accent;
     font-size: $font-size-sm;
+  }
+
+  &__language-notice {
+    margin-bottom: $spacing-xl;
+    padding: $spacing-sm $spacing-md;
+    border: 1px solid rgba($color-accent, 0.24);
+    border-radius: $border-radius-sm;
+    color: $color-text-secondary;
+    font-size: $font-size-xs;
+    background: rgba($color-bg-light, 0.35);
   }
 
   &__cover {
@@ -118,13 +129,75 @@
     ::ng-deep pre {
       overflow-x: auto;
       padding: $spacing-lg;
+      border: 1px solid rgba($color-accent, 0.14);
       border-radius: $border-radius-md;
-      background: $color-bg-light;
+      box-shadow: $shadow-sm;
+      background: rgba($color-black, 0.72);
 
       code {
         padding: 0;
+        color: inherit;
         background: transparent;
       }
+    }
+
+    ::ng-deep pre[class*='language-'],
+    ::ng-deep code[class*='language-'] {
+      color: $color-text-primary;
+      font-family: $font-mono;
+      font-size: $font-size-sm;
+      line-height: $line-height-relaxed;
+      text-shadow: none;
+      background: transparent;
+    }
+
+    ::ng-deep pre[class*='language-'] {
+      background: #06111f;
+    }
+
+    ::ng-deep .token.comment,
+    ::ng-deep .token.prolog,
+    ::ng-deep .token.doctype,
+    ::ng-deep .token.cdata {
+      color: $color-text-dark;
+    }
+
+    ::ng-deep .token.property,
+    ::ng-deep .token.tag,
+    ::ng-deep .token.boolean,
+    ::ng-deep .token.number,
+    ::ng-deep .token.constant,
+    ::ng-deep .token.symbol,
+    ::ng-deep .token.deleted {
+      color: #7dd3fc;
+    }
+
+    ::ng-deep .token.selector,
+    ::ng-deep .token.attr-name,
+    ::ng-deep .token.string,
+    ::ng-deep .token.char,
+    ::ng-deep .token.builtin,
+    ::ng-deep .token.inserted {
+      color: $color-accent;
+    }
+
+    ::ng-deep .token.operator,
+    ::ng-deep .token.entity,
+    ::ng-deep .token.url,
+    ::ng-deep .language-css .token.string,
+    ::ng-deep .style .token.string {
+      color: #fbbf24;
+    }
+
+    ::ng-deep .token.atrule,
+    ::ng-deep .token.attr-value,
+    ::ng-deep .token.keyword {
+      color: #c4b5fd;
+    }
+
+    ::ng-deep .token.function,
+    ::ng-deep .token.class-name {
+      color: #f472b6;
     }
 
     ::ng-deep blockquote {
@@ -159,17 +232,41 @@
   &__share div {
     display: flex;
     flex-wrap: wrap;
-    gap: $spacing-sm;
+    gap: $spacing-md;
   }
 
   &__share button,
   &__share a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     min-height: 36px;
-    padding: 0 $spacing-md;
+    padding: 0 $spacing-lg;
     border: 1px solid rgba($color-accent, 0.28);
     border-radius: $border-radius-sm;
     color: $color-accent;
     font-size: $font-size-xs;
+    line-height: 1;
+    background: rgba($color-bg-light, 0.28);
+    transition:
+      border-color $duration-fast ease,
+      background-color $duration-fast ease,
+      box-shadow $duration-fast ease,
+      color $duration-fast ease,
+      transform $duration-fast $ease-out-smooth;
+
+    &:hover,
+    &:focus-visible {
+      border-color: rgba($color-accent, 0.72);
+      color: $color-white;
+      background: rgba($color-accent-rgb..., 0.1);
+      outline: none;
+      transform: translateY(-2px);
+    }
+
+    &:focus-visible {
+      box-shadow: 0 0 0 3px rgba($color-accent-rgb..., 0.18);
+    }
   }
 
   &__related-grid {

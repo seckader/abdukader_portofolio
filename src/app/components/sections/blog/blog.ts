@@ -13,9 +13,8 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { Subject, take, takeUntil } from 'rxjs';
-import { Article, LocalizedText } from '../../../models/article.model';
+import { ArticleMeta } from '../../../models/article.model';
 import { AnimationService } from '../../../services/animation';
 import { AppStateService } from '../../../services/app-state';
 import { BlogService } from '../../../services/blog.service';
@@ -28,8 +27,7 @@ import { BlogService } from '../../../services/blog.service';
   standalone: false,
 })
 export class BlogComponent implements OnInit, AfterViewInit, OnDestroy {
-  articles: Article[] = [];
-  currentLang: 'fr' | 'en' = 'fr';
+  articles: ArticleMeta[] = [];
 
   @ViewChild('blogSection') blogSectionRef!: ElementRef<HTMLElement>;
   @ViewChild('blogCta') blogCtaRef?: ElementRef<HTMLElement>;
@@ -44,26 +42,16 @@ export class BlogComponent implements OnInit, AfterViewInit, OnDestroy {
     private appStateService: AppStateService,
     private blogService: BlogService,
     private cdr: ChangeDetectorRef,
-    private translateService: TranslateService,
     @Inject(PLATFORM_ID) platformId: Object
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
   }
 
   ngOnInit(): void {
-    this.currentLang = this.getActiveLang();
-
     this.blogService.getFeaturedArticles()
       .pipe(takeUntil(this.destroy$))
       .subscribe(articles => {
         this.articles = articles;
-        this.cdr.markForCheck();
-      });
-
-    this.translateService.onLangChange
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((event: LangChangeEvent) => {
-        this.currentLang = event.lang === 'en' ? 'en' : 'fr';
         this.cdr.markForCheck();
       });
   }
@@ -85,12 +73,8 @@ export class BlogComponent implements OnInit, AfterViewInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  text(value: LocalizedText): string {
-    return value[this.currentLang];
-  }
-
   formatDate(date: string): string {
-    return new Intl.DateTimeFormat(this.currentLang === 'fr' ? 'fr-CA' : 'en-CA', {
+    return new Intl.DateTimeFormat('fr-CA', {
       day: '2-digit',
       month: 'short',
       year: 'numeric',
@@ -105,9 +89,5 @@ export class BlogComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!triggerEl) return;
 
     this.animationService.animateBlogSection(headerEls, cardEls, triggerEl, this.blogCtaRef?.nativeElement);
-  }
-
-  private getActiveLang(): 'fr' | 'en' {
-    return this.translateService.currentLang === 'en' ? 'en' : 'fr';
   }
 }

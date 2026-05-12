@@ -1,5 +1,6 @@
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { Contact } from '../models/contact.model';
 
@@ -10,11 +11,13 @@ export class ContactService {
   private readonly isBrowser: boolean;
 
   private readonly contact: Contact = {
-    email: 'hello@example.com',
+    email: 'seckader.pro@gmail.com',
+    emailSubjectKey: 'contact.email_subject',
+    locationKey: 'contact.location.value',
     socialLinks: [
-      { label: 'GitHub', href: 'https://github.com/', icon: 'github' },
-      { label: 'LinkedIn', href: 'https://www.linkedin.com/', icon: 'linkedin' },
-      { label: 'X', href: 'https://x.com/', icon: 'twitter' },
+      { label: 'GitHub', href: 'https://github.com/seckader', icon: 'github' },
+      { label: 'LinkedIn', href: 'https://www.linkedin.com/in/abdukader', icon: 'linkedin' },
+      { label: 'X', href: 'https://x.com/Abdu_Kadeer', icon: 'twitter' },
     ],
     availability: {
       available: true,
@@ -29,6 +32,7 @@ export class ContactService {
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
+    private translateService: TranslateService,
     @Inject(PLATFORM_ID) platformId: Object
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
@@ -52,7 +56,8 @@ export class ContactService {
   sendEmail(): void {
     if (!this.isBrowser) return;
 
-    const subject = encodeURIComponent('Portfolio contact');
+    const translatedSubject = this.translateService.instant(this.contact.emailSubjectKey);
+    const subject = encodeURIComponent(translatedSubject);
     window.location.href = `mailto:${this.contact.email}?subject=${subject}`;
   }
 

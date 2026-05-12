@@ -31,6 +31,7 @@
   &__subtitle,
   &__description,
   &__badge,
+  &__details,
   &__missions,
   &__actions,
   &__social,
@@ -109,6 +110,29 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: $spacing-sm;
+  }
+
+  &__details {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: $spacing-sm $spacing-md;
+    margin-bottom: $spacing-lg;
+    color: $color-text-dark;
+    font-size: $font-size-xs;
+
+    a {
+      color: $color-text-secondary;
+      transition: color $duration-fast ease;
+
+      @include hover.hover-underline(1px, $duration-fast, $ease-out-smooth);
+
+      &:hover,
+      &:focus-visible {
+        color: $color-accent;
+        outline: none;
+      }
+    }
   }
 
   &__missions {

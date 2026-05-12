@@ -11,20 +11,24 @@
   <ng-container *ngIf="article as article">
     <a class="article__back mono" routerLink="/blog" #articleIntro>{{ 'blog.back_to_articles' | translate }}</a>
 
+    <p class="article__language-notice mono" *ngIf="currentLang === 'en'" #articleIntro>
+      {{ 'blog.lang_notice' | translate }}
+    </p>
+
     <figure class="article__cover" *ngIf="article.coverImage">
-      <img [src]="article.coverImage.src" [alt]="text(article.coverImage.alt)" loading="lazy" />
+      <img [src]="article.coverImage.src" [alt]="article.coverImage.alt" loading="lazy" />
     </figure>
 
     <header class="article__header">
       <p class="article__meta mono" #articleIntro>
         <span>{{ ('blog.category.' + article.category) | translate }}</span>
         <span aria-hidden="true">·</span>
-        <time [attr.datetime]="article.publishedAt">{{ formatDate(article.publishedAt) }}</time>
+        <time [attr.datetime]="article.date">{{ formatDate(article.date) }}</time>
         <span aria-hidden="true">·</span>
-        <span>{{ 'blog.read_time' | translate: { minutes: article.readTimeMinutes } }}</span>
+        <span>{{ 'blog.read_time' | translate: { minutes: article.readingTime } }}</span>
       </p>
 
-      <h1 #articleIntro>{{ text(article.title) }}</h1>
+      <h1 #articleIntro>{{ article.title }}</h1>
 
       <ul class="article__tags" #articleIntro>
         <li class="mono" *ngFor="let tag of article.tags">{{ tag }}</li>
@@ -36,11 +40,11 @@
     <section class="article__share" [attr.aria-label]="'blog.share' | translate">
       <h2>{{ 'blog.share' | translate }}</h2>
       <div>
-        <button class="mono" type="button" (click)="copyLink()">
+        <button class="mono btn-hover" type="button" cursorHover (click)="copyLink()">
           {{ (copied ? 'blog.copied' : 'blog.copy_link') | translate }}
         </button>
-        <a class="mono" [href]="getShareUrl('twitter')" target="_blank" rel="noopener noreferrer">X</a>
-        <a class="mono" [href]="getShareUrl('linkedin')" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a class="mono btn-hover" cursorHover [href]="getShareUrl('twitter')" target="_blank" rel="noopener noreferrer">X (Twitter)</a>
+        <a class="mono btn-hover" cursorHover [href]="getShareUrl('linkedin')" target="_blank" rel="noopener noreferrer">LinkedIn</a>
       </div>
     </section>
 
@@ -52,9 +56,9 @@
             {{ ('blog.category.' + related.category) | translate }}
           </p>
           <h3>
-            <a [routerLink]="['/blog', related.id]">{{ text(related.title) }}</a>
+            <a [routerLink]="['/blog', related.slug]">{{ related.title }}</a>
           </h3>
-          <p>{{ text(related.summary) }}</p>
+          <p>{{ related.excerpt }}</p>
         </article>
       </div>
     </section>

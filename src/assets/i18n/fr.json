@@ -45,7 +45,7 @@
             "available": "Disponible pour opportunités",
             "unavailable": "Indisponible actuellement"
         },
-        "location": "Québec, Canada",
+        "location": "Montréal, Canada",
         "cta": "Voir mes projets"
     },
     "experience": {
@@ -165,6 +165,7 @@
         "copy_link": "Copier le lien",
         "copied": "Lien copié",
         "clear_filters": "Effacer les filtres",
+        "lang_notice": "Article disponible en français.",
         "filter": {
             "all": "Tous"
         },
@@ -185,12 +186,16 @@
         "eyebrow": "// 06. contact",
         "title": "Et pour finir...",
         "subtitle": "Travaillons ensemble",
-        "description": "Vous avez un projet web, une mission Fullstack ou une opportunité à discuter ? Je serais ravi d'échanger et de voir comment je peux contribuer avec sérieux, clarté et soin.",
+        "description": "Discutons architecture, APIs, cloud, systèmes distribués… ou simplement d’un bon projet à construire.",
         "cta": "Dire bonjour",
+        "email_subject": "Opportunité professionnelle",
         "copy_email": "Copier l'email",
         "copied": "✓ Copié !",
         "email_label": "Envoyer un email à {{ email }}",
         "social_label": "Voir mon profil {{ label }}",
+        "location": {
+            "value": "Montréal, Canada"
+        },
         "availability": {
             "open": "Disponible pour opportunités",
             "closed": "Indisponible actuellement"
@@ -202,11 +207,10 @@
         }
     },
     "footer": {
-        "credit": "Conçu et développé par AbduKader",
-        "repo": "Voir le repo",
+        "credit": "Conçu et développé par Abdou Kader SECK",
         "built_with": "Construit avec",
         "built_with_tech": "Angular & SCSS",
-        "easter_egg": "> made with heart and coffee"
+        "easter_egg": "> made with heart and bisaab"
     },
     "sections": {
         "about": {

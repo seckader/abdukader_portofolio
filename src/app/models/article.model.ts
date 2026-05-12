@@ -1,27 +1,23 @@
 export type ArticleCategory = 'tutorial' | 'opinion' | 'case-study' | 'tips' | 'other';
 
-export type ArticleStatus = 'published' | 'draft';
-
-export interface LocalizedText {
-  fr: string;
-  en: string;
-}
-
 export interface ArticleCoverImage {
   src: string;
-  alt: LocalizedText;
+  alt: string;
 }
 
-export interface Article {
-  id: string;
-  title: LocalizedText;
-  summary: LocalizedText;
-  content: LocalizedText;
-  publishedAt: string;
-  readTimeMinutes: number;
+export interface ArticleMeta {
+  slug: string;
+  title: string;
+  excerpt: string;
+  date: string;
+  updatedAt?: string;
+  readingTime: number;
   category: ArticleCategory;
   tags: string[];
-  coverImage?: ArticleCoverImage;
-  status: ArticleStatus;
+  coverImage: ArticleCoverImage | null;
   featured: boolean;
+}
+
+export interface Article extends ArticleMeta {
+  content: string;
 }

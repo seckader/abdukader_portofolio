@@ -20,7 +20,6 @@ import { AnimationService } from '../../../services/animation';
 })
 export class FooterComponent implements AfterViewInit, OnDestroy {
   currentYear = new Date().getFullYear();
-  repoUrl = 'https://github.com/';
 
   @ViewChild('footer') footerRef!: ElementRef<HTMLElement>;
 

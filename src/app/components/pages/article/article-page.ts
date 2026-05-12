@@ -10,7 +10,6 @@ import {
   OnDestroy,
   OnInit,
   PLATFORM_ID,
-  SecurityContext,
   ViewChild,
   ViewChildren,
   QueryList,
@@ -19,8 +18,16 @@ import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { LangChangeEvent, TranslateModule, TranslateService } from '@ngx-translate/core';
+import { Marked, Renderer } from 'marked';
+import Prism from 'prismjs';
+import 'prismjs/components/prism-bash';
+import 'prismjs/components/prism-css';
+import 'prismjs/components/prism-javascript';
+import 'prismjs/components/prism-markup';
+import 'prismjs/components/prism-sql';
+import 'prismjs/components/prism-typescript';
 import { Subject, switchMap, takeUntil } from 'rxjs';
-import { Article, LocalizedText } from '../../../models/article.model';
+import { Article, ArticleMeta } from '../../../models/article.model';
 import { AnimationService } from '../../../services/animation';
 import { BlogService } from '../../../services/blog.service';
 
@@ -34,7 +41,7 @@ import { BlogService } from '../../../services/blog.service';
 })
 export class ArticlePageComponent implements OnInit, AfterViewInit, OnDestroy {
   article?: Article;
-  relatedArticles: Article[] = [];
+  relatedArticles: ArticleMeta[] = [];
   safeContent?: SafeHtml;
   currentLang: 'fr' | 'en' = 'fr';
   readingProgress = 0;
@@ -46,6 +53,7 @@ export class ArticlePageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
   private scrollListener?: () => void;
+  private markdownParser = this.createMarkdownParser();
   private isBrowser: boolean;
 
   constructor(
@@ -82,7 +90,7 @@ export class ArticlePageComponent implements OnInit, AfterViewInit, OnDestroy {
         this.updateContent();
         this.setMeta(article);
 
-        this.blogService.getRelatedArticles(article.id, 3)
+        this.blogService.getRelatedArticles(article.slug, 3)
           .pipe(takeUntil(this.destroy$))
           .subscribe(related => {
             this.relatedArticles = related;
@@ -135,12 +143,8 @@ export class ArticlePageComponent implements OnInit, AfterViewInit, OnDestroy {
     this.updateReadingProgress();
   }
 
-  text(value: LocalizedText): string {
-    return value[this.currentLang];
-  }
-
   formatDate(date: string): string {
-    return new Intl.DateTimeFormat(this.currentLang === 'fr' ? 'fr-CA' : 'en-CA', {
+    return new Intl.DateTimeFormat('fr-CA', {
       day: '2-digit',
       month: 'long',
       year: 'numeric',
@@ -149,7 +153,7 @@ export class ArticlePageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getShareUrl(network: 'twitter' | 'linkedin'): string {
     const url = encodeURIComponent(this.getCurrentUrl());
-    const title = encodeURIComponent(this.article ? this.text(this.article.title) : '');
+    const title = encodeURIComponent(this.article?.title ?? '');
 
     if (network === 'twitter') {
       return `https://twitter.com/intent/tweet?url=${url}&text=${title}`;
@@ -173,8 +177,8 @@ export class ArticlePageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private updateContent(): void {
     if (!this.article) return;
-    const sanitizedContent = this.sanitizer.sanitize(SecurityContext.HTML, this.text(this.article.content)) || '';
-    this.safeContent = this.sanitizer.bypassSecurityTrustHtml(sanitizedContent);
+    const renderedContent = this.markdownParser.parse(this.article.content, { async: false }) as string;
+    this.safeContent = this.sanitizer.bypassSecurityTrustHtml(renderedContent);
   }
 
   private updateReadingProgress(): void {
@@ -185,8 +189,8 @@ export class ArticlePageComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private setMeta(article: Article): void {
-    const articleTitle = this.text(article.title);
-    const description = this.text(article.summary);
+    const articleTitle = article.title;
+    const description = article.excerpt;
     const pageTitle = `${articleTitle} | Blog`;
 
     this.title.setTitle(pageTitle);
@@ -198,7 +202,7 @@ export class ArticlePageComponent implements OnInit, AfterViewInit, OnDestroy {
       this.meta.updateTag({ property: 'og:image', content: article.coverImage.src });
     }
 
-    this.setCanonical(`/blog/${article.id}`);
+    this.setCanonical(`/blog/${article.slug}`);
   }
 
   private setCanonical(path: string): void {
@@ -212,12 +216,54 @@ export class ArticlePageComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private getCurrentUrl(): string {
-    if (!this.isBrowser) return this.article ? `https://example.com/blog/${this.article.id}` : 'https://example.com/blog';
+    if (!this.isBrowser) return this.article ? `https://example.com/blog/${this.article.slug}` : 'https://example.com/blog';
     return window.location.href;
   }
 
   private getActiveLang(): 'fr' | 'en' {
     return this.translateService.currentLang === 'en' ? 'en' : 'fr';
+  }
+
+  private createMarkdownParser(): Marked {
+    const renderer = new Renderer();
+
+    renderer.code = ({ text, lang }) => {
+      const language = this.normalizeCodeLanguage(lang);
+      const grammar = Prism.languages[language];
+      const highlightedCode = grammar
+        ? Prism.highlight(text, grammar, language)
+        : this.escapeHtml(text);
+
+      return `<pre class="language-${language}"><code class="language-${language}">${highlightedCode}</code></pre>`;
+    };
+
+    return new Marked({
+      gfm: true,
+      breaks: false,
+      renderer,
+    });
+  }
+
+  private normalizeCodeLanguage(language?: string): string {
+    const normalized = (language || 'text').trim().toLowerCase();
+    const aliases: Record<string, string> = {
+      html: 'markup',
+      js: 'javascript',
+      sh: 'bash',
+      shell: 'bash',
+      ts: 'typescript',
+    };
+
+    return aliases[normalized] || normalized;
+  }
+
+  private escapeHtml(value: string): string {
+    return value
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
   }
 
   private animateArticle(): void {

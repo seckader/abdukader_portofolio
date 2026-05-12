@@ -1,11 +1,16 @@
-import { ChangeDetectionStrategy, Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
-
-interface SocialLink {
-  label: string;
-  href: string;
-  icon: 'github' | 'linkedin' | 'twitter' | 'cv';
-  download?: boolean;
-}
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
+import { ContactSocialLink } from '../../../../models/contact.model';
+import { ContactService } from '../../../../services/contact.service';
 
 @Component({
   selector: 'app-social-links',
@@ -14,15 +19,31 @@ interface SocialLink {
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
 })
-export class SocialLinksComponent {
+export class SocialLinksComponent implements OnInit, OnDestroy {
   @ViewChildren('socialLink') private socialLinkRefs!: QueryList<ElementRef<HTMLElement>>;
 
-  links: SocialLink[] = [
-    { label: 'GitHub', href: 'https://github.com/seckader', icon: 'github' },
-    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/abdukader', icon: 'linkedin' },
-    { label: 'X', href: 'https://x.com/Abdu_Kadeer', icon: 'twitter' },
-    { label: 'CV', href: '/assets/cv/abdukader-cv.pdf', icon: 'cv', download: true },
-  ];
+  links: ContactSocialLink[] = [];
+
+  private destroy$ = new Subject<void>();
+
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private contactService: ContactService
+  ) {}
+
+  ngOnInit(): void {
+    this.contactService.getContact()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(contact => {
+        this.links = contact.socialLinks;
+        this.cdr.markForCheck();
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   getLinkElements(): HTMLElement[] {
     return this.socialLinkRefs?.map(ref => ref.nativeElement) ?? [];
