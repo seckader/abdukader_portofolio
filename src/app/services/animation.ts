@@ -1,8 +1,12 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+import { gsap } from 'gsap';
+
+import type { ScrollTrigger as STType } from 'gsap/ScrollTrigger';
+import type { ScrollToPlugin as SPType } from 'gsap/ScrollToPlugin';
+
+let ScrollTrigger: typeof STType;
+let ScrollToPlugin: typeof SPType;
 
 @Injectable({
   providedIn: 'root',
@@ -15,31 +19,32 @@ export class AnimationService {
   };
 
   private isBrowser: boolean;
+  private pluginsReady = false;
+  private pluginsReadyPromise!: Promise<void>;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {
     this.isBrowser = isPlatformBrowser(platformId);
+
     if (this.isBrowser) {
-      this.initGSAP();
+      // GSAP core configuré immédiatement — disponible pour le preloader
+      gsap.config({ nullTargetWarn: false, trialWarn: false });
+      gsap.defaults({ ease: 'power3.out', duration: 0.6 });
+
+      // Plugins chargés en parallèle, sans bloquer
+      this.pluginsReadyPromise = this.loadPlugins();
     }
   }
 
-  // ============================================
-  // INIT
-  // ============================================
-  private initGSAP(): void {
+  private async loadPlugins(): Promise<void> {
+    const [stModule, spModule] = await Promise.all([
+      import('gsap/ScrollTrigger'),
+      import('gsap/ScrollToPlugin'),
+    ]);
+
+    ScrollTrigger = stModule.ScrollTrigger;
+    ScrollToPlugin = spModule.ScrollToPlugin;
     gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
-
-    // Config globale GSAP
-    gsap.config({
-      nullTargetWarn: false,
-      trialWarn: false
-    });
-
-    // Defaults globaux
-    gsap.defaults({
-      ease: 'power3.out',
-      duration: 0.6
-    });
+    this.pluginsReady = true;
   }
 
   // ============================================
@@ -166,75 +171,90 @@ export class AnimationService {
     );
   }
 
+  private withPlugins(fn: () => void): void {
+    if (this.pluginsReady) {
+      fn();
+      return;
+    }
+    this.pluginsReadyPromise.then(() => fn());
+  }
+
   animateAboutOnScroll(section: Element): void {
     if (!this.isBrowser) return;
 
-    gsap.fromTo(section,
-      { filter: 'brightness(0.92)' },
-      {
-        filter: 'brightness(1)',
-        duration: 0.5,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: section,
-          start: 'top 70%',
-          toggleActions: 'play none none none'
+    this.withPlugins(() => {
+      gsap.fromTo(section,
+        { filter: 'brightness(0.92)' },
+        {
+          filter: 'brightness(1)',
+          duration: 0.5,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top 70%',
+            toggleActions: 'play none none none'
+          }
         }
-      }
-    );
+      );
+    });
+
+
   }
 
   animateExperienceSection(headerEls: Element[], tabEls: Element[], panelEl: Element): void {
     if (!this.isBrowser) return;
-    if (this.isReducedMotion()) {
-      gsap.set([...headerEls, ...tabEls, panelEl], { opacity: 1, clearProps: 'transform' });
-      return;
-    }
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: panelEl,
-        ...this.defaultScrollConfig
+    this.withPlugins(() => {
+      if (this.isReducedMotion()) {
+        gsap.set([...headerEls, ...tabEls, panelEl], { opacity: 1, clearProps: 'transform' });
+        return;
       }
-    });
 
-    if (headerEls.length) {
-      tl.fromTo(headerEls,
-        { opacity: 0, x: -30 },
-        {
-          opacity: 1,
-          x: 0,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: 'power2.out'
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: panelEl,
+          ...this.defaultScrollConfig
         }
-      );
-    }
+      });
 
-    if (tabEls.length) {
-      tl.fromTo(tabEls,
-        { opacity: 0, x: -24 },
+      if (headerEls.length) {
+        tl.fromTo(headerEls,
+          { opacity: 0, x: -30 },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 0.6,
+            stagger: 0.1,
+            ease: 'power2.out'
+          }
+        );
+      }
+
+      if (tabEls.length) {
+        tl.fromTo(tabEls,
+          { opacity: 0, x: -24 },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 0.55,
+            stagger: 0.08,
+            ease: 'power3.out'
+          },
+          '-=0.25'
+        );
+      }
+
+      tl.fromTo(panelEl,
+        { opacity: 0, y: 15 },
         {
           opacity: 1,
-          x: 0,
-          duration: 0.55,
-          stagger: 0.08,
-          ease: 'power3.out'
+          y: 0,
+          duration: 0.5,
+          ease: 'power2.out'
         },
-        '-=0.25'
+        '-=0.2'
       );
-    }
-
-    tl.fromTo(panelEl,
-      { opacity: 0, y: 15 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.5,
-        ease: 'power2.out'
-      },
-      '-=0.2'
-    );
+    });
   }
 
   animateExperiencePanel(panelEl: Element): void {
@@ -262,62 +282,65 @@ export class AnimationService {
     triggerEl: Element
   ): void {
     if (!this.isBrowser) return;
-    if (this.isReducedMotion()) {
-      gsap.set([...headerEls, ...filterEls, ...cardEls], { opacity: 1, clearProps: 'transform' });
-      return;
-    }
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: triggerEl,
-        ...this.defaultScrollConfig
+    this.withPlugins(() => {
+      if (this.isReducedMotion()) {
+        gsap.set([...headerEls, ...filterEls, ...cardEls], { opacity: 1, clearProps: 'transform' });
+        return;
+      }
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: triggerEl,
+          ...this.defaultScrollConfig
+        }
+      });
+
+      if (headerEls.length) {
+        tl.fromTo(headerEls,
+          { opacity: 0, x: -30 },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 0.6,
+            stagger: 0.08,
+            ease: 'power2.out'
+          }
+        );
+      }
+
+      if (filterEls.length) {
+        tl.fromTo(filterEls,
+          { opacity: 0, y: -16 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            stagger: 0.07,
+            ease: 'power3.out'
+          },
+          '-=0.2'
+        );
+      }
+
+      if (cardEls.length) {
+        tl.fromTo(cardEls,
+          { opacity: 0, scale: 0.9 },
+          {
+            opacity: 1,
+            scale: 1,
+            duration: 0.55,
+            stagger: {
+              each: Math.min(0.06, 1.5 / cardEls.length),
+              from: 'start',
+              grid: 'auto'
+            },
+            ease: 'back.out(1.2)'
+          },
+          '-=0.15'
+        );
       }
     });
-
-    if (headerEls.length) {
-      tl.fromTo(headerEls,
-        { opacity: 0, x: -30 },
-        {
-          opacity: 1,
-          x: 0,
-          duration: 0.6,
-          stagger: 0.08,
-          ease: 'power2.out'
-        }
-      );
-    }
-
-    if (filterEls.length) {
-      tl.fromTo(filterEls,
-        { opacity: 0, y: -16 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.5,
-          stagger: 0.07,
-          ease: 'power3.out'
-        },
-        '-=0.2'
-      );
-    }
-
-    if (cardEls.length) {
-      tl.fromTo(cardEls,
-        { opacity: 0, scale: 0.9 },
-        {
-          opacity: 1,
-          scale: 1,
-          duration: 0.55,
-          stagger: {
-            each: Math.min(0.06, 1.5 / cardEls.length),
-            from: 'start',
-            grid: 'auto'
-          },
-          ease: 'back.out(1.2)'
-        },
-        '-=0.15'
-      );
-    }
   }
 
   animateSkillsFilterOut(gridEl: Element, onComplete: () => void): void {
@@ -374,52 +397,37 @@ export class AnimationService {
     moreButtonEl?: Element
   ): void {
     if (!this.isBrowser) return;
-    if (this.isReducedMotion()) {
-      gsap.set([...headerEls, ...featuredEls, ...secondaryEls, moreButtonEl].filter(Boolean), { opacity: 1, clearProps: 'transform' });
-      return;
-    }
 
-    gsap.timeline({
-      scrollTrigger: {
-        trigger: triggerEl,
-        ...this.defaultScrollConfig
+    this.withPlugins(() => {
+      if (this.isReducedMotion()) {
+        gsap.set([...headerEls, ...featuredEls, ...secondaryEls, moreButtonEl].filter(Boolean), { opacity: 1, clearProps: 'transform' });
+        return;
       }
-    })
-    .fromTo(headerEls,
-      { opacity: 0, x: -30 },
-      {
-        opacity: 1,
-        x: 0,
-        duration: 0.6,
-        stagger: 0.08,
-        ease: 'power2.out'
-      }
-    );
 
-    featuredEls.forEach((featuredEl, index) => {
-      gsap.fromTo(featuredEl,
-        { opacity: 0, y: 40 },
+      gsap.timeline({
+        scrollTrigger: {
+          trigger: triggerEl,
+          ...this.defaultScrollConfig
+        }
+      })
+      .fromTo(headerEls,
+        { opacity: 0, x: -30 },
         {
           opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: featuredEl,
-            ...this.defaultScrollConfig
-          }
+          x: 0,
+          duration: 0.6,
+          stagger: 0.08,
+          ease: 'power2.out'
         }
       );
 
-      const mediaEl = featuredEl.querySelector('.featured-card__media');
-      if (mediaEl) {
-        gsap.fromTo(mediaEl,
-          { opacity: 0, x: index % 2 === 0 ? 30 : -30 },
+      featuredEls.forEach((featuredEl, index) => {
+        gsap.fromTo(featuredEl,
+          { opacity: 0, y: 40 },
           {
             opacity: 1,
-            x: 0,
-            duration: 0.7,
-            delay: 0.2,
+            y: 0,
+            duration: 0.8,
             ease: 'power3.out',
             scrollTrigger: {
               trigger: featuredEl,
@@ -427,47 +435,66 @@ export class AnimationService {
             }
           }
         );
+
+        const mediaEl = featuredEl.querySelector('.featured-card__media');
+        if (mediaEl) {
+          gsap.fromTo(mediaEl,
+            { opacity: 0, x: index % 2 === 0 ? 30 : -30 },
+            {
+              opacity: 1,
+              x: 0,
+              duration: 0.7,
+              delay: 0.2,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: featuredEl,
+                ...this.defaultScrollConfig
+              }
+            }
+          );
+        }
+      });
+
+      if (secondaryEls.length) {
+        gsap.fromTo(secondaryEls,
+          { opacity: 0, y: 28 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.55,
+            stagger: {
+              each: 0.07,
+              from: 'start',
+              grid: 'auto'
+            },
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: secondaryEls[0],
+              ...this.defaultScrollConfig,
+              start: 'top 90%'
+            }
+          }
+        );
+      }
+
+      if (moreButtonEl) {
+        gsap.fromTo(moreButtonEl,
+          { opacity: 0 },
+          {
+            opacity: 1,
+            duration: 0.35,
+            delay: 0.2,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: moreButtonEl,
+              ...this.defaultScrollConfig,
+              start: 'top 95%'
+            }
+          }
+        );
       }
     });
 
-    if (secondaryEls.length) {
-      gsap.fromTo(secondaryEls,
-        { opacity: 0, y: 28 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.55,
-          stagger: {
-            each: 0.07,
-            from: 'start',
-            grid: 'auto'
-          },
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: secondaryEls[0],
-            ...this.defaultScrollConfig,
-            start: 'top 90%'
-          }
-        }
-      );
-    }
-
-    if (moreButtonEl) {
-      gsap.fromTo(moreButtonEl,
-        { opacity: 0 },
-        {
-          opacity: 1,
-          duration: 0.35,
-          delay: 0.2,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: moreButtonEl,
-            ...this.defaultScrollConfig,
-            start: 'top 95%'
-          }
-        }
-      );
-    }
   }
 
   animateProjectsGridOut(gridEl: Element, onComplete: () => void): void {
@@ -518,92 +545,98 @@ export class AnimationService {
 
   animateAboutSection(titleEls: Element[], bioEls: Element[], metaEls: Element[], triggerEl: Element): void {
     if (!this.isBrowser) return;
-    const targets = [...titleEls, ...bioEls, ...metaEls];
 
-    if (this.isReducedMotion()) {
-      gsap.set(targets, { opacity: 1, clearProps: 'transform' });
-      return;
-    }
+    this.withPlugins(() => {
+      const targets = [...titleEls, ...bioEls, ...metaEls];
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: triggerEl,
-        ...this.defaultScrollConfig,
+      if (this.isReducedMotion()) {
+        gsap.set(targets, { opacity: 1, clearProps: 'transform' });
+        return;
+      }
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: triggerEl,
+          ...this.defaultScrollConfig,
+        }
+      });
+
+      if (titleEls.length) {
+        tl.fromTo(titleEls,
+          { opacity: 0, x: -30 },
+          { opacity: 1, x: 0, duration: 0.6, stagger: 0.08, ease: 'power2.out' }
+        );
+      }
+
+      if (bioEls.length) {
+        tl.fromTo(bioEls,
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.5, stagger: 0.15, ease: 'power2.out' },
+          '-=0.1'
+        );
+      }
+
+      if (metaEls.length) {
+        tl.fromTo(metaEls,
+          { opacity: 0, y: 18 },
+          { opacity: 1, y: 0, duration: 0.45, stagger: 0.08, ease: 'power2.out' },
+          '+=0.05'
+        );
       }
     });
-
-    if (titleEls.length) {
-      tl.fromTo(titleEls,
-        { opacity: 0, x: -30 },
-        { opacity: 1, x: 0, duration: 0.6, stagger: 0.08, ease: 'power2.out' }
-      );
-    }
-
-    if (bioEls.length) {
-      tl.fromTo(bioEls,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.5, stagger: 0.15, ease: 'power2.out' },
-        '-=0.1'
-      );
-    }
-
-    if (metaEls.length) {
-      tl.fromTo(metaEls,
-        { opacity: 0, y: 18 },
-        { opacity: 1, y: 0, duration: 0.45, stagger: 0.08, ease: 'power2.out' },
-        '+=0.05'
-      );
-    }
   }
 
   animateBlogSection(headerEls: Element[], cardEls: Element[], triggerEl: Element, ctaEl?: Element): void {
     if (!this.isBrowser) return;
-    if (this.isReducedMotion()) {
-      gsap.set([...headerEls, ...cardEls, ctaEl].filter(Boolean), { opacity: 1, clearProps: 'transform' });
-      return;
-    }
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: triggerEl,
-        ...this.defaultScrollConfig
+    this.withPlugins(() => {
+      if (this.isReducedMotion()) {
+        gsap.set([...headerEls, ...cardEls, ctaEl].filter(Boolean), { opacity: 1, clearProps: 'transform' });
+        return;
+      }
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: triggerEl,
+          ...this.defaultScrollConfig
+        }
+      });
+
+      if (headerEls.length) {
+        tl.fromTo(headerEls,
+          { opacity: 0, x: -30 },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 0.6,
+            stagger: 0.08,
+            ease: 'power3.out'
+          }
+        );
+      }
+
+      if (cardEls.length) {
+        tl.fromTo(cardEls,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.55,
+            stagger: 0.12,
+            ease: 'power2.out'
+          },
+          '-=0.18'
+        );
+      }
+
+      if (ctaEl) {
+        tl.fromTo(ctaEl,
+          { opacity: 0 },
+          { opacity: 1, duration: 0.35, ease: 'power2.out' },
+          '+=0.05'
+        );
       }
     });
-
-    if (headerEls.length) {
-      tl.fromTo(headerEls,
-        { opacity: 0, x: -30 },
-        {
-          opacity: 1,
-          x: 0,
-          duration: 0.6,
-          stagger: 0.08,
-          ease: 'power3.out'
-        }
-      );
-    }
-
-    if (cardEls.length) {
-      tl.fromTo(cardEls,
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.55,
-          stagger: 0.12,
-          ease: 'power2.out'
-        },
-        '-=0.18'
-      );
-    }
-
-    if (ctaEl) {
-      tl.fromTo(ctaEl,
-        { opacity: 0 },
-        { opacity: 1, duration: 0.35, ease: 'power2.out' },
-        '+=0.05'
-      );
-    }
   }
 
   animateBlogPageIn(cardEls: Element[]): void {
@@ -721,80 +754,86 @@ export class AnimationService {
     triggerEl: Element
   ): void {
     if (!this.isBrowser) return;
-    if (this.isReducedMotion()) {
-      gsap.set([...introEls, ...detailEls, ...socialEls], { opacity: 1, clearProps: 'transform' });
-      return;
-    }
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: triggerEl,
-        ...this.defaultScrollConfig
+    this.withPlugins(() => {
+      if (this.isReducedMotion()) {
+        gsap.set([...introEls, ...detailEls, ...socialEls], { opacity: 1, clearProps: 'transform' });
+        return;
+      }
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: triggerEl,
+          ...this.defaultScrollConfig
+        }
+      });
+
+      if (introEls.length) {
+        tl.fromTo(introEls,
+          { opacity: 0, y: 28 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.65,
+            stagger: 0.1,
+            ease: 'power3.out'
+          }
+        );
+      }
+
+      if (detailEls.length) {
+        tl.fromTo(detailEls,
+          { opacity: 0, y: 24 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.55,
+            stagger: 0.08,
+            ease: 'power3.out'
+          },
+          '-=0.18'
+        );
+      }
+
+      if (socialEls.length) {
+        tl.fromTo(socialEls,
+          { opacity: 0, y: 18 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.45,
+            stagger: 0.07,
+            ease: 'power2.out'
+          },
+          '-=0.2'
+        );
       }
     });
-
-    if (introEls.length) {
-      tl.fromTo(introEls,
-        { opacity: 0, y: 28 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.65,
-          stagger: 0.1,
-          ease: 'power3.out'
-        }
-      );
-    }
-
-    if (detailEls.length) {
-      tl.fromTo(detailEls,
-        { opacity: 0, y: 24 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.55,
-          stagger: 0.08,
-          ease: 'power3.out'
-        },
-        '-=0.18'
-      );
-    }
-
-    if (socialEls.length) {
-      tl.fromTo(socialEls,
-        { opacity: 0, y: 18 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.45,
-          stagger: 0.07,
-          ease: 'power2.out'
-        },
-        '-=0.2'
-      );
-    }
   }
 
   animateFooterIn(footerEl: Element): void {
     if (!this.isBrowser) return;
-    if (this.isReducedMotion()) {
-      gsap.set(footerEl, { opacity: 1, clearProps: 'transform' });
-      return;
-    }
 
-    gsap.fromTo(footerEl,
-      { opacity: 0 },
-      {
-        opacity: 1,
-        duration: 0.55,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: footerEl,
-          ...this.defaultScrollConfig,
-          start: 'top 95%'
-        }
+    this.withPlugins(() => {
+      if (this.isReducedMotion()) {
+        gsap.set(footerEl, { opacity: 1, clearProps: 'transform' });
+        return;
       }
-    );
+
+      gsap.fromTo(footerEl,
+        { opacity: 0 },
+        {
+          opacity: 1,
+          duration: 0.55,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: footerEl,
+            ...this.defaultScrollConfig,
+            start: 'top 95%'
+          }
+        }
+      );
+    });
   }
 
   // ============================================
@@ -803,42 +842,48 @@ export class AnimationService {
   animateOnScroll(element: Element, options?: gsap.TweenVars): void {
     if (!this.isBrowser) return;
 
-    gsap.fromTo(element,
-      { opacity: 0, y: 40 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.7,
-        ease: 'power3.out',
-        ...options,
-        scrollTrigger: {
-          trigger: element,
-          start: 'top 85%',
-          toggleActions: 'play none none none'
+    this.withPlugins(() => {
+      gsap.fromTo(element,
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          ease: 'power3.out',
+          ...options,
+          scrollTrigger: {
+            trigger: element,
+            start: 'top 85%',
+            toggleActions: 'play none none none'
+          }
         }
-      }
-    );
+      );
+    });
+
+
   }
 
   animateStaggerOnScroll(elements: Element[], options?: gsap.TweenVars): void {
     if (!this.isBrowser) return;
 
-    gsap.fromTo(elements,
-      { opacity: 0, y: 40 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-        stagger: 0.1,
-        ease: 'power3.out',
-        ...options,
-        scrollTrigger: {
-          trigger: elements[0],
-          start: 'top 85%',
-          toggleActions: 'play none none none'
+    this.withPlugins(() => {
+      gsap.fromTo(elements,
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          stagger: 0.1,
+          ease: 'power3.out',
+          ...options,
+          scrollTrigger: {
+            trigger: elements[0],
+            start: 'top 85%',
+            toggleActions: 'play none none none'
+          }
         }
-      }
-    );
+      );
+    });
   }
 
   // ============================================
@@ -859,7 +904,7 @@ export class AnimationService {
   // ============================================
   killAll(): void {
     if (!this.isBrowser) return;
-    ScrollTrigger.getAll().forEach(t => t.kill());
+    ScrollTrigger.getAll().forEach((t: STType) => t.kill());
     gsap.killTweensOf('*');
   }
 
@@ -867,16 +912,16 @@ export class AnimationService {
     if (!this.isBrowser || !triggers.length) return;
 
     ScrollTrigger.getAll()
-      .filter(trigger => triggers.includes(trigger.vars.trigger as Element))
-      .forEach(trigger => trigger.kill());
+      .filter((trigger: STType) => triggers.includes(trigger.vars.trigger as Element))
+      .forEach((trigger: STType) => trigger.kill());
   }
 
   killTriggersForElement(element: HTMLElement): void {
     if (!this.isBrowser) return;
 
     ScrollTrigger.getAll()
-      .filter(trigger => this.triggerBelongsToElement(trigger.vars.trigger, element))
-      .forEach(trigger => trigger.kill());
+      .filter((trigger: STType) => this.triggerBelongsToElement(trigger.vars.trigger, element))
+      .forEach((trigger: STType) => trigger.kill());
   }
 
   refreshScrollTriggers(): void {
@@ -925,58 +970,64 @@ export class AnimationService {
 
   animateBlogPageSection(rootEl: Element, titleEls: Element[], toolEls: Element[], cardEls: Element[]): void {
     if (!this.isBrowser) return;
-    const targets = [...titleEls, ...toolEls, ...cardEls];
 
-    if (this.isReducedMotion()) {
-      gsap.set(targets, { opacity: 1, clearProps: 'transform' });
-      return;
-    }
+    this.withPlugins(() => {
+      const targets = [...titleEls, ...toolEls, ...cardEls];
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: rootEl,
-        ...this.defaultScrollConfig,
+      if (this.isReducedMotion()) {
+        gsap.set(targets, { opacity: 1, clearProps: 'transform' });
+        return;
+      }
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: rootEl,
+          ...this.defaultScrollConfig,
+        }
+      });
+
+      tl.fromTo(titleEls, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.6, stagger: 0.08, ease: 'power2.out' });
+
+      if (toolEls.length) {
+        tl.fromTo(toolEls, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.45, stagger: 0.06, ease: 'power2.out' }, '-=0.15');
+      }
+
+      if (cardEls.length) {
+        tl.fromTo(cardEls, { opacity: 0, y: 25 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: 'power2.out' }, '-=0.1');
       }
     });
-
-    tl.fromTo(titleEls, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.6, stagger: 0.08, ease: 'power2.out' });
-
-    if (toolEls.length) {
-      tl.fromTo(toolEls, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.45, stagger: 0.06, ease: 'power2.out' }, '-=0.15');
-    }
-
-    if (cardEls.length) {
-      tl.fromTo(cardEls, { opacity: 0, y: 25 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: 'power2.out' }, '-=0.1');
-    }
   }
 
   animateArticleSections(rootEl: Element, titleEls: Element[], contentEl?: Element): void {
     if (!this.isBrowser) return;
-    const targets = contentEl ? [...titleEls, contentEl] : titleEls;
 
-    if (this.isReducedMotion()) {
-      gsap.set(targets, { opacity: 1, clearProps: 'transform' });
-      return;
-    }
+    this.withPlugins(() => {
+      const targets = contentEl ? [...titleEls, contentEl] : titleEls;
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: rootEl,
-        ...this.defaultScrollConfig,
+      if (this.isReducedMotion()) {
+        gsap.set(targets, { opacity: 1, clearProps: 'transform' });
+        return;
+      }
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: rootEl,
+          ...this.defaultScrollConfig,
+        }
+      });
+
+      if (titleEls.length) {
+        tl.fromTo(titleEls, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: 'power2.out' });
+      }
+
+      if (contentEl) {
+        tl.fromTo(contentEl, { opacity: 0 }, { opacity: 1, duration: 0.55, ease: 'power2.out' }, '-=0.05');
       }
     });
-
-    if (titleEls.length) {
-      tl.fromTo(titleEls, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: 'power2.out' });
-    }
-
-    if (contentEl) {
-      tl.fromTo(contentEl, { opacity: 0 }, { opacity: 1, duration: 0.55, ease: 'power2.out' }, '-=0.05');
-    }
   }
 
   private triggerBelongsToElement(trigger: unknown, element: HTMLElement): boolean {
     return trigger instanceof Element && (trigger === element || element.contains(trigger));
   }
-  
+
 }

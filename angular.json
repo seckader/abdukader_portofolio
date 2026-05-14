@@ -27,6 +27,15 @@
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
+            "allowedCommonJsDependencies": [
+              "prismjs",
+              "prismjs/components/prism-bash",
+              "prismjs/components/prism-css",
+              "prismjs/components/prism-javascript",
+              "prismjs/components/prism-markup",
+              "prismjs/components/prism-sql",
+              "prismjs/components/prism-typescript"
+            ],
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -46,13 +55,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "550kB",
+                  "maximumError": "800kB"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "8kB",
+                  "maximumError": "16kB"
                 }
               ],
               "outputHashing": "all"

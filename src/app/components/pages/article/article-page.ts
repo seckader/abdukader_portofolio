@@ -19,13 +19,6 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { LangChangeEvent, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Marked, Renderer } from 'marked';
-import Prism from 'prismjs';
-import 'prismjs/components/prism-bash';
-import 'prismjs/components/prism-css';
-import 'prismjs/components/prism-javascript';
-import 'prismjs/components/prism-markup';
-import 'prismjs/components/prism-sql';
-import 'prismjs/components/prism-typescript';
 import { Subject, switchMap, takeUntil } from 'rxjs';
 import { Article, ArticleMeta } from '../../../models/article.model';
 import { AnimationService } from '../../../services/animation';
@@ -56,6 +49,9 @@ export class ArticlePageComponent implements OnInit, AfterViewInit, OnDestroy {
   private markdownParser = this.createMarkdownParser();
   private isBrowser: boolean;
 
+  private prism: any = null;
+  private prismReady: Promise<void> | null = null;
+
   constructor(
     private animationService: AnimationService,
     private blogService: BlogService,
@@ -75,6 +71,10 @@ export class ArticlePageComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {
     this.currentLang = this.getActiveLang();
 
+    if (this.isBrowser) {
+      this.prismReady = this.loadPrism();
+    }
+
     this.route.paramMap
       .pipe(
         switchMap(params => this.blogService.getArticleBySlug(params.get('slug') || '')),
@@ -87,15 +87,23 @@ export class ArticlePageComponent implements OnInit, AfterViewInit, OnDestroy {
         }
 
         this.article = article;
-        this.updateContent();
         this.setMeta(article);
 
-        this.blogService.getRelatedArticles(article.slug, 3)
-          .pipe(takeUntil(this.destroy$))
-          .subscribe(related => {
-            this.relatedArticles = related;
-            this.cdr.markForCheck();
-          });
+        const renderContent = () => {
+          this.updateContent();
+          this.blogService.getRelatedArticles(article.slug, 3)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(related => {
+              this.relatedArticles = related;
+              this.cdr.markForCheck();
+            });
+        };
+
+        if (this.isBrowser && this.prismReady) {
+          this.prismReady.then(renderContent);
+        } else {
+          renderContent();
+        }
       });
 
     this.translateService.onLangChange
@@ -175,6 +183,22 @@ export class ArticlePageComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  private async loadPrism(): Promise<void> {
+    if (this.prism) return; // déjà chargé
+
+    const [prismModule] = await Promise.all([
+      import('prismjs'),
+      import('prismjs/components/prism-bash'),
+      import('prismjs/components/prism-css'),
+      import('prismjs/components/prism-javascript'),
+      import('prismjs/components/prism-markup'),
+      import('prismjs/components/prism-sql'),
+      import('prismjs/components/prism-typescript'),
+    ]);
+
+    this.prism = prismModule.default;
+}
+
   private updateContent(): void {
     if (!this.article) return;
     const renderedContent = this.markdownParser.parse(this.article.content, { async: false }) as string;
@@ -229,19 +253,21 @@ export class ArticlePageComponent implements OnInit, AfterViewInit, OnDestroy {
 
     renderer.code = ({ text, lang }) => {
       const language = this.normalizeCodeLanguage(lang);
-      const grammar = Prism.languages[language];
-      const highlightedCode = grammar
-        ? Prism.highlight(text, grammar, language)
-        : this.escapeHtml(text);
 
-      return `<pre class="language-${language}"><code class="language-${language}">${highlightedCode}</code></pre>`;
+      // PrismJS peut ne pas encore être chargé lors du premier rendu SSR
+      // fallback propre sans highlight
+      if (this.prism) {
+        const grammar = this.prism.languages[language];
+        const highlightedCode = grammar
+          ? this.prism.highlight(text, grammar, language)
+          : this.escapeHtml(text);
+        return `<pre class="language-${language}"><code class="language-${language}">${highlightedCode}</code></pre>`;
+      }
+
+      return `<pre class="language-${language}"><code class="language-${language}">${this.escapeHtml(text)}</code></pre>`;
     };
 
-    return new Marked({
-      gfm: true,
-      breaks: false,
-      renderer,
-    });
+    return new Marked({ gfm: true, breaks: false, renderer });
   }
 
   private normalizeCodeLanguage(language?: string): string {

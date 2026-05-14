@@ -76,7 +76,10 @@
     font-size: $font-size-sm;
     letter-spacing: 0.05em;
 
-    .mono { font-family: $font-mono; }
+    .mono {
+      font-family: $font-mono;
+      color: $color-mono;
+    }
     .accent { color: $color-accent; }
   }
 
