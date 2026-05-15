@@ -11,6 +11,23 @@
 npm-debug.log
 yarn-error.log
 
+# Environment variables and local secrets
+.env
+.env.*
+!.env.example
+*.local
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+*secret*
+*credentials*
+*service-account*.json
+firebase*.json
+/.codex
+
 # IDEs and editors
 .idea/
 .project
