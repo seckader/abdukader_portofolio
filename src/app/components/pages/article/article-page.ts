@@ -183,9 +183,14 @@ export class ArticlePageComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private async loadPrism(): Promise<void> {
-    if (this.prism) return; // déjà chargé
+    if (this.prism) return;
 
-    const [prismModule] = await Promise.all([
+    const prismModule = await import('prismjs');
+    this.prism = prismModule.default;
+
+    (window as any)['Prism'] = this.prism;
+
+    await Promise.all([
       import('prismjs'),
       import('prismjs/components/prism-bash'),
       import('prismjs/components/prism-css'),
