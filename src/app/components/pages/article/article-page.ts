@@ -14,7 +14,6 @@ import {
   ViewChildren,
   QueryList,
 } from '@angular/core';
-import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { LangChangeEvent, TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -23,6 +22,7 @@ import { Subject, switchMap, takeUntil } from 'rxjs';
 import { Article, ArticleMeta } from '../../../models/article.model';
 import { AnimationService } from '../../../services/animation';
 import { BlogService } from '../../../services/blog.service';
+import { SeoService } from '../../../services/seo.service';
 
 @Component({
   selector: 'app-article-page',
@@ -56,11 +56,10 @@ export class ArticlePageComponent implements OnInit, AfterViewInit, OnDestroy {
     private animationService: AnimationService,
     private blogService: BlogService,
     private cdr: ChangeDetectorRef,
-    private meta: Meta,
     private route: ActivatedRoute,
     private router: Router,
     private sanitizer: DomSanitizer,
-    private title: Title,
+    private seoService: SeoService,
     private translateService: TranslateService,
     @Inject(DOCUMENT) private document: Document,
     @Inject(PLATFORM_ID) platformId: Object
@@ -216,31 +215,40 @@ export class ArticlePageComponent implements OnInit, AfterViewInit, OnDestroy {
     const articleTitle = article.title;
     const description = article.excerpt;
     const pageTitle = `${articleTitle} | Blog`;
+    const image = article.coverImage?.src ?? undefined;
 
-    this.title.setTitle(pageTitle);
-    this.meta.updateTag({ name: 'description', content: description });
-    this.meta.updateTag({ property: 'og:title', content: pageTitle });
-    this.meta.updateTag({ property: 'og:description', content: description });
-
-    if (article.coverImage) {
-      this.meta.updateTag({ property: 'og:image', content: article.coverImage.src });
-    }
-
-    this.setCanonical(`/blog/${article.slug}`);
-  }
-
-  private setCanonical(path: string): void {
-    let link = this.document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
-    if (!link) {
-      link = this.document.createElement('link');
-      link.setAttribute('rel', 'canonical');
-      this.document.head.appendChild(link);
-    }
-    link.setAttribute('href', `https://example.com${path}`);
+    this.seoService.updateMetaTags({
+      title: pageTitle,
+      description,
+      canonicalUrl: `/blog/${article.slug}`,
+      keywords: article.tags,
+      image,
+      type: 'article',
+      publishedTime: article.date,
+      modifiedTime: article.updatedAt,
+      structuredData: {
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: article.title,
+        description: this.truncateText(article.excerpt, 155),
+        datePublished: article.date,
+        dateModified: article.updatedAt ?? article.date,
+        author: {
+          '@type': 'Person',
+          name: 'Abdou Kader SECK',
+        },
+        image: this.seoService.getAbsoluteUrl(image ?? '/assets/images/og-cover.jpg'),
+        mainEntityOfPage: this.seoService.getAbsoluteUrl(`/blog/${article.slug}`),
+      },
+    });
   }
 
   private getCurrentUrl(): string {
-    if (!this.isBrowser) return this.article ? `https://example.com/blog/${this.article.slug}` : 'https://example.com/blog';
+    if (!this.isBrowser) {
+      return this.article
+        ? this.seoService.getAbsoluteUrl(`/blog/${this.article.slug}`)
+        : this.seoService.getAbsoluteUrl('/blog');
+    }
     return window.location.href;
   }
 
@@ -290,6 +298,13 @@ export class ArticlePageComponent implements OnInit, AfterViewInit, OnDestroy {
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#39;');
+  }
+
+  private truncateText(value: string, maxLength: number): string {
+    if (value.length <= maxLength) return value;
+    const trimmed = value.slice(0, maxLength - 1);
+    const lastSpace = trimmed.lastIndexOf(' ');
+    return `${trimmed.slice(0, lastSpace > 80 ? lastSpace : trimmed.length).trim()}…`;
   }
 
   private animateArticle(): void {

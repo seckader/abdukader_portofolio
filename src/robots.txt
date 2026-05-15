@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /assets/blog/
+
+Sitemap: https://mon-domaine.com/sitemap.xml

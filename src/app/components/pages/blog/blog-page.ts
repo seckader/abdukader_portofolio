@@ -1,4 +1,4 @@
-import { CommonModule, DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -13,13 +13,13 @@ import {
   ViewChild,
   ViewChildren,
 } from '@angular/core';
-import { Meta, Title } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { LangChangeEvent, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
 import { ArticleCategory, ArticleMeta } from '../../../models/article.model';
 import { AnimationService } from '../../../services/animation';
 import { BlogService } from '../../../services/blog.service';
+import { SeoService } from '../../../services/seo.service';
 
 type BlogCategoryFilter = ArticleCategory | 'all';
 
@@ -55,10 +55,8 @@ export class BlogPageComponent implements OnInit, AfterViewInit, OnDestroy {
     private animationService: AnimationService,
     private blogService: BlogService,
     private cdr: ChangeDetectorRef,
-    private meta: Meta,
-    private title: Title,
+    private seoService: SeoService,
     private translateService: TranslateService,
-    @Inject(DOCUMENT) private document: Document,
     @Inject(PLATFORM_ID) platformId: Object
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
@@ -176,24 +174,35 @@ export class BlogPageComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private setMeta(): void {
-    const title = this.translateService.instant('blog.meta.title');
-    const description = this.translateService.instant('blog.meta.description');
+    const lang = this.seoService.getActiveLang();
+    const title = lang === 'en' ? 'Blog - Abdou Kader SECK' : 'Blog - Abdou Kader SECK';
+    const description = lang === 'en'
+      ? 'Technical articles and notes about software development, cloud, backend architectures, networking, and modern systems.'
+      : 'Articles et notes techniques autour du développement logiciel, du cloud, des architectures backend, des réseaux et des systèmes modernes.';
 
-    this.title.setTitle(title);
-    this.meta.updateTag({ name: 'description', content: description });
-    this.meta.updateTag({ property: 'og:title', content: title });
-    this.meta.updateTag({ property: 'og:description', content: description });
-    this.setCanonical('/blog');
-  }
-
-  private setCanonical(path: string): void {
-    let link = this.document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
-    if (!link) {
-      link = this.document.createElement('link');
-      link.setAttribute('rel', 'canonical');
-      this.document.head.appendChild(link);
-    }
-    link.setAttribute('href', `https://example.com${path}`);
+    this.seoService.updateMetaTags({
+      title,
+      description,
+      canonicalUrl: '/blog',
+      keywords: [
+        'développement logiciel',
+        'génie logiciel',
+        'développement fullstack',
+        'backend',
+        'cloud computing',
+        'DevOps',
+        'architecture logicielle',
+        'systèmes distribués',
+        'Kafka',
+        'Docker',
+        'Angular',
+        'Spring Boot',
+        'APIs REST',
+        'réseaux',
+        'blog technique'
+      ],
+      type: 'website',
+    });
   }
   private animatePage(): void {
     const rootEl = this.pageRootRef?.nativeElement;
