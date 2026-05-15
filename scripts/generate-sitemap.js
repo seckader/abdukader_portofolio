@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const BASE_URL = 'https://mon-domaine.com';
+const BASE_URL = 'https://abdukader.dev';
 const rootDir = path.resolve(__dirname, '..');
 const blogIndexPath = path.join(rootDir, 'src', 'assets', 'blog', 'index.json');
 const sitemapPath = path.join(rootDir, 'src', 'sitemap.xml');

@@ -3,7 +3,7 @@ import { Inject, Injectable, Renderer2, RendererFactory2 } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 
-export const BASE_URL = 'https://mon-domaine.com';
+export const BASE_URL = 'https://abdukader.dev';
 
 export type SeoLocale = 'fr' | 'en';
 export type OgType = 'website' | 'article' | string;
