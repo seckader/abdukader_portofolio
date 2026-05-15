@@ -27,7 +27,7 @@ export class AnimationService {
 
     if (this.isBrowser) {
       // GSAP core configuré immédiatement — disponible pour le preloader
-      gsap.config({ nullTargetWarn: false, trialWarn: false });
+      gsap.config({ nullTargetWarn: false });
       gsap.defaults({ ease: 'power3.out', duration: 0.6 });
 
       // Plugins chargés en parallèle, sans bloquer
