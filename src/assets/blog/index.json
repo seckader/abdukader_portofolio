@@ -1,5 +1,25 @@
 [
   {
+    "slug": "understanding-network-protocols-the-hidden-language-of-machines",
+    "title": "Les protocoles : le langage secret des machines",
+    "excerpt": "Découvrez comment les protocoles permettent aux machines de communiquer sur Internet. DNS, TCP, TLS, HTTP… plongez dans le fonctionnement réel d’une requête web et comprenez les bases invisibles du réseau moderne.",
+    "date": "2026-05-19",
+    "updatedAt": "2026-05-19",
+    "readingTime": 6,
+    "category": "tutorial",
+    "tags": [
+      "Réseaux",
+      "Protocoles",
+      "HTTP",
+      "TCP/IP"
+    ],
+    "coverImage": {
+      "src": "assets/images/blog/cover_les_protocoles.png",
+      "alt": "Illustration représentant les protocoles réseau et le fonctionnement d’Internet."
+    },
+    "featured": true
+  },
+  {
     "slug": "understanding-redis-speed-up-your-api-with-caching",
     "title": "Comprendre Redis : accélérer son API avec le cache",
     "excerpt": "Découvrez comment Redis permet d’accélérer une API backend grâce au cache. Dans cet article, nous explorons le fonctionnement du pattern Cache-Aside, le TTL, l’invalidation du cache et une implémentation concrète avec Express.",
