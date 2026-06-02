@@ -1,5 +1,26 @@
 [
   {
+    "slug": "codex-as-a-co-developer-the-file-system-that-changes-everything",
+    "title": "Codex comme co-développeur : le système de fichiers qui change tout",
+    "excerpt": "Découvrez comment structurer le contexte de travail d’un agent IA grâce à quelques fichiers simples. Une approche inspirée de l’Agile pour déléguer des tâches à Codex tout en gardant le contrôle de votre projet.",
+    "date": "2026-06-02",
+    "updatedAt": "2026-06-02",
+    "readingTime": 10,
+    "category": "tutorial",
+    "tags": [
+      "AI",
+      "Codex",
+      "Productivité",
+      "Agentic Coding",
+      "Software Engineering"
+    ],
+    "coverImage": {
+      "src": "assets/images/blog/cover_codex.png",
+      "alt": "Schéma illustrant un workflow de développement agentique où Codex agit comme co-développeur en s'appuyant sur des fichiers de contexte."
+    },
+    "featured": true
+  },
+  {
     "slug": "understanding-network-protocols-the-hidden-language-of-machines",
     "title": "Les protocoles : le langage secret des machines",
     "excerpt": "Découvrez comment les protocoles permettent aux machines de communiquer sur Internet. DNS, TCP, TLS, HTTP… plongez dans le fonctionnement réel d’une requête web et comprenez les bases invisibles du réseau moderne.",
